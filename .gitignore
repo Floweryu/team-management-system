@@ -42,6 +42,7 @@ build/
 
 ### others ###
 README.assets
+application-prod.yml
 
 ### STS ###
 .apt_generated
