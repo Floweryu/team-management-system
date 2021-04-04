@@ -13,44 +13,11 @@ body,
 }
 
 body {
-  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'microsoft yahei', arial, STHeiTi,
-    sans-serif;
+  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'microsoft yahei', arial, STHeiTi, sans-serif;
 }
 
 a {
   text-decoration: none;
-}
-
-.content-box {
-  position: absolute;
-  left: 200px;
-  right: 0;
-  top: 50px;
-  bottom: 0;
-  padding-bottom: 30px;
-  -webkit-transition: left 0.3s ease-in-out;
-  transition: left 0.3s ease-in-out;
-  background: #f0f0f0;
-}
-
-.content-loading {
-  position: relative;
-  width: auto;
-  height: 100%;
-  /* padding: 0 5px 10px; */
-  overflow-y: scroll;
-  box-sizing: border-box;
-}
-
-.content-collapse {
-  left: 65px;
-}
-
-.container {
-  padding: 10px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
 }
 
 .crumbs {

@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import '@/icons'
 import http from '@/network/http-request/index'
 import bus from '@/utils/bus'
 

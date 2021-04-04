@@ -5,7 +5,7 @@
       :default-active="onRoutes"
       :collapse="collapse"
       background-color="#FFFFFF"
-      text-color="#8396A5"
+      text-color="#83A3C5"
       active-text-color="#409EFF"
       unique-opened
       router
@@ -80,7 +80,7 @@ export default {
   display: block;
 
   left: 0;
-  top: 50px;
+  top: 52px;
   bottom: 0;
   overflow-y: scroll;
 }

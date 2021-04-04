@@ -4,7 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const Index = () => import('@/views/index')
-const Home = () => import('@/components/Home')
+
+const UserManage = () => import('@/components/UserManage')
+const CommandInterface = () => import('@/components/CommandInterface')
 
 const routes = [
   {
@@ -14,8 +16,12 @@ const routes = [
   },
   {
     path: '/home',
-    name: 'Home',
-    component: Home
+    name: 'UserManage',
+    component: UserManage
+  },
+  {
+    path: '/command',
+    component: CommandInterface
   }
 ]
 
