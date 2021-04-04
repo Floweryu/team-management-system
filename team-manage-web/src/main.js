@@ -6,10 +6,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import http from '@/network/http-request/index'
+import bus from '@/utils/bus'
 
 Vue.config.productionTip = false
-
-const bus = new Vue()
 
 // 全局挂载axios和bus
 Vue.prototype.$http = http

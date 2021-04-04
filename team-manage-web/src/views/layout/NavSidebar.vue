@@ -1,11 +1,12 @@
 <template>
-  <div id="navigation-container">
+  <div id="nav-sidebar">
     <el-menu
-      class="nav-sidebar"
+      class="el-menu-sidebar"
       :default-active="onRoutes"
-      text-color="#fff"
-      background-color="#262626"
       :collapse="collapse"
+      background-color="#FFFFFF"
+      text-color="#8396A5"
+      active-text-color="#409EFF"
       unique-opened
       router
     >
@@ -54,18 +55,50 @@ export default {
   name: 'NavSidebar',
   data() {
     return {
+      collapse: false,
       menuList: []
+    }
+  },
+  computed: {
+    onRoutes() {
+      return this.$route.path
     }
   },
   created() {
     this.menuList = menuList
+    // 接收 home-header 发送来的 collapse
+    this.$bus.$on('collapse', msg => {
+      this.collapse = msg
+    })
   }
 }
 </script>
 
 <style scoped>
-.nav-sidebar:not(.el-menu--collapse) {
+#nav-sidebar {
+  position: absolute;
+  display: block;
+
+  left: 0;
+  top: 50px;
+  bottom: 0;
+  overflow-y: scroll;
+}
+#nav-sedebar::-webkit-scrollbar {
+  width: 0;
+}
+
+.el-menu-sidebar:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 400px;
+}
+
+#nav-sidebar > ul {
+  height: 100%;
+}
+
+.machines-num {
+  color: #bfcbd9;
+  float: right;
+  margin-right: 20px;
 }
 </style>
