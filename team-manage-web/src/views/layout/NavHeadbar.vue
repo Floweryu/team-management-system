@@ -147,7 +147,7 @@ export default {
   margin-right: 20px;
 }
 .el-dropdown-link {
-  color: black;
+  color: #73aeea;
   cursor: pointer;
 }
 .fullscreen-btn {
