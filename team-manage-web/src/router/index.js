@@ -6,11 +6,12 @@ Vue.use(VueRouter)
 const Index = () => import('@/views/index')
 const Login = () => import('@/components/Login')
 
+const UserManage = () => import('@/components/user/UserManage')
+
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    component: Login
+    redirect: '/login'
   },
   {
     path: '/login',
@@ -19,8 +20,14 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Manage',
-    component: Index
+    component: Index,
+    children: [
+      {
+        path: 'user',
+        component: UserManage,
+        meta: { title: '用户管理' }
+      }
+    ]
   }
 ]
 

@@ -11,24 +11,24 @@
       router
     >
       <template v-for="item in menuList">
-        <template v-if="item.subs">
-          <el-submenu :index="item.index" :key="item.index">
+        <template v-if="item.childMenu.length != 0">
+          <el-submenu :index="item.path" :key="item.path">
             <template slot="title">
-              <i :class="item.icon"></i>
-              <span slot="title">{{ item.title }}</span>
+              <svg-icon :iconClass="item.icon"></svg-icon>
+              <span slot="title">{{ item.name }}</span>
             </template>
-            <template v-for="subItem in item.subs">
-              <el-menu-item :index="subItem.index" :key="subItem.index">
-                <i :class="subItem.icon"></i>
-                <span slot="title">{{ subItem.title }}</span>
+            <template v-for="subMenu in item.childMenu">
+              <el-menu-item :index="subMenu.path" :key="subMenu.path">
+                <svg-icon :iconClass="subMenu.icon"></svg-icon>
+                <span slot="title">{{ subMenu.name }}</span>
               </el-menu-item>
             </template>
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :index="item.index" :key="item.index">
-            <i :class="item.icon"></i>
-            <span slot="title">{{ item.title }}</span>
+          <el-menu-item :index="item.path" :key="item.path">
+            <svg-icon :iconClass="item.icon"></svg-icon>
+            <span slot="title">{{ item.name }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -37,20 +37,6 @@
 </template>
 
 <script>
-const menuList = [
-  {
-    index: 'document',
-    icon: 'el-icon-s-marketing',
-    title: '文献管理',
-    subs: [
-      {
-        index: 'document',
-        icon: 'el-icon-s-marketing',
-        title: '文献列表'
-      }
-    ]
-  }
-]
 export default {
   name: 'NavSidebar',
   data() {
@@ -65,11 +51,21 @@ export default {
     }
   },
   created() {
-    this.menuList = menuList
+    this.getMenus()
     // 接收 home-header 发送来的 collapse
     this.$bus.$on('collapse', msg => {
       this.collapse = msg
     })
+  },
+  methods: {
+    // 获取所有菜单
+    getMenus() {
+      this.$http.menu.getMenus().then(res => {
+        if (res.code == 0 || res.data) {
+          this.menuList = res.data
+        }
+      })
+    }
   }
 }
 </script>
@@ -100,5 +96,9 @@ export default {
   color: #bfcbd9;
   float: right;
   margin-right: 20px;
+}
+
+span {
+  margin-left: 10px;
 }
 </style>

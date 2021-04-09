@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Menu">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="parent_id" jdbcType="BIGINT" javaType="Long" property="parentId" />
+        <result column="path" jdbcType="VARCHAR" javaType="String" property="path" />
+        <result column="icon" jdbcType="VARCHAR" javaType="String" property="icon" />
+        <result column="permission" jdbcType="VARCHAR" javaType="String" property="permission" />
+        <result column="type" jdbcType="CHAR" javaType="String" property="type" />
+        <result column="visible" jdbcType="TINYINT" javaType="Boolean" property="visible" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, name, parent_id, path, icon, permission, type, visible, create_time, update_time
+    </sql>
+    
+    <select id="getMenuList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_menu
+    </select>
+</mapper>

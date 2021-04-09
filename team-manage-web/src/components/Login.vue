@@ -18,9 +18,7 @@
 </template>
 
 <script>
-import { notify } from '@/utils/mixin'
 export default {
-  mixins: [notify],
   data: function() {
     return {
       ruleForm: {
@@ -40,9 +38,9 @@ export default {
         if (res.code === 0) {
           localStorage.setItem('username', this.ruleForm.username)
           this.$router.push('/dashboard')
-          this.notify('登陆成功', 'success')
+          this.$notify.success('登陆成功')
         } else {
-          this.notify('登陆失败', 'error')
+          this.$notify.error('登陆失败')
         }
       })
     }
