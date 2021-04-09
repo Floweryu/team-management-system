@@ -1,0 +1,11 @@
+import axios from '../http-instance/index'
+import host from '../http-env/index'
+
+const user = {
+  //验证登录
+  verifyPassword(params) {
+    return axios.post(`${host.apiHost}/admin/login`, params)
+  }
+}
+
+export default user

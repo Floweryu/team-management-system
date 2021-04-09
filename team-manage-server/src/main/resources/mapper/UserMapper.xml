@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.User">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="password" jdbcType="VARCHAR" javaType="String" property="password" />
+        <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
+        <result column="deleted" jdbcType="TINYINT" javaType="Boolean" property="deleted" />
+        <result column="sex" jdbcType="TINYINT" javaType="Boolean" property="sex" />
+        <result column="email" jdbcType="VARCHAR" javaType="String" property="email" />
+        <result column="mobile" jdbcType="VARCHAR" javaType="String" property="mobile" />
+        <result column="qq_open_id" jdbcType="VARCHAR" javaType="String" property="qqOpenId" />
+        <result column="wx_open_id" jdbcType="VARCHAR" javaType="String" property="wxOpenId" />
+        <result column="birth" jdbcType="DATE" javaType="Date" property="birth" />
+        <result column="login_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="loginTime" />
+        <result column="last_login_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="lastLoginTime" />
+        <result column="login_count" jdbcType="BIGINT" javaType="Long" property="loginCount" />
+        <result column="create_uid" jdbcType="VARCHAR" javaType="String" property="createUid" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+
+    <select id="verifyPassword" resultType="java.lang.Integer">
+        select count(*)
+        from t_user
+        where user_id = #{userId} and password = #{password}
+    </select>
+</mapper>

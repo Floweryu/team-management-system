@@ -4,24 +4,23 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const Index = () => import('@/views/index')
-
-const UserManage = () => import('@/components/UserManage')
-const CommandInterface = () => import('@/components/CommandInterface')
+const Login = () => import('@/components/Login')
 
 const routes = [
   {
     path: '/',
-    name: 'Index',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/dashboard',
+    name: 'Manage',
     component: Index
-  },
-  {
-    path: '/home',
-    name: 'UserManage',
-    component: UserManage
-  },
-  {
-    path: '/command',
-    component: CommandInterface
   }
 ]
 

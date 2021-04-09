@@ -2,6 +2,7 @@ package com.buct.team.manage.entity;
 
 import lombok.Data;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author Floweryu
@@ -9,7 +10,10 @@ import java.sql.Timestamp;
  */
 @Data
 public class User {
-    // 登录账号（学号）主键
+    // 主键
+    private Long id;
+
+    // 登录账号（学号）
     private String userId;
 
     // 登录密码
@@ -19,10 +23,10 @@ public class User {
     private String username;
 
     // 是否被删除：true: 被删除; false: 未删除
-    private Boolean delete;
+    private Boolean deleted;
 
     // 性别：1：男，0：女
-    private Integer sex;
+    private Boolean sex;
 
     // 电子邮箱
     private String email;
@@ -35,6 +39,9 @@ public class User {
 
     // 微信号
     private String wxOpenId;
+
+    // 出生日期
+    private Date birth;
 
     // 登录时间
     private Timestamp loginTime;
