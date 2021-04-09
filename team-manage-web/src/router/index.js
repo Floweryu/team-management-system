@@ -4,9 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const Index = () => import('@/views/index')
-const Login = () => import('@/components/Login')
+const Login = () => import('@/views/login/index')
 
-const UserManage = () => import('@/components/user/UserManage')
+const UserManage = () => import('@/views/user/index')
 
 const routes = [
   {

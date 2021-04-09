@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import HeaderTop from '@/components/user/HeaderTop'
+import HeaderTop from './components/HeaderTop'
 
 import { formatDate } from '@/utils/index'
 import { pageSeparate } from '@/utils/mixin'

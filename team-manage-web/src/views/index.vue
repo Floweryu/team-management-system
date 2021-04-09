@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import NavSidebar from '@/views/layout/NavSidebar'
-import NavHeadbar from '@/views/layout/NavHeadbar'
+import NavSidebar from '@/views/layout/NavSideBar/index'
+import NavHeadbar from '@/views/layout/NavHeadBar/index'
 
 export default {
   name: 'index',

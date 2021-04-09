@@ -19,7 +19,8 @@
 
 <script>
 export default {
-  data: function() {
+  name: 'Login',
+  data() {
     return {
       ruleForm: {
         userId: '',
@@ -51,7 +52,7 @@ export default {
 <style scoped>
 .login-wrap {
   position: fixed;
-  background: url('../assets/image/banner4.jpg');
+  background: url('../../assets/image/banner4.jpg');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;

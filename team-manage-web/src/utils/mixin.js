@@ -1,4 +1,4 @@
-import PageSeparate from '@/components/common/PageList'
+import PageSeparate from '@/components/Paging/index'
 
 // 分页组件混入
 export const pageSeparate = {

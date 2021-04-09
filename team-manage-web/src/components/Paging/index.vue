@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'PageList',
+  name: 'Paging',
   props: {
     currentPage: {
       type: Number,
