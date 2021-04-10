@@ -1,6 +1,7 @@
 package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.AdminReq;
+import com.buct.team.manage.dao.vo.UserLoginInfoVo;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.UserService;
@@ -24,12 +25,12 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Result<CodeMsg> adminLogin(@RequestBody AdminReq adminReq) {
+    public Result<Object> adminLogin(@RequestBody AdminReq adminReq) {
         try {
-            boolean flag = userService.verifyPassword(adminReq.getUserId(), adminReq.getPassword());
+            UserLoginInfoVo userInfo = userService.verifyPassword(adminReq.getUserId(), adminReq.getPassword());
             log.info("登录用户信息为：username: {}, password: {}", adminReq.getUserId(), adminReq.getPassword());
-            if (flag) {
-                return Result.success(CodeMsg.LOGIN_SUCCESS);
+            if (userInfo != null) {
+                return Result.success(userInfo);
             } else {
                 return Result.error(CodeMsg.LOGIN_FAILURE);
             }

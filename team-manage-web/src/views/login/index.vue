@@ -36,8 +36,12 @@ export default {
     //登录验证
     loginButton() {
       this.$http.user.verifyPassword(JSON.stringify(this.ruleForm)).then(res => {
-        if (res.code === 0) {
-          localStorage.setItem('username', this.ruleForm.username)
+        if (res.code === 0 && res.data) {
+          localStorage.setItem('userId', res.data.userId)
+          localStorage.setItem('username', res.data.username)
+          localStorage.setItem('loginTime', res.data.loginTime)
+          localStorage.setItem('loginCount', res.data.loginCount)
+          localStorage.setItem('createUid', res.data.createUid)
           this.$router.push('/dashboard')
           this.$notify.success('登陆成功')
         } else {

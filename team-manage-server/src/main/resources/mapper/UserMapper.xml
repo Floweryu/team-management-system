@@ -20,13 +20,21 @@
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
+    
+    <resultMap id="LoginInfoMap" type="com.buct.team.manage.dao.vo.UserLoginInfoVo">
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
+        <result column="login_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="loginTime" />
+        <result column="login_count" jdbcType="BIGINT" javaType="Long" property="loginCount" />
+        <result column="create_uid" jdbcType="VARCHAR" javaType="String" property="createUid" />
+    </resultMap>
 
     <sql id="Base_Column_List">
         id, user_id, password, username, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
     </sql>
 
-    <select id="verifyPassword" resultType="java.lang.Integer">
-        select count(*)
+    <select id="verifyPassword" resultMap="LoginInfoMap">
+        select user_id, username, login_time, login_count, create_uid
         from t_user
         where user_id = #{userId} and password = #{password}
     </select>
@@ -36,4 +44,78 @@
         <include refid="Base_Column_List" />
         from t_user
     </select>
+
+    <insert id="insertUser" parameterType="com.buct.team.manage.entity.User">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="qqOpenId != null">
+                qq_open_id,
+            </if>
+            <if test="wxOpenId != null">
+                wx_open_id,
+            </if>
+            <if test="birth != null">
+                birth,
+            </if>
+            <if test="createUid != null">
+                create_uid,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="mobile != null">
+                #{mobile},
+            </if>
+            <if test="qqOpenId != null">
+                #{qqOpenId},
+            </if>
+            <if test="wxOpenId != null">
+                #{wxOpenId},
+            </if>
+            <if test="birth != null">
+                #{birth},
+            </if>
+            <if test="createUid != null">
+                #{createUid},
+            </if>
+        </trim>
+    </insert>
 </mapper>

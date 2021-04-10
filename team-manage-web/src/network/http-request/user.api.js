@@ -10,6 +10,11 @@ const user = {
   // 获取所有用户
   getAllUser() {
     return axios.get(`${host.apiHost}/manage/users`)
+  },
+
+  // 添加用户
+  addUser(data) {
+    return axios.post(`${host.apiHost}/manage/user`, data)
   }
 }
 

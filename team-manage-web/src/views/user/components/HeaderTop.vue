@@ -4,7 +4,7 @@
  -->
 <template>
   <Header>
-    <el-button slot="left" size="mini" type="primary" @click="addUser" round icon="el-icon-plus">用户</el-button>
+    <el-button slot="left" size="mini" type="primary" @click="addUser" round icon="el-icon-plus">添加用户</el-button>
     <el-button slot="left" size="mini" type="danger" @click="multipleDelete" round icon="el-icon-delete">批量删除</el-button>
     <el-input
       slot="right"

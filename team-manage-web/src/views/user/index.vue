@@ -55,6 +55,13 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <user-dialog
+      ref="child"
+      :is-edit-button="isEditButton"
+      :edit-value="editValue"
+      :dialog-visible="dialogFormVisible"
+      @dialog-cancel="dialogCancel"
+    />
     <page-separate
       :page-sizes="pageSizes"
       :page-size="pageSize"
@@ -67,6 +74,7 @@
 
 <script>
 import HeaderTop from './components/HeaderTop'
+import UserDialog from './components/UserDialog'
 
 import { formatDate } from '@/utils/index'
 import { pageSeparate } from '@/utils/mixin'
@@ -74,7 +82,8 @@ import { pageSeparate } from '@/utils/mixin'
 export default {
   name: 'SingerManage',
   components: {
-    HeaderTop
+    HeaderTop,
+    UserDialog
   },
   mixins: [pageSeparate],
   data() {
@@ -108,17 +117,7 @@ export default {
               let time = new Date(item.lastLoginTime)
               item.lastLoginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
             }
-            switch (item.sex) {
-              case 0:
-                item._sex = '女'
-                break
-              case 1:
-                item._sex = '男'
-                break
-              case 2:
-                item._sex = '组合'
-                break
-            }
+            item._sex = item.sex ? '男' : '女'
           })
           this.tableData = res.data
         }
