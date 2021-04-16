@@ -4,7 +4,7 @@
  -->
 <template>
   <div class="user">
-    <header-top @input-data="searchData" @add-user="addUser" @multiple-delete="multipleDelete" />
+    <header-top @search-data="searchData(arguments)" @add-user="addUser" @multiple-delete="multipleDelete" />
     <el-card class="body">
       <el-table
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
@@ -18,6 +18,7 @@
         <el-table-column fixed prop="userId" label="用户账号" width="90" align="center" />
         <el-table-column prop="password" label="账号密码" width="200" align="center" />
         <el-table-column prop="username" label="用户姓名" width="80" align="center" />
+        <el-table-column prop="_identity" label="用户身份" width="60" align="center" />
         <el-table-column label="是否删除" width="80" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.deleted ? 'danger' : 'success'"> {{ scope.row.deleted ? '删除' : '正常' }}</el-tag>
@@ -99,105 +100,73 @@ export default {
     this.getAllUsers()
   },
   methods: {
-    // 获取所有歌手
+    // 获取所有用户
     getAllUsers() {
       this.$http.user.getAllUser().then(res => {
         if (res.code === 0 && res.data) {
           let data = res.data
-          data.forEach(item => {
-            if (item.birth) {
-              let time = new Date(item.birth)
-              item.birth = formatDate(time, 'yyyy-MM-dd')
-            }
-            if (item.loginTime) {
-              let time = new Date(item.loginTime)
-              item.loginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
-            }
-            if (item.lastLoginTime) {
-              let time = new Date(item.lastLoginTime)
-              item.lastLoginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
-            }
-            item._sex = item.sex ? '男' : '女'
-          })
-          this.tableData = res.data
+          this.tableData = this.transData(data)
         }
       })
     },
-    // 模糊查询歌手
-    searchData(val) {
-      let query = {
-        params: {
-          name: val
+    // 转换数据格式
+    transData(data) {
+      data.forEach(item => {
+        if (item.birth) {
+          let time = new Date(item.birth)
+          item.birth = formatDate(time, 'yyyy-MM-dd')
         }
-      }
-      this.$http.singer.getSingerByName(query).then(res => {
-        if (res.code === 0 && res.data) {
-          let data = res.data
-          data.forEach(item => {
-            if (item.birth) {
-              let time = new Date(item.birth)
-              item.birth = formatDate(time, 'yyyy-MM-dd')
-            }
-            switch (item.sex) {
-              case 0:
-                item._sex = '女'
-                break
-              case 1:
-                item._sex = '男'
-                break
-              case 2:
-                item._sex = '组合'
-                break
-            }
-          })
-          this.tableData = res.data
+        if (item.loginTime) {
+          let time = new Date(item.loginTime)
+          item.loginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
+        }
+        if (item.lastLoginTime) {
+          let time = new Date(item.lastLoginTime)
+          item.lastLoginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
+        }
+        item._sex = item.sex ? '男' : '女'
+        if (item.identity) {
+          switch (item.identity) {
+            case 0:
+              item._identity = '教师'
+              break
+            case 1:
+              item._identity = '大一'
+              break
+            case 2:
+              item._identity = '大二'
+              break
+            case 3:
+              item._identity = '大三'
+              break
+            case 4:
+              item._identity = '大四'
+              break
+            case 5:
+              item._identity = '研一'
+              break
+            case 6:
+              item._identity = '研二'
+              break
+            case 7:
+              item._identity = '研三'
+              break
+          }
         }
       })
+      return data
     },
-    // 添加歌手
+    // 添加用户事件
     addUser(val) {
       this.isEditButton = false
       this.dialogFormVisible = val
-      this.editValue = {}
-    },
-    // 图片上传地址
-    uploadUrl(id) {
-      return `${process.env.VUE_APP_BASE_URL}/admin/singer/updatePic?id=${id}`
-    },
-    // 校验图片格式
-    beforeUpload(file) {
-      const isPic = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isPic) {
-        this.$message.error('上传的头像图片必须为 jpg 或 png 格式')
-        return false
-      }
-
-      const size = file.size / 1024 / 1024
-      if (size >= 2) {
-        this.$message.error('上传的头像图片大小必须小于 2M ')
-        return false
-      }
-      return true
-    },
-    // 上传图片成功后
-    handleImgSuccess(res) {
-      if (res.code === 0) {
-        this.getAllSingers()
-        this.$notify({
-          message: '图片上传并更新成功',
-          type: 'success'
-        })
-      } else {
-        this.$notify.error({
-          message: '图片上传失败'
-        })
-      }
+      this.editValue = null
     },
     // 接收弹窗的取消事件
     dialogCancel() {
       this.dialogFormVisible = false
     },
-    // 编辑歌手
+    // 编辑用户
     editUser(index, row) {
       this.isEditButton = true
       this.dialogFormVisible = true
@@ -207,28 +176,27 @@ export default {
     handleSelectionChange(rows) {
       this.selectRows = rows
     },
-    // 删除歌手接口
-    deleteSingerApi(data) {
-      this.$http.singer
-        .deleteSinger(JSON.stringify(data))
+    // 删除用户接口
+    deleteUserApi(data) {
+      this.$http.user
+        .deleteUser(JSON.stringify(data))
         .then(res => {
           if (res.code === 0) {
-            this.$notify({
-              message: '删除歌手成功',
-              type: 'success'
+            this.$notify.success({
+              message: '删除用户成功'
             })
-            this.getAllSingers()
+            this.getAllUsers()
           }
         })
         .catch(() => {
           this.$notify.error({
-            message: '删除歌手失败'
+            message: '删除用户失败'
           })
         })
     },
     // 批量删除
     async multipleDelete() {
-      this.$confirm('此操作将永久删除歌手, 是否继续?', '提示', {
+      this.$confirm('此操作将删除用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -238,7 +206,7 @@ export default {
           this.selectRows.forEach(item => {
             data.push(item.id)
           })
-          await this.deleteSingerApi(data)
+          await this.deleteUserApi(data)
         })
         .catch(() => {
           this.$notify.error({
@@ -246,17 +214,17 @@ export default {
           })
         })
     },
-    // 删除歌手信息
-    async deleteUser(index, row) {
-      this.$confirm('此操作将永久删除歌手, 是否继续?', '提示', {
+    // 删除用户信息
+    deleteUser(index, row) {
+      this.$confirm('此操作将删除用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(async () => {
+        .then(() => {
           let data = []
           data.push(row.id)
-          await this.deleteSingerApi(data)
+          this.deleteUserApi(data)
         })
         .catch(err => {
           console.log(err)
@@ -264,6 +232,62 @@ export default {
             message: '取消删除操作'
           })
         })
+    },
+    // 搜索用户
+    searchData(msg) {
+      console.log(msg)
+      let searchType = msg[0]
+      let inputData = msg[1]
+      switch (searchType) {
+        case 0:
+          this.getUserByUserId(inputData)
+          break
+        case 1:
+          this.getUserByUserName(inputData)
+          break
+        case 2:
+          this.getUserByIdentity(inputData)
+          break
+      }
+    },
+    // 根据用户账号获取用户
+    getUserByUserId(val) {
+      let query = {
+        params: {
+          userId: val
+        }
+      }
+      this.$http.user.getUserByUserId(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
+    },
+    // 根据用户姓名获取用户
+    getUserByUserName(val) {
+      let query = {
+        params: {
+          username: val
+        }
+      }
+      this.$http.user.getUserByUserName(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
+    },
+    // 根据用户身份获取用户
+    getUserByIdentity(val) {
+      let query = {
+        params: {
+          identity: val
+        }
+      }
+      this.$http.user.getUserByIdentity(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
     }
   }
 }

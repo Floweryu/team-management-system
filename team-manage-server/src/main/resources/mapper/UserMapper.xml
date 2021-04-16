@@ -6,8 +6,9 @@
         <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
         <result column="password" jdbcType="VARCHAR" javaType="String" property="password" />
         <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
+        <result column="identity" jdbcType="TINYINT" javaType="Integer" property="identity" />
         <result column="deleted" jdbcType="TINYINT" javaType="Boolean" property="deleted" />
-        <result column="sex" jdbcType="TINYINT" javaType="Boolean" property="sex" />
+        <result column="sex" jdbcType="TINYINT" javaType="Integer" property="sex" />
         <result column="email" jdbcType="VARCHAR" javaType="String" property="email" />
         <result column="mobile" jdbcType="VARCHAR" javaType="String" property="mobile" />
         <result column="qq_open_id" jdbcType="VARCHAR" javaType="String" property="qqOpenId" />
@@ -30,7 +31,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, password, username, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
+        id, user_id, password, username, identity, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
     </sql>
 
     <select id="verifyPassword" resultMap="LoginInfoMap">
@@ -43,6 +44,42 @@
         select
         <include refid="Base_Column_List" />
         from t_user
+        where deleted = 0
+    </select>
+
+    <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="getUserByUserId" resultMap="BaseResultMap">
+        <if test="userId != null">
+            <bind name="pattern" value="'%' + userId + '%'" />
+        </if>
+
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_id like #{pattern}
+    </select>
+
+    <select id="getUserByUserName" resultMap="BaseResultMap">
+        <if test="username != null">
+            <bind name="pattern" value="'%' + username + '%'" />
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where username like #{pattern}
+    </select>
+
+    <select id="getUserByIdentity" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where identity = #{identity}
     </select>
 
     <insert id="insertUser" parameterType="com.buct.team.manage.entity.User">
@@ -56,6 +93,9 @@
             </if>
             <if test="username != null">
                 username,
+            </if>
+            <if test="identity != null">
+                `identity`,
             </if>
             <if test="deleted != null">
                 deleted,
@@ -92,6 +132,9 @@
             <if test="username != null">
                 #{username},
             </if>
+            <if test="identity != null">
+                #{identity},
+            </if>
             <if test="deleted != null">
                 #{deleted},
             </if>
@@ -118,4 +161,56 @@
             </if>
         </trim>
     </insert>
+
+    <update id="updatetUser" parameterType="com.buct.team.manage.entity.User">
+        update t_user
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="identity != null">
+                `identity` = #{identity},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="qqOpenId != null">
+                qq_open_id = #{qqOpenId},
+            </if>
+            <if test="wxOpenId != null">
+                wx_open_id = #{wxOpenId},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteUser" parameterType="java.util.List">
+        update t_user
+        set deleted = 1
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

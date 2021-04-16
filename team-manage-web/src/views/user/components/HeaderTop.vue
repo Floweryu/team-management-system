@@ -6,7 +6,14 @@
   <Header>
     <el-button slot="left" size="mini" type="primary" @click="addUser" round icon="el-icon-plus">添加用户</el-button>
     <el-button slot="left" size="mini" type="danger" @click="multipleDelete" round icon="el-icon-delete">批量删除</el-button>
+    <el-select slot="right" class="select" v-model="searchType" placeholder="请选择" size="mini">
+      <el-option v-for="item in searchTypeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+    </el-select>
+    <el-select v-if="searchType === 2" slot="right" class="select-identity" size="mini" v-model="input" placeholder="请选择身份">
+      <el-option v-for="item in identityOptions" :key="item.value" :label="item.label" :value="item.value" />
+    </el-select>
     <el-input
+      v-else
       slot="right"
       class="input"
       v-model="input"
@@ -32,7 +39,23 @@ export default {
   },
   data() {
     return {
-      input: ''
+      input: '',
+      searchType: 0,
+      searchTypeList: [
+        { value: 0, label: '账号' },
+        { value: 1, label: '姓名' },
+        { value: 2, label: '身份' }
+      ],
+      identityOptions: [
+        { value: 0, label: '教师' },
+        { value: 1, label: '大一' },
+        { value: 2, label: '大二' },
+        { value: 3, label: '大三' },
+        { value: 4, label: '大四' },
+        { value: 5, label: '研一' },
+        { value: 6, label: '研二' },
+        { value: 7, label: '研三' }
+      ]
     }
   },
   methods: {
@@ -40,7 +63,7 @@ export default {
       this.$emit('add-user', true)
     },
     searchData() {
-      this.$emit('input-data', this.input)
+      this.$emit('search-data', this.searchType, this.input)
     },
     multipleDelete() {
       this.$emit('multiple-delete', true)
@@ -53,6 +76,14 @@ export default {
 .input {
   margin: 0 10px;
   width: 200px;
+}
+.select {
+  width: 74px;
+}
+
+.select-identity {
+  margin: 0 10px;
+  width: 120px;
 }
 
 .search-button {

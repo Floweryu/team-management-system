@@ -21,6 +21,25 @@ public interface UserMapper {
     // 获取所有用户
     List<User> getAllUser();
 
+    // 通过用户id获取用户信息
+    User getUserById(Long id);
+
     // 添加用户
     int insertUser(User user);
+
+    // 更新用户
+    int updatetUser(User user);
+
+    // 删除用户
+    int deleteUser(List<Long> idList);
+
+    // 根据账号查询用户
+    List<User> getUserByUserId(String userId);
+
+    // 根据用户姓名查询
+    List<User> getUserByUserName(String username);
+
+    // 根据用户身份查询
+    List<User> getUserByIdentity(Integer identity);
+
 }

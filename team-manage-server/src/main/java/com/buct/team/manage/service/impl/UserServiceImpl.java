@@ -33,12 +33,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
+    @Override
     public boolean insertUser(UserReq userReq) {
+        User user = transUserReq(userReq);
+        return userMapper.insertUser(user) > 0;
+    }
+
+    @Override
+    public boolean updateUser(UserReq userReq) {
+        User user = transUserReq(userReq);
+        return userMapper.updatetUser(user) > 0;
+    }
+
+    @Override
+    public boolean deleteUser(List<Long> idList) {
+        return userMapper.deleteUser(idList) > 0;
+    }
+
+    @Override
+    public List<User> getUserByUserId(String userId) {
+        return userMapper.getUserByUserId(userId);
+    }
+
+    @Override
+    public List<User> getUserByUserName(String username) {
+        return userMapper.getUserByUserName(username);
+    }
+
+    @Override
+    public List<User> getUserByIdentity(Integer identity) {
+        return userMapper.getUserByIdentity(identity);
+    }
+
+    private User transUserReq(UserReq userReq) {
+        Long id = userReq.getId();
         String userId = userReq.getUserId();
         String password = userReq.getPassword();
         String username = userReq.getUsername();
+        Integer identity = userReq.getIdentity();
         Boolean deleted = userReq.getDeleted();
-        Boolean sex = userReq.getSex();
+        Integer sex = userReq.getSex();
         String email = userReq.getEmail();
         String mobile = userReq.getMobile();
         String qqOpenId = userReq.getQqOpenId();
@@ -47,6 +85,9 @@ public class UserServiceImpl implements UserService {
         String createUid = userReq.getCreateUid();
 
         User user = new User();
+        if (id != null) {
+            user.setId(id);
+        }
         if (userId != null) {
             user.setUserId(userId);
         }
@@ -55,6 +96,9 @@ public class UserServiceImpl implements UserService {
         }
         if (username != null) {
             user.setUsername(username);
+        }
+        if (identity != null) {
+            user.setIdentity(identity);
         }
         if (deleted != null) {
             user.setDeleted(deleted);
@@ -80,7 +124,6 @@ public class UserServiceImpl implements UserService {
         if (createUid != null) {
             user.setCreateUid(createUid);
         }
-
-        return userMapper.insertUser(user) > 0;
+        return user;
     }
 }

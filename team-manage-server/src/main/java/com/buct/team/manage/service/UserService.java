@@ -15,5 +15,17 @@ public interface UserService {
 
     List<User> getAllUser();
 
+    User getUserById(Long id);
+
     boolean insertUser(UserReq userReq);
+
+    boolean updateUser(UserReq userReq);
+
+    boolean deleteUser(List<Long> idList);
+
+    List<User> getUserByUserId(String userId);
+
+    List<User> getUserByUserName(String username);
+
+    List<User> getUserByIdentity(Integer identity);
 }
