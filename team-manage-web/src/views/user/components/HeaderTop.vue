@@ -6,7 +6,7 @@
   <Header>
     <el-button slot="left" size="mini" type="primary" @click="addUser" round icon="el-icon-plus">添加用户</el-button>
     <el-button slot="left" size="mini" type="danger" @click="multipleDelete" round icon="el-icon-delete">批量删除</el-button>
-    <el-select slot="right" class="select" v-model="searchType" placeholder="请选择" size="mini">
+    <el-select slot="right" class="select" v-model="searchType" placeholder="请选择" size="mini" @change="selectChange">
       <el-option v-for="item in searchTypeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
     </el-select>
     <el-select v-if="searchType === 2" slot="right" class="select-identity" size="mini" v-model="input" placeholder="请选择身份">
@@ -22,7 +22,7 @@
       size="mini"
       clearable
       autosize
-      placeholder="请输入用户id"
+      placeholder="请输入查询关键词"
     ></el-input>
     <el-button slot="right" class="search-button" @click="searchData" type="primary" size="mini" icon="el-icon-search" round>
       搜索
@@ -67,6 +67,9 @@ export default {
     },
     multipleDelete() {
       this.$emit('multiple-delete', true)
+    },
+    selectChange() {
+      this.input = ''
     }
   }
 }

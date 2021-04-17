@@ -37,7 +37,7 @@
     <select id="verifyPassword" resultMap="LoginInfoMap">
         select user_id, username, login_time, login_count, create_uid
         from t_user
-        where user_id = #{userId} and password = #{password}
+        where user_id = #{userId} and password = #{password} and deleted = 0
     </select>
     
     <select id="getAllUser" resultMap="BaseResultMap">
@@ -51,7 +51,7 @@
         select
         <include refid="Base_Column_List" />
         from t_user
-        where id = #{id}
+        where id = #{id} and deleted = 0
     </select>
 
     <select id="getUserByUserId" resultMap="BaseResultMap">
@@ -62,7 +62,7 @@
         select
         <include refid="Base_Column_List" />
         from t_user
-        where user_id like #{pattern}
+        where user_id like #{pattern} and deleted = 0
     </select>
 
     <select id="getUserByUserName" resultMap="BaseResultMap">
@@ -72,14 +72,14 @@
         select
         <include refid="Base_Column_List" />
         from t_user
-        where username like #{pattern}
+        where username like #{pattern} and deleted = 0
     </select>
 
     <select id="getUserByIdentity" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from t_user
-        where identity = #{identity}
+        where identity = #{identity} and deleted = 0
     </select>
 
     <insert id="insertUser" parameterType="com.buct.team.manage.entity.User">

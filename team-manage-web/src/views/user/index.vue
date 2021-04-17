@@ -18,7 +18,7 @@
         <el-table-column fixed prop="userId" label="用户账号" width="90" align="center" />
         <el-table-column prop="password" label="账号密码" width="200" align="center" />
         <el-table-column prop="username" label="用户姓名" width="80" align="center" />
-        <el-table-column prop="_identity" label="用户身份" width="60" align="center" />
+        <el-table-column prop="_identity" label="身份" width="60" align="center" />
         <el-table-column label="是否删除" width="80" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.deleted ? 'danger' : 'success'"> {{ scope.row.deleted ? '删除' : '正常' }}</el-tag>
