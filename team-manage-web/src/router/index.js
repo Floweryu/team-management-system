@@ -7,6 +7,7 @@ const Index = () => import('@/views/index')
 const Login = () => import('@/views/login/index')
 
 const UserManage = () => import('@/views/user/index')
+const DocumentManage = () => import('@/views/document/index')
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
         path: 'user',
         component: UserManage,
         meta: { title: '用户管理' }
+      },
+      {
+        path: 'document',
+        component: DocumentManage,
+        meta: { title: '文献管理' }
       }
     ]
   }

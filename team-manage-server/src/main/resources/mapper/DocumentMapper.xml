@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.DocumentMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Document">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="title" jdbcType="VARCHAR" javaType="String" property="title" />
+        <result column="author" jdbcType="VARCHAR" javaType="String" property="author" />
+        <result column="publish_time" jdbcType="DATE" javaType="Date" property="publishTime" />
+        <result column="introduction" jdbcType="VARCHAR" javaType="String" property="introduction" />
+        <result column="publish_place" jdbcType="VARCHAR" javaType="String" property="publishPlace" />
+        <result column="size" jdbcType="DOUBLE" javaType="Double" property="size" />
+        <result column="upload_user_id" jdbcType="VARCHAR" javaType="String" property="uploadUserId" />
+        <result column="upload_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="uploadTime" />
+        <result column="origin_address" jdbcType="VARCHAR" javaType="String" property="originAddress" />
+        <result column="like_count" jdbcType="BIGINT" javaType="Long" property="likeCount" />
+        <result column="view_count" jdbcType="BIGINT" javaType="Long" property="viewCount" />
+        <result column="download_count" jdbcType="BIGINT" javaType="Long" property="downloadCount" />
+        <result column="store_path" jdbcType="VARCHAR" javaType="String" property="storePath" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, upload_time, origin_address, like_count, view_count, download_count, store_path, create_time, update_time
+    </sql>
+
+    <select id="getAllDocument" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+    </select>
+
+    <insert id="insertDocument" parameterType="com.buct.team.manage.entity.Document">
+        insert into t_document
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            <if test="publishPlace != null">
+                publish_place,
+            </if>
+            <if test="size != null">
+                `size`,
+            </if>
+            <if test="uploadUserId != null">
+                upload_user_id,
+            </if>
+            <if test="uploadTime != null">
+                upload_time,
+            </if>
+            <if test="originAddress != null">
+                origin_address,
+            </if>
+            <if test="likeCount != null">
+                like_count,
+            </if>
+            <if test="viewCount != null">
+                view_count,
+            </if>
+            <if test="downloadCount != null">
+                download_count,
+            </if>
+            <if test="store_path != null">
+                store_path
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="author != null">
+                #{author},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime},
+            </if>
+            <if test="introduction != null">
+                #{introduction},
+            </if>
+            <if test="publishPlace != null">
+                #{publishPlace},
+            </if>
+            <if test="size != null">
+                #{size},
+            </if>
+            <if test="uploadUserId != null">
+                #{uploadUserId},
+            </if>
+            <if test="uploadTime != null">
+                #{uploadTime},
+            </if>
+            <if test="originAddress != null">
+                #{originAddress},
+            </if>
+            <if test="likeCount != null">
+                #{likeCount},
+            </if>
+            <if test="viewCount != null">
+                #{viewCount},
+            </if>
+            <if test="downloadCount != null">
+                #{downloadCount},
+            </if>
+            <if test="storePath != null">
+                #{storePath}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatetDocument" parameterType="com.buct.team.manage.entity.Document">
+        update t_document
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction},
+            </if>
+            <if test="publishPlace != null">
+                publish_place = #{publishPlace},
+            </if>
+            <if test="size != null">
+                `size` = #{size},
+            </if>
+            <if test="uploadUserId != null">
+                upload_user_id = #{uploadUserId},
+            </if>
+            <if test="uploadTime != null">
+                upload_time = #{uploadTime},
+            </if>
+            <if test="originAddress != null">
+                origin_address = #{originAddress},
+            </if>
+            <if test="likeCount != null">
+                like_count = #{likeCount},
+            </if>
+            <if test="viewCount != null">
+                view_count = #{viewCount},
+            </if>
+            <if test="downloadCount != null">
+                download_count = #{downloadCount},
+            </if>
+            <if test="storePath != null">
+                store_path = #{storePath}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
