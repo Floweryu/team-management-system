@@ -32,32 +32,26 @@ public class Document {
     // 文献大小，单位(M)
     private Double size;
 
+    // 存储位置
+    private String storePath;
+
     // 上传用户
     private String uploadUserId;
-
-    // 上传时间
-    private Timestamp uploadTime;
 
     // 来源地址
     private String originAddress;
 
     // 点赞数
-    private Long likes;
+    private Long likeCount;
 
     // 浏览量
-    private Long views;
+    private Long viewCount;
 
     // 下载数
-    private Long downloadTimes;
+    private Long downloadCount;
 
-    // 存储位置
-    private String storePath;
-
-    // 文献评分
-    private Double score;
-
-    // 评论数
-    private Long commentCount;
+    // 上传时间
+    private Timestamp uploadTime;
 
     // 创建时间
     private Timestamp createTime;
