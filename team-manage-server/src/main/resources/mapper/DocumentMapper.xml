@@ -10,7 +10,6 @@
         <result column="publish_place" jdbcType="VARCHAR" javaType="String" property="publishPlace" />
         <result column="size" jdbcType="DOUBLE" javaType="Double" property="size" />
         <result column="upload_user_id" jdbcType="VARCHAR" javaType="String" property="uploadUserId" />
-        <result column="upload_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="uploadTime" />
         <result column="origin_address" jdbcType="VARCHAR" javaType="String" property="originAddress" />
         <result column="like_count" jdbcType="BIGINT" javaType="Long" property="likeCount" />
         <result column="view_count" jdbcType="BIGINT" javaType="Long" property="viewCount" />
@@ -21,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, upload_time, origin_address, like_count, view_count, download_count, store_path, create_time, update_time
+        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, store_path, create_time, update_time
     </sql>
 
     <select id="getAllDocument" resultMap="BaseResultMap">
@@ -54,9 +53,6 @@
             <if test="uploadUserId != null">
                 upload_user_id,
             </if>
-            <if test="uploadTime != null">
-                upload_time,
-            </if>
             <if test="originAddress != null">
                 origin_address,
             </if>
@@ -69,7 +65,7 @@
             <if test="downloadCount != null">
                 download_count,
             </if>
-            <if test="store_path != null">
+            <if test="storePath != null">
                 store_path
             </if>
         </trim>
@@ -94,9 +90,6 @@
             </if>
             <if test="uploadUserId != null">
                 #{uploadUserId},
-            </if>
-            <if test="uploadTime != null">
-                #{uploadTime},
             </if>
             <if test="originAddress != null">
                 #{originAddress},
@@ -139,9 +132,6 @@
             </if>
             <if test="uploadUserId != null">
                 upload_user_id = #{uploadUserId},
-            </if>
-            <if test="uploadTime != null">
-                upload_time = #{uploadTime},
             </if>
             <if test="originAddress != null">
                 origin_address = #{originAddress},

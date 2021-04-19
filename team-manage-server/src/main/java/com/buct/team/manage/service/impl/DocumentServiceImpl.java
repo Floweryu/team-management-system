@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,16 +47,47 @@ public class DocumentServiceImpl implements DocumentService {
     private Document transDocument(DocumentReq documentReq) {
 
         Document document = new Document();
-        document.setId(documentReq.getId());
-        document.setTitle(documentReq.getTitle().trim());
-        document.setAuthor(documentReq.getAuthor().trim());
-        document.setPubishTime(documentReq.getPubishTime());
-        document.setIntroduction(documentReq.getIntroduction().trim());
-        document.setPublishPlace(documentReq.getPublishPlace().trim());
-        document.setSize(documentReq.getSize());
-        document.setUploadUserId(documentReq.getUploadUserId());
-        document.setOriginAddress(document.getOriginAddress());
-        document.setStorePath(document.getStorePath());
+
+        Long id = documentReq.getId();
+        String title = documentReq.getTitle();
+        String author = documentReq.getAuthor();
+        Date publishTime = documentReq.getPublishTime();
+        String introduction = documentReq.getIntroduction();
+        String publishPlace = documentReq.getPublishPlace();
+        Double size = documentReq.getSize();
+        String uploadUserId = documentReq.getUploadUserId();
+        String originAddress = documentReq.getOriginAddress();
+        String storePath = documentReq.getStorePath();
+        if (id != null) {
+            document.setId(id);
+        }
+        if (title != null) {
+            document.setTitle(title.trim());
+        }
+        if (author != null) {
+            document.setAuthor(author);
+        }
+        if (publishTime != null) {
+            document.setPublishTime(publishTime);
+        }
+        if (introduction != null) {
+            document.setIntroduction(introduction.trim());
+        }
+        if (publishPlace != null) {
+            document.setPublishPlace(publishPlace.trim());
+        }
+        if (size != null) {
+            document.setSize(size);
+        }
+        if (uploadUserId != null) {
+            document.setUploadUserId(uploadUserId);
+        }
+        if (originAddress != null) {
+            document.setOriginAddress(originAddress);
+        }
+        if (storePath != null) {
+            document.setStorePath(storePath);
+        }
 
         return document;
     }

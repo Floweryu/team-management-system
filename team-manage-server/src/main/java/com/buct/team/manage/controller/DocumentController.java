@@ -2,19 +2,16 @@ package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.entity.Document;
-import com.buct.team.manage.entity.User;
 import com.buct.team.manage.enums.FilePathEnum;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.DocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -52,11 +49,6 @@ public class DocumentController {
      */
     @PostMapping("/document")
     public Result<CodeMsg> insertDocument(@RequestBody DocumentReq documentReq) {
-        Long id = documentReq.getId();
-        if (id < 0) {
-            return Result.error(400, "id must >= 0");
-        }
-
         String title = documentReq.getTitle();
         if (title.isEmpty()) {
             return Result.error(400, "title connot be null");
@@ -78,11 +70,6 @@ public class DocumentController {
             return Result.error(400, "publish place cannot be null");
         }
 
-        Double size = documentReq.getSize();
-        if (size < 0) {
-            return Result.error(400, "size must >= 0");
-        }
-
         String uploadUserId = documentReq.getUploadUserId();
         if (!StringUtils.isNumeric(uploadUserId)) {
             return Result.error(400, "uploadUserId must be Number!");
@@ -92,9 +79,9 @@ public class DocumentController {
         }
 
         try {
+            log.info("添加文献参数为: {}", documentReq);
             boolean flag = documentService.insertDocument(documentReq);
             if (flag) {
-                log.info("添加文献成功，参数为: {}", documentReq);
                 return Result.success(CodeMsg.SUCCESS);
             } else {
                 return Result.error(CodeMsg.FAILURE);
@@ -133,6 +120,11 @@ public class DocumentController {
      */
     @PostMapping("/document/upload")
     public Result<CodeMsg> uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam Long id){
+
+        if (id < 0) {
+            return Result.error(400, "id must >= 0");
+        }
+
         if (file.isEmpty()) {
             return Result.error(400, "file is empty");
         }
@@ -140,10 +132,6 @@ public class DocumentController {
         long size = file.getSize();
         if (size / 1024 / 1024 > 20) {
             return Result.error(400, "the size of file should be < 20M !");
-        }
-
-        if (id <= 0) {
-            return Result.error(400, "id should > 0 !");
         }
 
         // 文件名
@@ -166,7 +154,7 @@ public class DocumentController {
         }
 
         // 文件存储绝对路径
-        File absolutePath = new File(filePath + System.getProperty("file.separator" + newFileName));
+        File absolutePath = new File(filePath + System.getProperty("file.separator") + newFileName);
 
         // 存储到数据库中的path
         String databaseFilePath = FilePathEnum.DOCUMENT_PATH.getPath() + newFileName;
@@ -177,6 +165,7 @@ public class DocumentController {
 
             DocumentReq documentReq = new DocumentReq();
             documentReq.setId(id);
+            documentReq.setSize((double) (size / 1024 / 1024));
             documentReq.setStorePath(databaseFilePath);
 
             boolean flag = documentService.updateDocument(documentReq);

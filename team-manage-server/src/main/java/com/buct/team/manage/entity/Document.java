@@ -2,7 +2,7 @@ package com.buct.team.manage.entity;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 /**
@@ -21,7 +21,7 @@ public class Document {
     private String author;
 
     // 发表时间
-    private Date pubishTime;
+    private Date publishTime;
 
     // 文献简介
     private String introduction;
@@ -49,9 +49,6 @@ public class Document {
 
     // 下载数
     private Long downloadCount;
-
-    // 上传时间
-    private Timestamp uploadTime;
 
     // 创建时间
     private Timestamp createTime;

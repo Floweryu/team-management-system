@@ -21,7 +21,7 @@ public class DocumentReq {
     private String author;
 
     // 发表时间
-    private Date pubishTime;
+    private Date publishTime;
 
     // 文献简介
     private String introduction;

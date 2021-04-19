@@ -4,7 +4,7 @@
  -->
 <template>
   <Header>
-    <el-button slot="left" size="mini" type="primary" @click="addUser" round icon="el-icon-plus">添加用户</el-button>
+    <el-button slot="left" size="mini" type="primary" @click="addDocument" round icon="el-icon-plus">添加文献</el-button>
     <el-button slot="left" size="mini" type="danger" @click="multipleDelete" round icon="el-icon-delete">批量删除</el-button>
     <el-select slot="right" class="select" v-model="searchType" placeholder="请选择" size="mini" @change="selectChange">
       <el-option v-for="item in searchTypeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
@@ -59,8 +59,8 @@ export default {
     }
   },
   methods: {
-    addUser() {
-      this.$emit('add-user', true)
+    addDocument() {
+      this.$emit('add-document', true)
     },
     searchData() {
       this.$emit('search-data', this.searchType, this.input)
