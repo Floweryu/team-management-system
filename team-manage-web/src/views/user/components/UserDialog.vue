@@ -113,20 +113,7 @@ export default {
   },
   data() {
     return {
-      formData: {
-        userId: '',
-        password: '',
-        username: '',
-        identity: '',
-        deleted: 0,
-        sex: 1,
-        email: '',
-        mobile: '',
-        qqOpenId: '',
-        wxOpenId: '',
-        birth: new Date(),
-        createUid: localStorage.getItem('userId')
-      },
+      formData: {},
       identityOptions: [
         { value: 0, label: '教师' },
         { value: 1, label: '大一' },
@@ -152,6 +139,7 @@ export default {
           { min: 2, max: 5, message: '长度在 2 到 5 个字符' },
           { pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文' }
         ],
+        sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
         identity: [{ required: true, message: '请选择用户身份', trigger: 'change' }],
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -217,13 +205,13 @@ export default {
                   message: '添加用户成功',
                   type: 'success'
                 })
-                this.$refs[formName].resetFields()
+                this.resetForm(formName)
                 this.$parent.getAllUsers()
               }
             })
             .catch(() => {
               this.$notify.error({
-                message: '添加歌手失败'
+                message: '添加用户失败'
               })
             })
           this.$emit('dialog-cancel') // 关闭弹窗
@@ -236,6 +224,7 @@ export default {
     updateUser(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          this.formData.createUid = localStorage.getItem('userId')
           this.$http.user
             .updateUser(JSON.stringify(this.formData))
             .then(res => {
@@ -244,13 +233,13 @@ export default {
                   message: '用户信息更新成功',
                   type: 'success'
                 })
-                this.$refs[formName].resetFields()
+                this.resetForm(formName)
                 this.$parent.getAllUsers()
               }
             })
             .catch(() => {
               this.$notify.error({
-                message: '歌手信息更新失败'
+                message: '用户信息更新失败'
               })
             })
           this.$emit('dialog-cancel') // 关闭弹窗
