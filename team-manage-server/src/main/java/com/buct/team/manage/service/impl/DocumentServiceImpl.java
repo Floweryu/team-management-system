@@ -3,14 +3,8 @@ package com.buct.team.manage.service.impl;
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.dao.DocumentMapper;
 import com.buct.team.manage.entity.Document;
-import com.buct.team.manage.result.CodeMsg;
-import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.DocumentService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
-import javax.print.Doc;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +36,11 @@ public class DocumentServiceImpl implements DocumentService {
     public boolean updateDocument(DocumentReq documentReq) {
         Document document = transDocument(documentReq);
         return documentMapper.updatetDocument(document) > 0;
+    }
+
+    @Override
+    public List<String> findMd5IsExist(String md5) {
+        return documentMapper.findMd5IsExit(md5);
     }
 
     private Document transDocument(DocumentReq documentReq) {

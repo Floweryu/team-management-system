@@ -2,16 +2,21 @@ package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.entity.Document;
+import com.buct.team.manage.entity.FileMd;
 import com.buct.team.manage.enums.FilePathEnum;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.DocumentService;
+import com.buct.team.manage.service.FileMdService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -23,9 +28,11 @@ import java.util.List;
 @RequestMapping("/manage")
 public class DocumentController {
     private final DocumentService documentService;
+    private final FileMdService fileMdService;
 
-    public DocumentController(DocumentService documentService) {
+    public DocumentController(DocumentService documentService, FileMdService fileMdService) {
         this.documentService = documentService;
+        this.fileMdService = fileMdService;
     }
 
     /**
@@ -119,7 +126,7 @@ public class DocumentController {
      * @return  Result
      */
     @PostMapping("/document/upload")
-    public Result<CodeMsg> uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam Long id){
+    public Result<CodeMsg> uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam Long id) throws IOException {
 
         if (id < 0) {
             return Result.error(400, "id must >= 0");
@@ -134,51 +141,79 @@ public class DocumentController {
             return Result.error(400, "the size of file should be < 20M !");
         }
 
-        // 文件名
-        String newFileName = file.getOriginalFilename();
+        // 获取文件的md5
+        String md5 = DigestUtils.md5Hex(file.getBytes());
 
-        // 文件存储路径
-        String filePath = System.getProperty("user.dir") + System.getProperty("file.separator")
-                + FilePathEnum.FILE_PATH.getPath() + System.getProperty("file.separator")
-                + FilePathEnum.DOCUMENT.getPath();
-
-        File newFile = new File(filePath);
-        if (!newFile.exists() && !newFile.isDirectory()) {
-            log.info("file directory is not exits");
-            boolean flag = newFile.mkdirs();
-            if (flag) {
-                log.info("create a directory successed");
-            } else {
-                log.info("create a directory failed");
-            }
-        }
-
-        // 文件存储绝对路径
-        File absolutePath = new File(filePath + System.getProperty("file.separator") + newFileName);
+        List<String> filePathList = fileMdService.getFilePathByMd(md5);
 
         // 存储到数据库中的path
-        String databaseFilePath = FilePathEnum.DOCUMENT_PATH.getPath() + newFileName;
+        String databaseFilePath;
 
-        try {
-            // 将文件存储到磁盘
-            file.transferTo(absolutePath);
+        boolean isExist;
 
-            DocumentReq documentReq = new DocumentReq();
-            documentReq.setId(id);
-            documentReq.setSize((double) (size / 1024 / 1024));
-            documentReq.setStorePath(databaseFilePath);
+        // 文件已经上传过: 更新文献表中文件的存储路径
+        // 文件未上传：上传文件，向文件MD表中添加文件映射MD记录, 更新文献表中文件存储路径
+        if (filePathList.size() != 0) {
+            // 获取存储路径
+            isExist = true;
+            databaseFilePath = filePathList.get(0);
+        } else {
+            isExist = false;
+            // 文件名
+            String newFileName = file.getOriginalFilename();
 
-            boolean flag = documentService.updateDocument(documentReq);
-            log.info("文件更新信息：id: {}, 文件在磁盘位置: {}, 存储到数据库中信息: {}", id, absolutePath, databaseFilePath);
-            if (flag) {
-                return Result.success(CodeMsg.SUCCESS);
-            }else {
-                return Result.error(CodeMsg.FAILURE);
+            databaseFilePath = FilePathEnum.DOCUMENT_PATH.getPath() + newFileName;
+
+            // 文件存储路径
+            String filePath = System.getProperty("user.dir") + System.getProperty("file.separator")
+                    + FilePathEnum.FILE_PATH.getPath() + System.getProperty("file.separator")
+                    + FilePathEnum.DOCUMENT.getPath();
+
+            File newFile = new File(filePath);
+            if (!newFile.exists() && !newFile.isDirectory()) {
+                log.info("file directory is not exits");
+                boolean flag = newFile.mkdirs();
+                if (flag) {
+                    log.info("create a directory successed");
+                } else {
+                    log.info("create a directory failed");
+                }
             }
-        } catch (Throwable throwable) {
-            log.error("上传文件失败，异常信息： {}", throwable.getMessage());
-            return Result.error(CodeMsg.SERVER_ERROR);
+
+            // 文件存储绝对路径
+            File absolutePath = new File(filePath + System.getProperty("file.separator") + newFileName);
+
+            try {
+                // 将文件存储到磁盘
+                file.transferTo(absolutePath);
+
+                // 更新t_file_md表
+                FileMd fileMd = new FileMd();
+                fileMd.setFilePath(databaseFilePath);
+                fileMd.setFileMd(md5);
+                fileMdService.insertFilePathMd(fileMd);
+            } catch (Throwable throwable) {
+                log.error("存储文件失败，异常信息： {}", throwable.getMessage());
+                return Result.error(CodeMsg.SERVER_ERROR);
+            }
         }
 
+        // 更新t_document表
+        DocumentReq documentReq = new DocumentReq();
+        documentReq.setId(id);
+        DecimalFormat df = new DecimalFormat("#.00");
+        documentReq.setSize(new Double(df.format(size / 1024 / 1024)));
+        documentReq.setStorePath(databaseFilePath);
+
+        boolean flag = documentService.updateDocument(documentReq);
+        log.info("文件更新信息：id: {}, 存储到数据库中路径: {}", id, databaseFilePath);
+        if (flag && isExist) {
+            return Result.success(0, "上传文件已存在，更新路径成功");
+        }
+        else if (!isExist && flag) {
+            return Result.success(0, "上传文件成功");
+        }else {
+            return Result.error(500, "文件存储异常");
+        }
     }
 }

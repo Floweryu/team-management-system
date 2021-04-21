@@ -28,6 +28,12 @@
         <include refid="Base_Column_List" />
         from t_document
     </select>
+    
+    <select id="findMd5IsExit" resultType="String">
+        select store_path
+        from t_document
+        where file_md = #{fileMd}
+    </select>
 
     <insert id="insertDocument" parameterType="com.buct.team.manage.entity.Document">
         insert into t_document
@@ -66,7 +72,7 @@
                 download_count,
             </if>
             <if test="storePath != null">
-                store_path
+                store_path,
             </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">

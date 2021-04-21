@@ -2,6 +2,7 @@ package com.buct.team.manage.dao;
 
 import com.buct.team.manage.entity.Document;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface DocumentMapper {
 
     // 获取文献
     List<Document> getAllDocument();
+
+    List<String> findMd5IsExit(@Param("fileMd") String md5);
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.FileMdMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.FileMd">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="file_path" jdbcType="VARCHAR" javaType="String" property="filePath" />
+        <result column="file_md" jdbcType="VARCHAR" javaType="String" property="fileMd" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+
+    <select id="getFilePathByMd" resultType="String">
+        select file_path
+        from t_file_md
+        where file_md = #{fileMd}
+    </select>
+
+    <insert id="insertFilePathMd" parameterType="com.buct.team.manage.entity.FileMd">
+        insert into t_file_md
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="fileMd != null">
+                file_md,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="filePath != null">
+                #{filePath},
+            </if>
+            <if test="fileMd != null">
+                #{fileMd},
+            </if>
+        </trim>
+    </insert>
+</mapper>

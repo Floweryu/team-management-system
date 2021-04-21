@@ -26,18 +26,22 @@
         <el-table-column prop="viewCount" label="浏览量" width="60" align="center" />
         <el-table-column prop="downloadCount" label="下载次数" width="80" align="center" />
         <el-table-column prop="uploadUserId" label="上传用户" width="90" align="center" />
-        <el-table-column prop="storePath" show-overflow-tooltip label="存储位置" width="80" align="center" />
+        <el-table-column prop="storePath" show-overflow-tooltip label="存储位置(点击下载)" width="140" align="center" />
         <el-table-column fixed="right" prop="storePath" label="文献上传" width="100" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
+            <el-progress v-if="loading" type="line" :percentage="progressPercent" class="progress" :show-text="true"></el-progress>
             <el-upload
+              v-else
               ref="upload"
               class="file-upload"
               action="#"
-              :http-request="file => customUpload(file, scope.row.id)"
-              :on-remove="handleRemove"
+              :data="scope.row"
+              :http-request="customUpload"
               :auto-upload="true"
               :before-upload="beforeUpload"
               :on-success="handleSuccess"
+              :on-error="handleError"
+              :show-file-list="false"
               name="file"
             >
               <el-button size="mini" type="primary">点击上传</el-button>
@@ -103,7 +107,9 @@ export default {
       dialogFormVisible: false,
       isEditButton: false,
       editValue: {},
-      selectRows: []
+      selectRows: [],
+      progressPercent: 0,
+      loading: false
     }
   },
   created() {
@@ -134,38 +140,49 @@ export default {
       return data
     },
     // 自定义上传
-    customUpload(file, id) {
-      console.log(file)
-      let FormDatas = new FormData()
-      FormDatas.append('file', file.file)
-      this.$axios({
-        url: `${process.env.VUE_APP_BASE_URL}/manage/document/upload?id=${id}`,
-        method: 'post',
-        data: FormDatas,
-        //上传进度
-        onUploadProgress: progressEvent => {
-          let num = ((progressEvent.loaded / progressEvent.total) * 100) | 0 //百分比
-          file.onProgress({ percent: num }) //进度条
+    customUpload(param) {
+      this.progressPercent = 0
+      console.log(param)
+      let formData = new FormData()
+      formData.append('file', param.file)
+      const onUploadProgress = progressEvent => {
+        this.progressPercent = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+        if (this.progressPercent >= 100) {
+          setTimeout(() => {
+            this.loading = false
+          }, 1500)
         }
-      }).then(() => {
-        file.onSuccess() //上传成功(打钩的小图标)
+      }
+      this.$axios({
+        url: `${process.env.VUE_APP_BASE_URL}/manage/document/upload?id=${param.data.id}`,
+        method: 'post',
+        data: formData,
+        //上传进度
+        onUploadProgress
       })
+        .then(res => {
+          param.onSuccess(res)
+        })
+        .catch(err => {
+          param.onError(err)
+        })
     },
+
+    // 上传前钩子
     beforeUpload(file) {
       const size = file.size / 1024 / 1024
       if (size >= 20) {
-        this.$message.error('上传的头像图片大小必须小于 20M ')
+        this.$message.error('上传的文件大小必须小于 20M ')
         return false
       }
+      this.loading = true
       return true
     },
-    // 上传图片成功后
+    // 上传成功后
     handleSuccess(res) {
-      if (res.code === 0) {
-        this.getAllDocuments()
-        this.$notify({
-          message: '文件上传并更新成功',
-          type: 'success'
+      if (res.data.code === 0) {
+        this.$notify.success({
+          message: res.data.msg
         })
       } else {
         this.$notify.error({
@@ -173,10 +190,11 @@ export default {
         })
       }
     },
-    // 取消上传
-    handleRemove(file) {
-      this.$refs.upload.abort() //取消上传
-      this.$message({ message: '成功移除' + file.name, type: 'success' })
+    // 上传失败后
+    handleError(err) {
+      this.$notify.error({
+        message: err
+      })
     },
     // 添加用户事件
     addDocument(val) {
