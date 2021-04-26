@@ -14,8 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -34,6 +35,11 @@ public class DocumentController {
         this.documentService = documentService;
         this.fileMdService = fileMdService;
     }
+
+    // 文献存储本地磁盘路径
+    private final String filePath = System.getProperty("user.dir") + System.getProperty("file.separator")
+            + FilePathEnum.FILE_PATH.getPath() + System.getProperty("file.separator")
+            + FilePathEnum.DOCUMENT.getPath();
 
     /**
      * 获取所有文献
@@ -120,6 +126,31 @@ public class DocumentController {
     }
 
     /**
+     * 删除文献
+     * @param idList    删除文献的主键
+     * @return  CodeMsg
+     */
+    @DeleteMapping("/document")
+    public Result<CodeMsg> deleteDocuemnt(@RequestBody List<Long> idList) {
+        if (idList.isEmpty()) {
+            return Result.error(400, "idList should not be null !");
+        }
+
+        log.info("删除的idList: {}", idList);
+        try {
+            boolean flag = documentService.deleteDocument(idList);
+            if (flag) {
+                return Result.success(CodeMsg.SUCCESS);
+            } else {
+                return Result.error(CodeMsg.SERVER_ERROR);
+            }
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    /**
      * 上传和更新文件
      * @param file  上传文件
      * @param id    记录id
@@ -149,6 +180,9 @@ public class DocumentController {
         // 存储到数据库中的path
         String databaseFilePath;
 
+        // 文件名
+        String newFileName = file.getOriginalFilename();
+
         boolean isExist;
 
         // 文件已经上传过: 更新文献表中文件的存储路径
@@ -159,15 +193,8 @@ public class DocumentController {
             databaseFilePath = filePathList.get(0);
         } else {
             isExist = false;
-            // 文件名
-            String newFileName = file.getOriginalFilename();
 
             databaseFilePath = FilePathEnum.DOCUMENT_PATH.getPath() + newFileName;
-
-            // 文件存储路径
-            String filePath = System.getProperty("user.dir") + System.getProperty("file.separator")
-                    + FilePathEnum.FILE_PATH.getPath() + System.getProperty("file.separator")
-                    + FilePathEnum.DOCUMENT.getPath();
 
             File newFile = new File(filePath);
             if (!newFile.exists() && !newFile.isDirectory()) {
@@ -204,6 +231,7 @@ public class DocumentController {
         DecimalFormat df = new DecimalFormat("#.00");
         documentReq.setSize(new Double(df.format(size / 1024 / 1024)));
         documentReq.setStorePath(databaseFilePath);
+        documentReq.setFileName(newFileName);
 
         boolean flag = documentService.updateDocument(documentReq);
         log.info("文件更新信息：id: {}, 存储到数据库中路径: {}", id, databaseFilePath);
@@ -214,6 +242,40 @@ public class DocumentController {
             return Result.success(0, "上传文件成功");
         }else {
             return Result.error(500, "文件存储异常");
+        }
+    }
+
+    /**
+     * 下载文件
+     * @param response  下载文献设置
+     * @param fileName  传入下载文件名
+     * @return  CodeMsg
+     */
+    @GetMapping("/document/download")
+    public Result<CodeMsg> downloadDocument(HttpServletResponse response, @RequestParam String fileName) throws UnsupportedEncodingException {
+        File file = new File(filePath + System.getProperty("file.separator") + fileName);
+        if (! file.exists()) {
+            return Result.error(400, "文件不存在");
+        }
+        response.reset();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";filename*=utf-8''"+ URLEncoder.encode(fileName,"UTF-8") );
+        response.setCharacterEncoding("utf-8");
+        response.setContentLength((int) file.length());
+
+        try {
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            byte[] buff = new byte[1024];
+            OutputStream os = response.getOutputStream();
+            int i;
+            while ((i = bis.read(buff)) != -1) {
+                os.write(buff, 0, i);
+                os.flush();
+            }
+            return Result.success(0, "下载成功");
+        } catch (IOException e) {
+            log.error("There is something error: {}", e.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
         }
     }
 }

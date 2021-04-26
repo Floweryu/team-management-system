@@ -16,5 +16,5 @@ public interface DocumentService {
 
     boolean updateDocument(DocumentReq documentReq);
 
-    List<String> findMd5IsExist(String md5);
+    boolean deleteDocument(List<Long> idList);
 }

@@ -32,6 +32,9 @@ public class Document {
     // 文献大小，单位(M)
     private Double size;
 
+    // 文件名
+    private String fileName;
+
     // 存储位置
     private String storePath;
 

@@ -15,6 +15,11 @@ const document = {
   // 更新文献
   updateDocument(data) {
     return axios.put(`${host.apiHost}/manage/document`, data)
+  },
+
+  // 删除文献
+  deleteDocument(data) {
+    return axios.delete(`${host.apiHost}/manage/document`, { data })
   }
 }
 

@@ -39,8 +39,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<String> findMd5IsExist(String md5) {
-        return documentMapper.findMd5IsExit(md5);
+    public boolean deleteDocument(List<Long> idList) {
+        return documentMapper.deleteDocument(idList) > 0;
     }
 
     private Document transDocument(DocumentReq documentReq) {
@@ -57,6 +57,7 @@ public class DocumentServiceImpl implements DocumentService {
         String uploadUserId = documentReq.getUploadUserId();
         String originAddress = documentReq.getOriginAddress();
         String storePath = documentReq.getStorePath();
+        String fileName = documentReq.getFileName();
         if (id != null) {
             document.setId(id);
         }
@@ -86,6 +87,9 @@ public class DocumentServiceImpl implements DocumentService {
         }
         if (storePath != null) {
             document.setStorePath(storePath);
+        }
+        if (fileName != null) {
+            document.setFileName(fileName);
         }
 
         return document;

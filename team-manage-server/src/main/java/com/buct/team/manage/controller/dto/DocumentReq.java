@@ -3,7 +3,6 @@ package com.buct.team.manage.controller.dto;
 import lombok.Data;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * @author Floweryu
@@ -40,4 +39,7 @@ public class DocumentReq {
 
     // 存储位置
     private String storePath;
+
+    // 文件名
+    private String fileName;
 }

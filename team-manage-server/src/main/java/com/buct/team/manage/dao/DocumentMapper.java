@@ -25,4 +25,6 @@ public interface DocumentMapper {
     List<Document> getAllDocument();
 
     List<String> findMd5IsExit(@Param("fileMd") String md5);
+
+    int deleteDocument(List<Long> idList);
 }

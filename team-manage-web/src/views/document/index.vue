@@ -22,9 +22,9 @@
             <a :href="scope.row.originAddress" target="_blank" class="buttonText">{{ scope.row.originAddress }}</a>
           </template>
         </el-table-column>
-        <el-table-column prop="likeCount" label="点赞数" width="60" align="center" />
+        <!-- <el-table-column prop="likeCount" label="点赞数" width="60" align="center" />
         <el-table-column prop="viewCount" label="浏览量" width="60" align="center" />
-        <el-table-column prop="downloadCount" label="下载次数" width="80" align="center" />
+        <el-table-column prop="downloadCount" label="下载次数" width="80" align="center" /> -->
         <el-table-column prop="uploadUserId" label="上传用户" width="90" align="center" />
         <el-table-column prop="storePath" show-overflow-tooltip label="存储位置(点击下载)" width="140" align="center" />
         <el-table-column fixed="right" prop="storePath" label="文献上传" width="100" align="center">
@@ -95,7 +95,7 @@ import { formatDate } from '@/utils/index'
 import { pageSeparate } from '@/utils/mixin'
 
 export default {
-  name: 'SingerManage',
+  name: 'DocumentManage',
   components: {
     HeaderTop,
     DocumentDialog
@@ -196,7 +196,7 @@ export default {
         message: err
       })
     },
-    // 添加用户事件
+    // 添加文献事件
     addDocument(val) {
       this.isEditButton = false
       this.dialogFormVisible = val
@@ -206,8 +206,8 @@ export default {
     dialogCancel() {
       this.dialogFormVisible = false
     },
-    // 编辑用户
-    editUser(index, row) {
+    // 编辑
+    editDocument(index, row) {
       this.isEditButton = true
       this.dialogFormVisible = true
       this.editValue = row
@@ -217,26 +217,26 @@ export default {
       this.selectRows = rows
     },
     // 删除用户接口
-    deleteUserApi(data) {
-      this.$http.user
-        .deleteUser(JSON.stringify(data))
+    deleteDocumentApi(data) {
+      this.$http.document
+        .deleteDocument(JSON.stringify(data))
         .then(res => {
           if (res.code === 0) {
             this.$notify.success({
-              message: '删除用户成功'
+              message: '删除成功'
             })
-            this.getAllUsers()
+            this.getAllDocuments()
           }
         })
         .catch(() => {
           this.$notify.error({
-            message: '删除用户失败'
+            message: '删除失败'
           })
         })
     },
     // 批量删除
     async multipleDelete() {
-      this.$confirm('此操作将删除用户, 是否继续?', '提示', {
+      this.$confirm('此操作将删除文献, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -255,8 +255,8 @@ export default {
         })
     },
     // 删除用户信息
-    deleteUser(index, row) {
-      this.$confirm('此操作将删除用户, 是否继续?', '提示', {
+    deleteDocument(index, row) {
+      this.$confirm('此操作将删除文献, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -264,7 +264,7 @@ export default {
         .then(() => {
           let data = []
           data.push(row.id)
-          this.deleteUserApi(data)
+          this.deleteDocumentApi(data)
         })
         .catch(err => {
           console.log(err)

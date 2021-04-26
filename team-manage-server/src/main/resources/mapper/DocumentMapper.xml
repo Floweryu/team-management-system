@@ -15,12 +15,13 @@
         <result column="view_count" jdbcType="BIGINT" javaType="Long" property="viewCount" />
         <result column="download_count" jdbcType="BIGINT" javaType="Long" property="downloadCount" />
         <result column="store_path" jdbcType="VARCHAR" javaType="String" property="storePath" />
+        <result column="file_name" jdbcType="VARCHAR" javaType="String" property="fileName" />
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, store_path, create_time, update_time
+        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, store_path, file_title, create_time, update_time
     </sql>
 
     <select id="getAllDocument" resultMap="BaseResultMap">
@@ -34,6 +35,13 @@
         from t_document
         where file_md = #{fileMd}
     </select>
+
+    <delete id="deleteDocument" parameterType="java.util.List">
+        delete from t_document where id in 
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <insert id="insertDocument" parameterType="com.buct.team.manage.entity.Document">
         insert into t_document
@@ -74,6 +82,9 @@
             <if test="storePath != null">
                 store_path,
             </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="title != null">
@@ -111,6 +122,9 @@
             </if>
             <if test="storePath != null">
                 #{storePath}
+            </if>
+            <if test="fileName != null">
+                #{fileName},
             </if>
         </trim>
     </insert>
@@ -153,6 +167,9 @@
             </if>
             <if test="storePath != null">
                 store_path = #{storePath}
+            </if>
+            <if test="fileName != null">
+                file_name = #{fileName}
             </if>
         </set>
         where id = #{id}
