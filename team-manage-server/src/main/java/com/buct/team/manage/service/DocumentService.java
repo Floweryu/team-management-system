@@ -17,4 +17,14 @@ public interface DocumentService {
     boolean updateDocument(DocumentReq documentReq);
 
     boolean deleteDocument(List<Long> idList);
+
+    List<Document> selectByTitle(String title);
+
+    List<Document> selectByAuthor(String author);
+
+    List<Document> selectByPublishPlace(String publishPlace);
+
+    Document selectById(Long id);
+
+    boolean updateAverageScore(Long id, Double score);
 }

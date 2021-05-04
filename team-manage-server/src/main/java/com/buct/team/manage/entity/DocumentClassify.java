@@ -8,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class DocumentClassify {
+    private Long id;
+
     // 文献id
     private Long documentId;
 

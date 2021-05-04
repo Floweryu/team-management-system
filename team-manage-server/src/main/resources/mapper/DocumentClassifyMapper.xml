@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.DocumentClassifyMapper">
+    <select id="getClassifyId" parameterType="Long" resultType="java.lang.Long">
+        select classify_id
+        from t_document_classify
+        where document_id = #{id}
+    </select>
+</mapper>

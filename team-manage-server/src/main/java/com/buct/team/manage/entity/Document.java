@@ -53,6 +53,9 @@ public class Document {
     // 下载数
     private Long downloadCount;
 
+    // 分数
+    private Double averageScore;
+
     // 创建时间
     private Timestamp createTime;
 

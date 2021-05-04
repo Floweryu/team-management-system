@@ -1,6 +1,6 @@
 package com.buct.team.manage.dao;
 
-import com.buct.team.manage.dao.vo.UserLoginInfoVo;
+import com.buct.team.manage.controller.vo.UserLoginInfoVo;
 import com.buct.team.manage.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -61,11 +61,8 @@ export default {
 .bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin: 5px 0;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background-color: #fff;
   padding: 10px;
 }
 </style>

@@ -1,7 +1,7 @@
 package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.AdminReq;
-import com.buct.team.manage.dao.vo.UserLoginInfoVo;
+import com.buct.team.manage.controller.vo.UserLoginInfoVo;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.UserService;

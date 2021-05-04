@@ -8,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class DocumentLabel {
+    private Long id;
+
     // 标签id
     private Long labelId;
 

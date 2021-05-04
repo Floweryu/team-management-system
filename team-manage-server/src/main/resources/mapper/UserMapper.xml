@@ -22,7 +22,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
     
-    <resultMap id="LoginInfoMap" type="com.buct.team.manage.dao.vo.UserLoginInfoVo">
+    <resultMap id="LoginInfoMap" type="com.buct.team.manage.controller.vo.UserLoginInfoVo">
         <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
         <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
         <result column="login_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="loginTime" />

@@ -24,7 +24,15 @@ public interface DocumentMapper {
     // 获取文献
     List<Document> getAllDocument();
 
-    List<String> findMd5IsExit(@Param("fileMd") String md5);
-
     int deleteDocument(List<Long> idList);
+
+    List<Document> selectByTitle(@Param("title") String title);
+
+    List<Document> selectByAuthor(@Param("author") String author);
+
+    List<Document> selectByPublishPlace(@Param("publishPlace") String publishPlace);
+
+    Document selectById(@Param("id") Long id);
+
+    int updateAverageScore(@Param("id") Long id, @Param("score") Double score);
 }

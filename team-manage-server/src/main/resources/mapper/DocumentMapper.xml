@@ -13,6 +13,7 @@
         <result column="origin_address" jdbcType="VARCHAR" javaType="String" property="originAddress" />
         <result column="like_count" jdbcType="BIGINT" javaType="Long" property="likeCount" />
         <result column="view_count" jdbcType="BIGINT" javaType="Long" property="viewCount" />
+        <result column="average_score" jdbcType="DOUBLE" javaType="Double" property="averageScore" />
         <result column="download_count" jdbcType="BIGINT" javaType="Long" property="downloadCount" />
         <result column="store_path" jdbcType="VARCHAR" javaType="String" property="storePath" />
         <result column="file_name" jdbcType="VARCHAR" javaType="String" property="fileName" />
@@ -21,8 +22,14 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, store_path, file_title, create_time, update_time
+        id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, average_score, store_path, file_name, create_time, update_time
     </sql>
+
+    <update id="updateAverageScore">
+        update t_document
+        set average_score = #{score}
+        where id = #{id}
+    </update>
 
     <select id="getAllDocument" resultMap="BaseResultMap">
         select
@@ -34,6 +41,43 @@
         select store_path
         from t_document
         where file_md = #{fileMd}
+    </select>
+
+    <select id="selectByTitle" parameterType="String" resultMap="BaseResultMap">
+        <if test="title != null">
+            <bind name="pattern" value="'%' + title + '%'"/>
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+        where title like #{pattern}
+    </select>
+
+    <select id="selectByAuthor" parameterType="String" resultMap="BaseResultMap">
+        <if test="author != null">
+            <bind name="pattern" value="'%' + author + '%'"/>
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+        where author like #{pattern}
+    </select>
+
+    <select id="selectByPublishPlace" parameterType="String" resultMap="BaseResultMap">
+        <if test="publishPlace != null">
+            <bind name="pattern" value="'%' + publishPlace + '%'"/>
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+        where publish_place like #{pattern}
+    </select>
+
+    <select id="selectById" parameterType="Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+        where id = #{id}
     </select>
 
     <delete id="deleteDocument" parameterType="java.util.List">
@@ -70,15 +114,6 @@
             <if test="originAddress != null">
                 origin_address,
             </if>
-            <if test="likeCount != null">
-                like_count,
-            </if>
-            <if test="viewCount != null">
-                view_count,
-            </if>
-            <if test="downloadCount != null">
-                download_count,
-            </if>
             <if test="storePath != null">
                 store_path,
             </if>
@@ -111,17 +146,8 @@
             <if test="originAddress != null">
                 #{originAddress},
             </if>
-            <if test="likeCount != null">
-                #{likeCount},
-            </if>
-            <if test="viewCount != null">
-                #{viewCount},
-            </if>
-            <if test="downloadCount != null">
-                #{downloadCount},
-            </if>
             <if test="storePath != null">
-                #{storePath}
+                #{storePath},
             </if>
             <if test="fileName != null">
                 #{fileName},
@@ -156,20 +182,11 @@
             <if test="originAddress != null">
                 origin_address = #{originAddress},
             </if>
-            <if test="likeCount != null">
-                like_count = #{likeCount},
-            </if>
-            <if test="viewCount != null">
-                view_count = #{viewCount},
-            </if>
-            <if test="downloadCount != null">
-                download_count = #{downloadCount},
-            </if>
             <if test="storePath != null">
-                store_path = #{storePath}
+                store_path = #{storePath},
             </if>
             <if test="fileName != null">
-                file_name = #{fileName}
+                file_name = #{fileName},
             </if>
         </set>
         where id = #{id}

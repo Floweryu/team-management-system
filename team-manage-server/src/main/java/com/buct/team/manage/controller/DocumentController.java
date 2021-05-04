@@ -1,13 +1,15 @@
 package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.DocumentReq;
+import com.buct.team.manage.controller.vo.DocumentDetailVo;
+import com.buct.team.manage.entity.Classify;
 import com.buct.team.manage.entity.Document;
 import com.buct.team.manage.entity.FileMd;
+import com.buct.team.manage.entity.Label;
 import com.buct.team.manage.enums.FilePathEnum;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
-import com.buct.team.manage.service.DocumentService;
-import com.buct.team.manage.service.FileMdService;
+import com.buct.team.manage.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,10 +32,23 @@ import java.util.List;
 public class DocumentController {
     private final DocumentService documentService;
     private final FileMdService fileMdService;
+    private final DocumentClassifyService documentClassifyService;
+    private final ClassifyService classifyService;
+    private final DocumentLabelService documentLabelService;
+    private final LabelService labelService;
 
-    public DocumentController(DocumentService documentService, FileMdService fileMdService) {
+    public DocumentController(DocumentService documentService,
+                              FileMdService fileMdService,
+                              DocumentClassifyService documentClassifyService,
+                              ClassifyService classifyService,
+                              DocumentLabelService documentLabelService,
+                              LabelService labelService) {
         this.documentService = documentService;
         this.fileMdService = fileMdService;
+        this.documentClassifyService = documentClassifyService;
+        this.classifyService = classifyService;
+        this.documentLabelService = documentLabelService;
+        this.labelService = labelService;
     }
 
     // 文献存储本地磁盘路径
@@ -249,32 +264,132 @@ public class DocumentController {
      * 下载文件
      * @param response  下载文献设置
      * @param fileName  传入下载文件名
-     * @return  CodeMsg
      */
     @GetMapping("/document/download")
-    public Result<CodeMsg> downloadDocument(HttpServletResponse response, @RequestParam String fileName) throws UnsupportedEncodingException {
+    public void downloadDocument(HttpServletResponse response, @RequestParam String fileName) throws UnsupportedEncodingException {
         File file = new File(filePath + System.getProperty("file.separator") + fileName);
-        if (! file.exists()) {
-            return Result.error(400, "文件不存在");
-        }
-        response.reset();
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";filename*=utf-8''"+ URLEncoder.encode(fileName,"UTF-8") );
-        response.setCharacterEncoding("utf-8");
-        response.setContentLength((int) file.length());
+        if (file.exists()) {
 
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            byte[] buff = new byte[1024];
-            OutputStream os = response.getOutputStream();
-            int i;
-            while ((i = bis.read(buff)) != -1) {
-                os.write(buff, 0, i);
-                os.flush();
+            response.reset();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";filename*=utf-8''" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setCharacterEncoding("utf-8");
+            response.setContentLength((int) file.length());
+
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                byte[] buff = new byte[1024];
+                OutputStream os = response.getOutputStream();
+                int i;
+                while ((i = bis.read(buff)) != -1) {
+                    os.write(buff, 0, i);
+                    os.flush();
+                }
+            } catch (IOException e) {
+                log.error("There is something error: {}", e.getMessage());
             }
-            return Result.success(0, "下载成功");
-        } catch (IOException e) {
-            log.error("There is something error: {}", e.getMessage());
+        }
+    }
+
+
+    /**
+     * 根据文献标题查询
+     * @param title     文献标题
+     */
+    @GetMapping("/document/searchByTitle")
+    public Result<List<Document>> getByTitle(@RequestParam("title") String title) {
+        if (title.isEmpty()) {
+            return Result.error(400, "title is not null");
+        }
+        log.info("传入的参数: {}", title);
+        try {
+            List<Document> documentList = documentService.selectByTitle(title);
+            return Result.success(documentList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 根据文献作者查询
+     * @param author     文献标题
+     */
+    @GetMapping("/document/searchByAuthor")
+    public Result<List<Document>> getByAuthor(@RequestParam("author") String author) {
+        if (author.isEmpty()) {
+            return Result.error(400, "author is not null");
+        }
+        log.info("传入的参数: {}", author);
+        try {
+            List<Document> documentList = documentService.selectByAuthor(author);
+            return Result.success(documentList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 根据文献出版单位查询
+     * @param place     文献标题
+     */
+    @GetMapping("/document/searchByPlace")
+    public Result<List<Document>> getByPublishPlace(@RequestParam("place") String place) {
+        if (place.isEmpty()) {
+            return Result.error(400, "author is not null");
+        }
+        log.info("传入的参数: {}", place);
+        try {
+            List<Document> documentList = documentService.selectByPublishPlace(place);
+            return Result.success(documentList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/document/detail")
+    public Result<DocumentDetailVo> getDocumentDetail(@RequestParam("id") Long id) {
+        if (id < 0) {
+            return Result.error(400, "id must >= 0");
+        }
+        log.info("传递文件id: {}", id);
+        try {
+            // 根据id查询到document信息
+            Document document = documentService.selectById(id);
+
+            // 根据文献id获取与该文献id关联的分类id
+            List<Long> classifyId = documentClassifyService.getClassifyId(id);
+
+            List<Classify> classifyList;
+            if (classifyId.size() != 0) {
+                // 根据类别id查询分类信息
+                classifyList = classifyService.getClassifyById(classifyId);
+            } else {
+                classifyList = null;
+            }
+
+
+            // 根据文献id获取与该文献关联的标签id
+            List<Long> labelId = documentLabelService.getLabelId(id);
+
+            List<Label> labelList;
+            if (labelId.size() != 0) {
+                // 根据标签id查询标签信息
+                labelList = labelService.getLabelById(labelId);
+            } else {
+                labelList = null;
+            }
+
+            DocumentDetailVo documentDetailVo = new DocumentDetailVo();
+            documentDetailVo.setDocument(document);
+            documentDetailVo.setClassifyList(classifyList);
+            documentDetailVo.setLabelList(labelList);
+
+            return Result.success(documentDetailVo);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
             return Result.error(CodeMsg.SERVER_ERROR);
         }
     }

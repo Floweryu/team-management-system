@@ -2,7 +2,7 @@ package com.buct.team.manage.service.impl;
 
 import com.buct.team.manage.controller.dto.UserReq;
 import com.buct.team.manage.dao.UserMapper;
-import com.buct.team.manage.dao.vo.UserLoginInfoVo;
+import com.buct.team.manage.controller.vo.UserLoginInfoVo;
 import com.buct.team.manage.entity.User;
 import com.buct.team.manage.service.UserService;
 import org.springframework.stereotype.Service;

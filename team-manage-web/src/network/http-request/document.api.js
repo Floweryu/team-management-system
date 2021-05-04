@@ -20,6 +20,28 @@ const document = {
   // 删除文献
   deleteDocument(data) {
     return axios.delete(`${host.apiHost}/manage/document`, { data })
+  },
+
+  // 下载文献
+  downloadDocument(param) {
+    return axios.get(`${host.apiHost}/manage/document/download`, param)
+  },
+
+  // 通过关键词查找
+  searchByTitle(param) {
+    return axios.get(`${host.apiHost}/manage/document/searchByTitle`, param)
+  },
+  // 通过关键词查找
+  searchByAuthor(param) {
+    return axios.get(`${host.apiHost}/manage/document/searchByAuthor`, param)
+  },
+  // 通过关键词查找
+  searchByPlace(param) {
+    return axios.get(`${host.apiHost}/manage/document/searchByPlace`, param)
+  },
+  // 获取文献详情
+  getDocumentDetail(param) {
+    return axios.get(`${host.apiHost}/manage/document/detail`, param)
   }
 }
 

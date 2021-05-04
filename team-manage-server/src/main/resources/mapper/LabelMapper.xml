@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.LabelMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Label">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="description" jdbcType="VARCHAR" javaType="String" property="description" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `name`, description, create_time, update_time
+    </sql>
+
+    <select id="getLabelById" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_label
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

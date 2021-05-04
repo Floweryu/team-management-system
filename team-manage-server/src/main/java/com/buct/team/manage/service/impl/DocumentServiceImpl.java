@@ -43,6 +43,31 @@ public class DocumentServiceImpl implements DocumentService {
         return documentMapper.deleteDocument(idList) > 0;
     }
 
+    @Override
+    public List<Document> selectByTitle(String title) {
+        return documentMapper.selectByTitle(title);
+    }
+
+    @Override
+    public List<Document> selectByAuthor(String author) {
+        return documentMapper.selectByAuthor(author);
+    }
+
+    @Override
+    public List<Document> selectByPublishPlace(String publishPlace) {
+        return documentMapper.selectByPublishPlace(publishPlace);
+    }
+
+    @Override
+    public Document selectById(Long id) {
+        return documentMapper.selectById(id);
+    }
+
+    @Override
+    public boolean updateAverageScore(Long id, Double score) {
+        return documentMapper.updateAverageScore(id, score) > 0;
+    }
+
     private Document transDocument(DocumentReq documentReq) {
 
         Document document = new Document();

@@ -7,7 +7,9 @@ const Index = () => import('@/views/index')
 const Login = () => import('@/views/login/index')
 
 const UserManage = () => import('@/views/user/index')
-const DocumentManage = () => import('@/views/document/index')
+const DocumentManage = () => import('@/views/document/ManageIndex')
+const DocumentDetail = () => import('@/views/document/DetailIndex')
+const DocumentDetailPre = () => import('@/views/document/components/DocumentDetail')
 
 const routes = [
   {
@@ -29,9 +31,20 @@ const routes = [
         meta: { title: '用户管理' }
       },
       {
-        path: 'document',
+        path: 'document/manage',
         component: DocumentManage,
         meta: { title: '文献管理' }
+      },
+      {
+        path: 'document/detail',
+        component: DocumentDetail,
+        meta: { title: '文献详情' }
+      },
+      {
+        path: 'document/detail/:id',
+        name: 'Detail',
+        component: DocumentDetailPre,
+        meta: { title: '详情页' }
       }
     ]
   }

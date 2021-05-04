@@ -1,4 +1,4 @@
-package com.buct.team.manage.dao.vo;
+package com.buct.team.manage.controller.vo;
 
 import lombok.Data;
 

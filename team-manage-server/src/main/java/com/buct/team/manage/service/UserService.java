@@ -1,7 +1,7 @@
 package com.buct.team.manage.service;
 
 import com.buct.team.manage.controller.dto.UserReq;
-import com.buct.team.manage.dao.vo.UserLoginInfoVo;
+import com.buct.team.manage.controller.vo.UserLoginInfoVo;
 import com.buct.team.manage.entity.User;
 
 import java.util.List;

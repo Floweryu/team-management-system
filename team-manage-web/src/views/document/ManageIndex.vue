@@ -1,6 +1,11 @@
 <template>
-  <div class="user">
-    <header-top @search-data="searchData(arguments)" @add-document="addDocument" @multiple-delete="multipleDelete" />
+  <div class="manage-index">
+    <header-top
+      @search-data="searchData(arguments)"
+      @clear-button="clearButton"
+      @add-document="addDocument"
+      @multiple-delete="multipleDelete"
+    />
     <el-card class="body">
       <el-table
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
@@ -11,12 +16,11 @@
         stripe
       >
         <el-table-column fixed type="selection" width="40" align="center" />
-        <el-table-column fixed prop="title" show-overflow-tooltip label="文献标题" width="120" align="center" />
-        <el-table-column prop="author" label="作者" width="80" align="center" />
-        <el-table-column prop="publishTime" label="发表时间" width="90" align="center" />
-        <el-table-column prop="introduction" show-overflow-tooltip label="文献简介" width="90" align="center" />
+        <el-table-column fixed prop="title" show-overflow-tooltip label="文献标题" width="100" align="center" />
+        <el-table-column prop="author" show-overflow-tooltip label="作者" min-width="80" align="center" />
+        <el-table-column prop="publishTime" sortable label="发表时间" width="100" align="center" />
         <el-table-column prop="publishPlace" show-overflow-tooltip label="出版单位" width="80" align="center" />
-        <el-table-column prop="size" label="大小(MB)" width="80" align="center" />
+        <el-table-column prop="size" label="MB" width="60" align="center" />
         <el-table-column prop="originAddress" show-overflow-tooltip label="来源地址" width="120" align="center">
           <template slot-scope="scope">
             <a :href="scope.row.originAddress" target="_blank" class="buttonText">{{ scope.row.originAddress }}</a>
@@ -26,8 +30,12 @@
         <el-table-column prop="viewCount" label="浏览量" width="60" align="center" />
         <el-table-column prop="downloadCount" label="下载次数" width="80" align="center" /> -->
         <el-table-column prop="uploadUserId" label="上传用户" width="90" align="center" />
-        <el-table-column prop="storePath" show-overflow-tooltip label="存储位置(点击下载)" width="140" align="center" />
-        <el-table-column fixed="right" prop="storePath" label="文献上传" width="100" align="center">
+        <el-table-column prop="fileName" show-overflow-tooltip label="文件名(点击下载)" width="120" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="downloadFile(scope.row)">{{ scope.row.fileName }}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="文献上传" width="100" align="center">
           <template slot-scope="scope">
             <el-progress v-if="loading" type="line" :percentage="progressPercent" class="progress" :show-text="true"></el-progress>
             <el-upload
@@ -181,6 +189,7 @@ export default {
     // 上传成功后
     handleSuccess(res) {
       if (res.data.code === 0) {
+        this.getAllDocuments()
         this.$notify.success({
           message: res.data.msg
         })
@@ -273,57 +282,93 @@ export default {
           })
         })
     },
+    // 点击下载文件
+    downloadFile(row) {
+      let query = {
+        params: {
+          fileName: row.fileName
+        },
+        responseType: 'blob'
+      }
+      this.$http.document
+        .downloadDocument(query)
+        .then(res => {
+          if (res) {
+            let blob = new Blob([res])
+            let url = window.URL.createObjectURL(blob)
+            let link = document.createElement('a')
+            link.href = url
+            link.download = row.fileName || '下载文件' //下载后文件名
+            document.body.appendChild(link)
+            link.click() //点击下载
+            link.remove() //下载完成移除元素
+            window.URL.revokeObjectURL(link.href) //用完之后使用URL.revokeObjectURL()释放；
+          } else {
+            this.$notify.error({
+              message: '文件下载失败，请重试'
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: '文件下载错误'
+          })
+        })
+    },
+
+    clearButton() {
+      this.getAllDocuments()
+    },
     // 搜索用户
     searchData(msg) {
-      console.log(msg)
       let searchType = msg[0]
       let inputData = msg[1]
       switch (searchType) {
         case 0:
-          this.getUserByUserId(inputData)
+          this.searchByTitle(inputData)
           break
         case 1:
-          this.getUserByUserName(inputData)
+          this.searchByAuthor(inputData)
           break
         case 2:
-          this.getUserByIdentity(inputData)
+          this.searchByPlace(inputData)
           break
       }
     },
-    // 根据用户账号获取用户
-    getUserByUserId(val) {
+    // 根据关键字获取用户
+    searchByTitle(val) {
       let query = {
         params: {
-          userId: val
+          title: val
         }
       }
-      this.$http.user.getUserByUserId(query).then(res => {
+      this.$http.document.searchByTitle(query).then(res => {
         if (res.code === 0 && res.data) {
           this.tableData = this.transData(res.data)
         }
       })
     },
-    // 根据用户姓名获取用户
-    getUserByUserName(val) {
+    // 根据关键字获取用户
+    searchByAuthor(val) {
       let query = {
         params: {
-          username: val
+          author: val
         }
       }
-      this.$http.user.getUserByUserName(query).then(res => {
+      this.$http.document.searchByAuthor(query).then(res => {
         if (res.code === 0 && res.data) {
           this.tableData = this.transData(res.data)
         }
       })
     },
-    // 根据用户身份获取用户
-    getUserByIdentity(val) {
+    // 根据关键字获取用户
+    searchByPlace(val) {
       let query = {
         params: {
-          identity: val
+          place: val
         }
       }
-      this.$http.user.getUserByIdentity(query).then(res => {
+      this.$http.document.searchByPlace(query).then(res => {
         if (res.code === 0 && res.data) {
           this.tableData = this.transData(res.data)
         }

@@ -1,0 +1,346 @@
+<template>
+  <div class="document-detail">
+    <el-card class="detail-box">
+      <div class="doc">
+        <div class="document-top">
+          <div class="document-top-left">
+            <div class="publish-time">
+              <span class="flag">发布时间：</span>
+              {{ document.publishTime }}
+            </div>
+          </div>
+          <div class="document-top-right">
+            <div class="view">
+              <svg-icon class="view-icon" iconClass="view"></svg-icon>
+              {{ document.viewCount }}
+            </div>
+            <div class="like">
+              <svg-icon class="like-icon" iconClass="dianzan"></svg-icon>
+              {{ document.likeCount }}
+            </div>
+            <div class="download-count">
+              <svg-icon class="download-count-icon" iconClass="downloadCount"></svg-icon>
+              {{ document.downloadCount }}
+            </div>
+            <el-rate
+              class="score"
+              v-model="document.averageScore"
+              :max="5"
+              disabled
+              show-score
+              text-color="#ff9900"
+              score-template="{value}"
+            />
+          </div>
+        </div>
+        <div class="document-center">
+          <div class="brief">
+            <div class="title">{{ document.title }}</div>
+            <div class="author">
+              <svg-icon iconClass="author"></svg-icon>
+              {{ document.author }}
+            </div>
+            <div class="publish-place">
+              <svg-icon class="publish-place-icon" iconClass="publishPlace"></svg-icon>
+              {{ document.publishPlace }}
+            </div>
+          </div>
+          <el-row type="flex" align="top" class="row">
+            <el-col class="tag" :span="2">摘要：</el-col>
+            <el-col class="text" :span="22">{{ document.introduction }}</el-col>
+          </el-row>
+          <el-row type="flex" align="middle" class="row">
+            <el-col class="tag" :span="2">分类：</el-col>
+            <el-col class="flag" :span="2" v-for="item in classifyList" :key="item.id">{{ item.name }}</el-col>
+          </el-row>
+          <el-row type="flex" align="middle" class="row">
+            <el-col class="tag" :span="2">标签：</el-col>
+            <el-col class="flag" :span="2" v-for="item in labelList" :key="item.id">
+              {{ item.name }}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="document-bottom">
+          <div class="document-bottom-left">
+            <div class="is-like" @click="likeEvent">
+              <svg-icon v-if="isLike" class="is-like-icon" iconClass="is_like"></svg-icon>
+              <svg-icon v-else class="is-like-icon" iconClass="not_like"></svg-icon>
+              <span class="like-count" v-if="isLike" :class="{ active: isLike }">已赞{{ likeCount }}</span>
+              <span class="like-count" v-else>点赞{{ likeCount }}</span>
+            </div>
+            <div class="comment">
+              <svg-icon class="comment-icon" iconClass="comment"></svg-icon>
+              <span class="comment-count">评论{{ likeCount }}</span>
+            </div>
+            <div class="download">
+              <el-button type="primary" size="mini" @click="downloadFile">
+                点击下载<i class="el-icon-download el-icon--right"></i>
+              </el-button>
+            </div>
+          </div>
+
+          <div class="document-bottom-right">
+            <div class="rate">
+              <span class="rate-text">评分：</span>
+              <el-rate v-model="score" @change="submitScore" :disabled="isDisabled"> </el-rate>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-card>
+  </div>
+</template>
+
+<script>
+import { formatDate } from '@/utils/index'
+export default {
+  name: 'DocumentDetail',
+  data() {
+    return {
+      documentInfo: {},
+      document: {},
+      classifyList: [],
+      labelList: [],
+      id: Number,
+      likeCount: Number,
+      isLike: false,
+      score: null,
+      isDisabled: false
+    }
+  },
+  created() {
+    this.id = this.$route.params.id
+    this.getDocumentDetail(this.id)
+  },
+  methods: {
+    // 获取文献详细信息
+    getDocumentDetail(val) {
+      let query = {
+        params: {
+          id: val
+        }
+      }
+      this.$http.document
+        .getDocumentDetail(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.documentInfo = res.data
+            this.document = this.transData(this.documentInfo.document)
+            this.likeCount = this.document.likeCount
+            this.classifyList = this.documentInfo.classifyList
+            this.labelList = this.documentInfo.labelList
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 转换数据格式
+    transData(data) {
+      if (data.publishTime) {
+        let time = new Date(data.publishTime)
+        data.publishTime = formatDate(time, 'yyyy-MM-dd')
+      }
+      return data
+    },
+    //点赞触发事件
+    likeEvent() {
+      if (this.isLike) {
+        this.likeCount--
+        this.isLike = false
+      } else {
+        this.likeCount++
+        this.isLike = true
+      }
+    },
+    // 提交分数
+    submitScore(val) {
+      let data = {
+        documentId: this.id,
+        userId: localStorage.getItem('userId'),
+        score: val
+      }
+      this.$http.score
+        .addScore(JSON.stringify(data))
+        .then(res => {
+          if (res.code === 0) {
+            this.isDisabled = true
+            this.$notify.success({
+              message: '评分成功'
+            })
+          }
+        })
+        .catch(err => {
+          this.$notify.error({
+            message: '评分失败'
+          })
+          console.log(err)
+        })
+    },
+    // 点击下载文件
+    downloadFile() {
+      let query = {
+        params: {
+          fileName: this.document.fileName
+        },
+        responseType: 'blob'
+      }
+      this.$http.document
+        .downloadDocument(query)
+        .then(res => {
+          if (res) {
+            let blob = new Blob([res])
+            let url = window.URL.createObjectURL(blob)
+            let link = document.createElement('a')
+            link.href = url
+            link.download = this.document.fileName.fileName || '下载文件' //下载后文件名
+            document.body.appendChild(link)
+            link.click() //点击下载
+            link.remove() //下载完成移除元素
+            window.URL.revokeObjectURL(link.href) //用完之后使用URL.revokeObjectURL()释放；
+          } else {
+            this.$notify.error({
+              message: '文件下载失败，请重试'
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: '文件下载错误'
+          })
+        })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.document-detail {
+  margin: 0 10px;
+}
+.detail-box {
+  margin-top: 6px;
+}
+
+.doc {
+  width: 80%;
+  min-width: 750px;
+  margin: 0 auto 30px;
+}
+.document-top,
+.document-top-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.document-top {
+  font-size: 13px;
+  color: #5f6471;
+  line-height: 22px;
+}
+.document-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.document-bottom-left {
+  display: flex;
+  align-items: center;
+}
+
+.view-icon,
+.like-icon,
+.download-count-icon,
+.score {
+  margin-left: 16px;
+}
+
+.is-like-icon,
+.comment-icon {
+  margin-right: 4px;
+  font-size: 20px;
+}
+.publish-time {
+  text-align: center;
+  color: #fc5531;
+}
+.flag {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 70px;
+  height: 20px;
+  border-radius: 2px;
+}
+.row {
+  min-height: 26px;
+  padding-top: 8px;
+  font-size: 14px;
+  color: #000;
+  text-align: justify;
+}
+.row .tag {
+  font-weight: bold;
+}
+
+.row .text {
+  color: #666;
+}
+
+.row .flag {
+  color: #517faf;
+  margin-right: -10px;
+}
+.brief {
+  text-align: center;
+}
+.title {
+  padding-top: 25px;
+  padding-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+  font-weight: normal;
+  line-height: 35px;
+  vertical-align: middle;
+  font-family: 'Microsoft yahei';
+}
+.author {
+  padding: 0;
+  line-height: 27px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  word-break: break-all;
+}
+.publish-place {
+  line-height: 27px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.is-like,
+.comment,
+.download {
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 20px;
+}
+.rate {
+  display: flex;
+  align-items: center;
+}
+.rate-text {
+  font-size: 14px;
+  color: #fc5531;
+}
+.like-count,
+.comment-count {
+  font-size: 12px;
+}
+.active {
+  color: #fc5531;
+}
+</style>

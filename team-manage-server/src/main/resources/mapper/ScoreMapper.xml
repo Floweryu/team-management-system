@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.ScoreMapper">
+    <select id="getAverageScore" parameterType="Long" resultType="Double">
+        select avg (score)
+        from t_score
+        where document_id = #{id}
+    </select>
+
+    <select id="getScoreCount" parameterType="Long">
+        select count(*)
+        from t_score
+        where document_id = #{id}
+    </select>
+    
+    <select id="getDuplicateScore" resultType="Long">
+        select count(*)
+        from t_score
+        where document_id = #{documentId} and user_id = #{userId}
+    </select>
+
+    <insert id="addScore" parameterType="com.buct.team.manage.entity.Score">
+        insert into t_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="documentId != null">
+                document_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="documentId != null">
+                #{documentId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+        </trim>
+    </insert>
+</mapper>
