@@ -27,4 +27,6 @@ public interface DocumentService {
     Document selectById(Long id);
 
     boolean updateAverageScore(Long id, Double score);
+
+    Long getLikeCount(Long id);
 }

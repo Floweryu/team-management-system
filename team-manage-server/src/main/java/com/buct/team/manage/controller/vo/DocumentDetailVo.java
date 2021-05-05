@@ -15,6 +15,12 @@ import java.util.List;
 public class DocumentDetailVo {
     // 文献内容
     private Document document;
+    
+    // 是否已经评分
+    private boolean hasScore;
+
+    // 是否已经点赞
+    private boolean hasLike;
 
     // 文献所属类别
     private List<Classify> classifyList;

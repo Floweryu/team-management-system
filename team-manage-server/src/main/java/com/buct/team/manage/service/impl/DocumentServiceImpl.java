@@ -68,6 +68,11 @@ public class DocumentServiceImpl implements DocumentService {
         return documentMapper.updateAverageScore(id, score) > 0;
     }
 
+    @Override
+    public Long getLikeCount(Long id) {
+        return documentMapper.getLikeCount(id);
+    }
+
     private Document transDocument(DocumentReq documentReq) {
 
         Document document = new Document();
@@ -83,6 +88,10 @@ public class DocumentServiceImpl implements DocumentService {
         String originAddress = documentReq.getOriginAddress();
         String storePath = documentReq.getStorePath();
         String fileName = documentReq.getFileName();
+        Long likeCount = documentReq.getLikeCount();
+        Double averageScore = documentReq.getAverageScore();
+        Long viewCount = documentReq.getViewCount();
+        Long downloadCount = documentReq.getDownloadCount();
         if (id != null) {
             document.setId(id);
         }
@@ -116,7 +125,19 @@ public class DocumentServiceImpl implements DocumentService {
         if (fileName != null) {
             document.setFileName(fileName);
         }
+        if (likeCount != null) {
+            document.setLikeCount(likeCount);
+        }
+        if (averageScore != null) {
+            document.setAverageScore(averageScore);
+        }
 
+        if (viewCount != null) {
+            document.setViewCount(viewCount);
+        }
+        if (downloadCount != null) {
+            document.setDownloadCount(downloadCount);
+        }
         return document;
     }
 }

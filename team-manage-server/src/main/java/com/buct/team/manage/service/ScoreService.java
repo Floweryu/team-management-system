@@ -9,7 +9,7 @@ import com.buct.team.manage.controller.dto.ScoreReq;
 public interface ScoreService {
     Double getAverageScore(Long id);
 
-    Integer getDuplicateScore(Long documentId, String userId);
+    boolean getDuplicateScore(Long documentId, String userId);
 
     boolean addScore(ScoreReq scoreReq);
 }

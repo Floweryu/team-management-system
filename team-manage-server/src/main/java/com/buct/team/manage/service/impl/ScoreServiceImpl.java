@@ -25,8 +25,8 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public Long getScoreCount(Long id) {
-        return scoreMapper.getScoreCount(id);
+    public boolean getDuplicateScore(Long documentId, String userId) {
+        return scoreMapper.getDuplicateScore(documentId, userId) == 1;
     }
 
     @Override

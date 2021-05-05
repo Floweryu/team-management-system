@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.buct.team.manage.dao.ScoreMapper">
-    <select id="getAverageScore" parameterType="Long" resultType="Double">
-        select avg(score)
-        from t_score
-        where document_id = #{id}
-    </select>
-
-    <select id="getScoreCount" parameterType="Long">
+<mapper namespace="com.buct.team.manage.dao.LikeMapper">
+    <select id="checkDuplicateLike" resultType="Integer">
         select count(*)
-        from t_score
-        where document_id = #{id}
-    </select>
-    
-    <select id="getDuplicateScore" resultType="Integer">
-        select count(*)
-        from t_score
+        from t_like
         where document_id = #{documentId} and user_id = #{userId}
     </select>
 
-    <insert id="addScore" parameterType="com.buct.team.manage.entity.Score">
-        insert into t_score
+    <delete id="deleteLike" parameterType="com.buct.team.manage.entity.Like">
+        delete from t_like
+        where document_id = #{documentId} and user_id = #{userId}
+    </delete>
+
+    <insert id="addLike" parameterType="com.buct.team.manage.entity.Like">
+        insert into t_like
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="documentId != null">
                 document_id,
             </if>
             <if test="userId != null">
                 user_id,
-            </if>
-            <if test="score != null">
-                score,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -38,9 +28,6 @@
             </if>
             <if test="userId != null">
                 #{userId},
-            </if>
-            <if test="score != null">
-                #{score},
             </if>
         </trim>
     </insert>

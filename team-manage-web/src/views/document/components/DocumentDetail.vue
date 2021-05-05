@@ -63,9 +63,9 @@
         <div class="document-bottom">
           <div class="document-bottom-left">
             <div class="is-like" @click="likeEvent">
-              <svg-icon v-if="isLike" class="is-like-icon" iconClass="is_like"></svg-icon>
+              <svg-icon v-if="hasLike" class="is-like-icon" iconClass="is_like"></svg-icon>
               <svg-icon v-else class="is-like-icon" iconClass="not_like"></svg-icon>
-              <span class="like-count" v-if="isLike" :class="{ active: isLike }">已赞{{ likeCount }}</span>
+              <span class="like-count" v-if="hasLike" :class="{ active: hasLike }">已赞{{ likeCount }}</span>
               <span class="like-count" v-else>点赞{{ likeCount }}</span>
             </div>
             <div class="comment">
@@ -81,8 +81,9 @@
 
           <div class="document-bottom-right">
             <div class="rate">
-              <span class="rate-text">评分：</span>
-              <el-rate v-model="score" @change="submitScore" :disabled="isDisabled"> </el-rate>
+              <span v-if="!isDisabled" class="rate-text">评分：</span>
+              <span v-else class="rate-text">已提交过评分</span>
+              <el-rate v-if="!isDisabled" v-model="score" @change="submitScore" :disabled="isDisabled"> </el-rate>
             </div>
           </div>
         </div>
@@ -103,9 +104,14 @@ export default {
       labelList: [],
       id: Number,
       likeCount: Number,
-      isLike: false,
+      hasLike: false,
       score: null,
       isDisabled: false
+    }
+  },
+  watch: {
+    likeCount(val) {
+      this.document.likeCount = val
     }
   },
   created() {
@@ -117,7 +123,8 @@ export default {
     getDocumentDetail(val) {
       let query = {
         params: {
-          id: val
+          id: val,
+          userId: localStorage.getItem('userId')
         }
       }
       this.$http.document
@@ -129,6 +136,8 @@ export default {
             this.likeCount = this.document.likeCount
             this.classifyList = this.documentInfo.classifyList
             this.labelList = this.documentInfo.labelList
+            this.isDisabled = this.documentInfo.hasScore
+            this.hasLike = this.documentInfo.hasLike
           }
         })
         .catch(err => {
@@ -145,12 +154,42 @@ export default {
     },
     //点赞触发事件
     likeEvent() {
-      if (this.isLike) {
-        this.likeCount--
-        this.isLike = false
+      let data = {
+        documentId: this.id,
+        userId: localStorage.getItem('userId')
+      }
+      if (this.hasLike) {
+        this.$http.like
+          .deleteLike(JSON.stringify(data))
+          .then(res => {
+            if (res.code === 0 && res.data) {
+              this.hasLike = res.data.hasLike
+              this.likeCount = res.data.likeNum
+            }
+          })
+          .catch(err => {
+            this.hasLike = true
+            console.log(err)
+          })
       } else {
-        this.likeCount++
-        this.isLike = true
+        this.$http.like
+          .addLike(JSON.stringify(data))
+          .then(res => {
+            if (res.code === 0 && res.data) {
+              this.$notify.success({
+                message: '点赞成功'
+              })
+              this.hasLike = res.data.hasLike
+              this.likeCount = res.data.likeNum
+            }
+          })
+          .catch(err => {
+            this.$notify.error({
+              message: '点赞失败'
+            })
+            this.hasLike = false
+            console.log(err)
+          })
       }
     },
     // 提交分数

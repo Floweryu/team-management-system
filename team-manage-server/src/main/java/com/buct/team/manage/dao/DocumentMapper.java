@@ -35,4 +35,6 @@ public interface DocumentMapper {
     Document selectById(@Param("id") Long id);
 
     int updateAverageScore(@Param("id") Long id, @Param("score") Double score);
+
+    Long getLikeCount(@Param("id") Long id);
 }

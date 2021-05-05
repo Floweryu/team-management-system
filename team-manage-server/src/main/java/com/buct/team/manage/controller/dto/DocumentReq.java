@@ -42,4 +42,16 @@ public class DocumentReq {
 
     // 文件名
     private String fileName;
+
+    // 浏览量
+    private Long viewCount;
+
+    // 下载数
+    private Long downloadCount;
+
+    // 分数
+    private Double averageScore;
+
+    // 点赞数
+    private Long likeCount;
 }

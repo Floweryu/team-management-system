@@ -25,6 +25,12 @@
         id, title, author, publish_time, introduction, publish_place, `size`, upload_user_id, origin_address, like_count, view_count, download_count, average_score, store_path, file_name, create_time, update_time
     </sql>
 
+    <select id="getLikeCount" parameterType="Long" resultType="Long">
+        select like_count
+        from t_document
+        where id = #{id}
+    </select>
+
     <update id="updateAverageScore">
         update t_document
         set average_score = #{score}
@@ -187,6 +193,18 @@
             </if>
             <if test="fileName != null">
                 file_name = #{fileName},
+            </if>
+            <if test="likeCount != null">
+                like_count = #{likeCount},
+            </if>
+            <if test="averageScore != null">
+                average_score = #{averageScore},
+            </if>
+            <if test="viewCount != null">
+                view_count = #{viewCount},
+            </if>
+            <if test="downloadCount != null">
+                download_count = #{downloadCount},
             </if>
         </set>
         where id = #{id}

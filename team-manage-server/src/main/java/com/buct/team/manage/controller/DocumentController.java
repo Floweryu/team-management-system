@@ -36,19 +36,25 @@ public class DocumentController {
     private final ClassifyService classifyService;
     private final DocumentLabelService documentLabelService;
     private final LabelService labelService;
+    private final ScoreService scoreService;
+    private final LikeService likeService;
 
     public DocumentController(DocumentService documentService,
                               FileMdService fileMdService,
                               DocumentClassifyService documentClassifyService,
                               ClassifyService classifyService,
                               DocumentLabelService documentLabelService,
-                              LabelService labelService) {
+                              LabelService labelService,
+                              ScoreService scoreService,
+                              LikeService likeService) {
         this.documentService = documentService;
         this.fileMdService = fileMdService;
         this.documentClassifyService = documentClassifyService;
         this.classifyService = classifyService;
         this.documentLabelService = documentLabelService;
         this.labelService = labelService;
+        this.scoreService = scoreService;
+        this.likeService = likeService;
     }
 
     // 文献存储本地磁盘路径
@@ -349,12 +355,18 @@ public class DocumentController {
         }
     }
 
+    /**
+     *
+     * @param id 文献id
+     * @param userId    用户id
+     * @return Result
+     */
     @GetMapping("/document/detail")
-    public Result<DocumentDetailVo> getDocumentDetail(@RequestParam("id") Long id) {
+    public Result<DocumentDetailVo> getDocumentDetail(@RequestParam("id") Long id, @RequestParam("userId") String userId) {
         if (id < 0) {
             return Result.error(400, "id must >= 0");
         }
-        log.info("传递文件id: {}", id);
+        log.info("传递文件id: {}, userId: {}", id, userId);
         try {
             // 根据id查询到document信息
             Document document = documentService.selectById(id);
@@ -382,10 +394,22 @@ public class DocumentController {
                 labelList = null;
             }
 
+            boolean isScore = scoreService.getDuplicateScore(id, userId);
+            boolean isLike = likeService.checkDuplicateLike(id, userId);
+
+            // 返回信息
             DocumentDetailVo documentDetailVo = new DocumentDetailVo();
             documentDetailVo.setDocument(document);
             documentDetailVo.setClassifyList(classifyList);
             documentDetailVo.setLabelList(labelList);
+            documentDetailVo.setHasScore(isScore);
+            documentDetailVo.setHasLike(isLike);
+
+            // 增加阅读量
+            DocumentReq documentReq = new DocumentReq();
+            documentReq.setId(id);
+            documentReq.setViewCount(document.getViewCount() + 1);
+            documentService.updateDocument(documentReq);
 
             return Result.success(documentDetailVo);
         } catch (Throwable throwable) {
