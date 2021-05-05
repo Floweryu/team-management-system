@@ -55,7 +55,7 @@ public class LikeController {
             LikeVo likeVo = new LikeVo();
             likeVo.setLikeNum(likeCount + 1);
             likeVo.setHasLike(true);
-            
+
             if (upFlag) {
                 return Result.success(likeVo);
             } else {

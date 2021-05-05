@@ -8,6 +8,10 @@
               <span class="flag">发布时间：</span>
               {{ document.publishTime }}
             </div>
+            <div class="upload-user">
+              <span class="flag">上传者：</span>
+              {{ document.uploadUserId }}
+            </div>
           </div>
           <div class="document-top-right">
             <div class="view">
@@ -73,9 +77,10 @@
               <span class="comment-count">评论{{ likeCount }}</span>
             </div>
             <div class="download">
-              <el-button type="primary" size="mini" @click="downloadFile">
+              <el-button v-if="document.storePath != ''" type="primary" size="mini" @click="downloadFile">
                 点击下载<i class="el-icon-download el-icon--right"></i>
               </el-button>
+              <span v-else class="download-text">文件资源暂缺</span>
             </div>
           </div>
 
@@ -267,7 +272,8 @@ export default {
   margin: 0 auto 30px;
 }
 .document-top,
-.document-top-right {
+.document-top-right,
+.document-top-left {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -300,9 +306,11 @@ export default {
   margin-right: 4px;
   font-size: 20px;
 }
-.publish-time {
+.publish-time,
+.upload-user {
   text-align: center;
   color: #fc5531;
+  margin-right: 20px;
 }
 .flag {
   display: inline-block;
@@ -367,11 +375,15 @@ export default {
   cursor: pointer;
   margin-right: 20px;
 }
+.download {
+  width: 85px;
+}
 .rate {
   display: flex;
   align-items: center;
 }
-.rate-text {
+.rate-text,
+.download-text {
   font-size: 14px;
   color: #fc5531;
 }
