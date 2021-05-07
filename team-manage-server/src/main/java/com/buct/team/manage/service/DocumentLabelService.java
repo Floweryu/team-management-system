@@ -8,4 +8,6 @@ import java.util.List;
  */
 public interface DocumentLabelService {
     List<Long> getLabelId(Long id);
+
+    List<Long> getDocumentId(Long id);
 }

@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface LabelService {
     List<Label> getLabelById(List<Long> id);
+
+    List<Label> getAllLabel();
 }

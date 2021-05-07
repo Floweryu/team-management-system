@@ -23,4 +23,9 @@ public class DocumentLabelImpl implements DocumentLabelService {
     public List<Long> getLabelId(Long id) {
         return documentLabelMapper.getLabelId(id);
     }
+
+    @Override
+    public List<Long> getDocumentId(Long id) {
+        return documentLabelMapper.getDocumentId(id);
+    }
 }

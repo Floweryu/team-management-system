@@ -29,4 +29,8 @@ public interface DocumentService {
     boolean updateAverageScore(Long id, Double score);
 
     Long getLikeCount(Long id);
+
+    Long getDownloadCount(Long id);
+
+    List<Document> getDocumentById(List<Long> idList);
 }

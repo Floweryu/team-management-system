@@ -14,4 +14,6 @@ import java.util.List;
 @Mapper
 public interface DocumentLabelMapper {
     List<Long> getLabelId(@Param("id") Long id);
+
+    List<Long> getDocumentId(@Param("id") Long id);
 }

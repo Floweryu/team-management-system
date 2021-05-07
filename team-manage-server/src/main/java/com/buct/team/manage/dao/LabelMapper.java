@@ -14,4 +14,6 @@ import java.util.List;
 @Mapper
 public interface LabelMapper {
     List<Label> getLabelById(List<Long> id);
+
+    List<Label> getAllLabel();
 }

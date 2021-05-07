@@ -272,7 +272,7 @@ public class DocumentController {
      * @param fileName  传入下载文件名
      */
     @GetMapping("/document/download")
-    public void downloadDocument(HttpServletResponse response, @RequestParam String fileName) throws UnsupportedEncodingException {
+    public void downloadDocument(HttpServletResponse response, @RequestParam String fileName, @RequestParam Long id) throws UnsupportedEncodingException {
         File file = new File(filePath + System.getProperty("file.separator") + fileName);
         if (file.exists()) {
 
@@ -291,6 +291,11 @@ public class DocumentController {
                     os.write(buff, 0, i);
                     os.flush();
                 }
+                Long downloadCount = documentService.getDownloadCount(id);
+                DocumentReq documentReq = new DocumentReq();
+                documentReq.setDownloadCount(downloadCount + 1);
+                documentReq.setId(id);
+                documentService.updateDocument(documentReq);
             } catch (IOException e) {
                 log.error("There is something error: {}", e.getMessage());
             }
@@ -356,7 +361,7 @@ public class DocumentController {
     }
 
     /**
-     *
+     * 获取文献详情
      * @param id 文献id
      * @param userId    用户id
      * @return Result
@@ -412,6 +417,62 @@ public class DocumentController {
             documentService.updateDocument(documentReq);
 
             return Result.success(documentDetailVo);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 根据类别查询文献
+     * @param id 类别id
+     * @return  文献列表
+     */
+    @GetMapping("/document/classify")
+    public Result<List<Document>> getDocumentByClassify(@RequestParam Long id) {
+        if (id < 0) {
+            return Result.error(400, "id should >= 0");
+        }
+
+        log.info("查询类别id: {}", id);
+        try {
+            List<Long> documentIdList = documentClassifyService.getDocumentId(id);
+
+            List<Document> documentList;
+            if (documentIdList.size() != 0) {
+                documentList = documentService.getDocumentById(documentIdList);
+            } else {
+                documentList = null;
+            }
+            return Result.success(documentList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 根据标签查询文献
+     * @param id 类别id
+     * @return  文献列表
+     */
+    @GetMapping("/document/label")
+    public Result<List<Document>> getDocumentByLabel(@RequestParam Long id) {
+        if (id < 0) {
+            return Result.error(400, "id should >= 0");
+        }
+
+        log.info("查询标签id: {}", id);
+        try {
+            List<Long> documentIdList = documentLabelService.getDocumentId(id);
+
+            List<Document> documentList;
+            if (documentIdList.size() != 0) {
+                documentList = documentService.getDocumentById(documentIdList);
+            } else {
+                documentList = null;
+            }
+            return Result.success(documentList);
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());
             return Result.error(CodeMsg.SERVER_ERROR);

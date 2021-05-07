@@ -23,4 +23,9 @@ public class DocumentClassifyServiceImpl implements DocumentClassifyService {
     public List<Long> getClassifyId(Long id) {
         return documentClassifyMapper.getClassifyId(id);
     }
+
+    @Override
+    public List<Long> getDocumentId(Long id) {
+        return documentClassifyMapper.getDocumentId(id);
+    }
 }

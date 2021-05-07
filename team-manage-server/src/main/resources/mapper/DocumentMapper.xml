@@ -31,6 +31,12 @@
         where id = #{id}
     </select>
 
+    <select id="getDownloadCount" parameterType="Long" resultType="Long">
+        select download_count
+        from t_document
+        where id = #{id}
+    </select>
+
     <update id="updateAverageScore">
         update t_document
         set average_score = #{score}
@@ -84,6 +90,15 @@
         <include refid="Base_Column_List" />
         from t_document
         where id = #{id}
+    </select>
+
+    <select id="getDocumentById" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_document where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
     <delete id="deleteDocument" parameterType="java.util.List">

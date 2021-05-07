@@ -14,4 +14,6 @@ import java.util.List;
 @Mapper
 public interface DocumentClassifyMapper {
     List<Long> getClassifyId(@Param("id") Long id);
+
+    List<Long> getDocumentId(@Param("id") Long id);
 }

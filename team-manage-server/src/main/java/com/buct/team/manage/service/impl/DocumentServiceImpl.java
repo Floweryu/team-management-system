@@ -73,6 +73,16 @@ public class DocumentServiceImpl implements DocumentService {
         return documentMapper.getLikeCount(id);
     }
 
+    @Override
+    public Long getDownloadCount(Long id) {
+        return documentMapper.getDownloadCount(id);
+    }
+
+    @Override
+    public List<Document> getDocumentById(List<Long> idList) {
+        return documentMapper.getDocumentById(idList);
+    }
+
     private Document transDocument(DocumentReq documentReq) {
 
         Document document = new Document();

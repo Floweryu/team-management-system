@@ -23,4 +23,10 @@
         </foreach>
     </select>
 
+    <select id="getAllClassify" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_classify
+    </select>
+
 </mapper>

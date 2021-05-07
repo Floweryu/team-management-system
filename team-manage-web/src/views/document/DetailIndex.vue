@@ -1,6 +1,12 @@
 <template>
   <div id="document-detail">
-    <header-top @search-data="searchData(arguments)" @clear-button="clearButton" />
+    <header-top
+      @search-data="searchData(arguments)"
+      @clear-button="clearButton"
+      @sort-event="sort"
+      @classify-select-change="searchByClassify"
+      @label-select-change="searchByLabel"
+    />
     <el-card class="detail-box">
       <div class="item-box" v-for="(item, index) in tableData" :key="index">
         <div class="info-top">
@@ -68,7 +74,8 @@ export default {
   mixins: [pageSeparate],
   data() {
     return {
-      tableData: []
+      tableData: [],
+      classifyList: []
     }
   },
   created() {
@@ -83,6 +90,7 @@ export default {
           if (res.code === 0 && res.data) {
             let data = res.data
             this.tableData = this.transData(data)
+            this.tableData.sort(this.compare('likeCount'))
           }
         })
         .catch(err => {
@@ -102,6 +110,54 @@ export default {
         }
       })
       return data
+    },
+    searchByClassify(val) {
+      if (val) {
+        let query = {
+          params: {
+            id: val
+          }
+        }
+        this.$http.document
+          .getDocumentByClassify(query)
+          .then(res => {
+            if (res.code === 0 && res.data) {
+              this.tableData = this.transData(res.data)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    searchByLabel(val) {
+      if (val) {
+        let query = {
+          params: {
+            id: val
+          }
+        }
+        this.$http.document
+          .getDocumentByLabel(query)
+          .then(res => {
+            if (res.code === 0 && res.data) {
+              this.tableData = this.transData(res.data)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    compare(key) {
+      return function(a, b) {
+        let val1 = a[key]
+        let val2 = b[key]
+        return val2 - val1
+      }
+    },
+    sort(type) {
+      this.tableData.sort(this.compare(type))
     },
     // 跳转详情页
     jumpDetail(val) {
@@ -139,11 +195,16 @@ export default {
           title: val
         }
       }
-      this.$http.document.searchByTitle(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByTitle(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 根据关键字获取用户
     searchByAuthor(val) {
@@ -152,11 +213,16 @@ export default {
           author: val
         }
       }
-      this.$http.document.searchByAuthor(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByAuthor(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 根据关键字获取用户
     searchByPlace(val) {
@@ -165,11 +231,16 @@ export default {
           place: val
         }
       }
-      this.$http.document.searchByPlace(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByPlace(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

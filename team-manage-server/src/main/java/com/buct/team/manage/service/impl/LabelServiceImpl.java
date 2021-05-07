@@ -24,4 +24,9 @@ public class LabelServiceImpl implements LabelService {
     public List<Label> getLabelById(List<Long> id) {
         return labelMapper.getLabelById(id);
     }
+
+    @Override
+    public List<Label> getAllLabel() {
+        return labelMapper.getAllLabel();
+    }
 }

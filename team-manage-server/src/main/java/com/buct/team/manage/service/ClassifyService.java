@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface ClassifyService {
     List<Classify> getClassifyById(List<Long> id);
+
+    List<Classify> getAllClassify();
 }

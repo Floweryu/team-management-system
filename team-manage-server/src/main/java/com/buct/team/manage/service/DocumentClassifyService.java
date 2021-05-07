@@ -8,4 +8,6 @@ import java.util.List;
  */
 public interface DocumentClassifyService {
     List<Long> getClassifyId(Long id);
+
+    List<Long> getDocumentId(Long id);
 }

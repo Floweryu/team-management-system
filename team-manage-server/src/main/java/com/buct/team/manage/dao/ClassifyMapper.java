@@ -14,4 +14,6 @@ import java.util.List;
 @Mapper
 public interface ClassifyMapper {
     List<Classify> getClassifyById(List<Long> id);
+
+    List<Classify> getAllClassify();
 }

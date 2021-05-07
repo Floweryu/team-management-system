@@ -225,7 +225,8 @@ export default {
     downloadFile() {
       let query = {
         params: {
-          fileName: this.document.fileName
+          fileName: this.document.fileName,
+          id: this.document.id
         },
         responseType: 'blob'
       }
@@ -253,6 +254,64 @@ export default {
             message: '文件下载错误'
           })
         })
+    },
+    clearButton() {
+      this.getAllDocuments()
+    },
+    // 搜索用户
+    searchData(msg) {
+      let searchType = msg[0]
+      let inputData = msg[1]
+      switch (searchType) {
+        case 0:
+          this.searchByTitle(inputData)
+          break
+        case 1:
+          this.searchByAuthor(inputData)
+          break
+        case 2:
+          this.searchByPlace(inputData)
+          break
+      }
+    },
+    // 根据关键字获取用户
+    searchByTitle(val) {
+      let query = {
+        params: {
+          title: val
+        }
+      }
+      this.$http.document.searchByTitle(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
+    },
+    // 根据关键字获取用户
+    searchByAuthor(val) {
+      let query = {
+        params: {
+          author: val
+        }
+      }
+      this.$http.document.searchByAuthor(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
+    },
+    // 根据关键字获取用户
+    searchByPlace(val) {
+      let query = {
+        params: {
+          place: val
+        }
+      }
+      this.$http.document.searchByPlace(query).then(res => {
+        if (res.code === 0 && res.data) {
+          this.tableData = this.transData(res.data)
+        }
+      })
     }
   }
 }

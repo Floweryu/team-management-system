@@ -23,4 +23,9 @@ public class ClassifyServiceImpl implements ClassifyService {
     public List<Classify> getClassifyById(List<Long> id) {
         return classifyMapper.getClassifyById(id);
     }
+
+    @Override
+    public List<Classify> getAllClassify() {
+        return classifyMapper.getAllClassify();
+    }
 }

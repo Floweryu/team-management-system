@@ -42,6 +42,14 @@ const document = {
   // 获取文献详情
   getDocumentDetail(param) {
     return axios.get(`${host.apiHost}/manage/document/detail`, param)
+  },
+  // 根据类别查询文献
+  getDocumentByClassify(param) {
+    return axios.get(`${host.apiHost}/manage/document/classify`, param)
+  },
+  // 根据标签查询文献
+  getDocumentByLabel(param) {
+    return axios.get(`${host.apiHost}/manage/document/label`, param)
   }
 }
 

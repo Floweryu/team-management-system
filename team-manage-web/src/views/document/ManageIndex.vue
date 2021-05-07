@@ -286,7 +286,8 @@ export default {
     downloadFile(row) {
       let query = {
         params: {
-          fileName: row.fileName
+          fileName: row.fileName,
+          id: row.id
         },
         responseType: 'blob'
       }

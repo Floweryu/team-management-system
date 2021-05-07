@@ -6,11 +6,15 @@ import menu from './menu.api'
 import document from './document.api'
 import score from './score.api'
 import like from './like.api'
+import classify from './classify.api'
+import label from './label.api'
 
 export default {
   user,
   menu,
   document,
   score,
-  like
+  like,
+  classify,
+  label
 }
