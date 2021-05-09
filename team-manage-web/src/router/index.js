@@ -10,6 +10,7 @@ const UserManage = () => import('@/views/user/index')
 const DocumentManage = () => import('@/views/document/ManageIndex')
 const DocumentDetail = () => import('@/views/document/DetailIndex')
 const DocumentDetailPre = () => import('@/views/document/components/DocumentDetail')
+const SoftwareIndex = () => import('@/views/software/index')
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
         name: 'Detail',
         component: DocumentDetailPre,
         meta: { title: '详情页' }
+      },
+      {
+        path: 'software',
+        component: SoftwareIndex,
+        meta: { title: '软件管理' }
       }
     ]
   }

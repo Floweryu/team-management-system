@@ -4,49 +4,31 @@
       <el-form :model="formData" ref="formData" :rules="rules" label-width="80px" label-position="right">
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="title" label="文献标题" size="mini">
-              <el-input v-model="formData.title" placeholder="请输入文献标题"></el-input>
+            <el-form-item prop="name" label="软件名称" size="mini">
+              <el-input v-model="formData.name" placeholder="请输入软件名称"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col>
+            <el-form-item prop="version" label="版本号" size="mini">
+              <el-input v-model="formData.version" placeholder="请输入版本号"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="introduction" label="简介" size="mini">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4 }"
-                v-model="formData.introduction"
-                placeholder="请输入简介"
-              ></el-input>
+            <el-form-item prop="downloadLink" label="下载地址" size="mini">
+              <el-input v-model="formData.downloadLink" placeholder="请输入地址"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="author" label="作者" size="mini">
-              <el-input v-model="formData.author" placeholder="请输入作者"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col>
-            <el-form-item prop="publishTime" label="发表时间" size="mini">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.publishTime" style="width: 100%"></el-date-picker>
+            <el-form-item prop="remark" label="备注" size="mini">
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" v-model="formData.remark" placeholder="软件备注"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" align="middle" class="row-bg">
-          <el-col>
-            <el-form-item prop="publishPlace" label="出版单位" size="mini">
-              <el-input v-model="formData.publishPlace" placeholder="请输入出版单位"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex" align="middle" class="row-bg">
-          <el-col>
-            <el-form-item prop="originAddress" label="来源地址" size="mini">
-              <el-input v-model="formData.originAddress" placeholder="请输入地址"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+
         <el-row type="flex" align="middle" justify="center" class="row-bg">
           <el-col :span="12" :push="4">
             <el-form-item>
@@ -66,7 +48,7 @@
 
 <script>
 export default {
-  name: 'DocumentDialog',
+  name: 'SoftwareDialog',
   props: {
     dialogVisible: {
       type: Boolean,
@@ -86,19 +68,14 @@ export default {
   data() {
     return {
       formData: {
-        title: '',
-        author: '',
-        introduction: '',
-        publishPlace: '',
-        originAddress: '',
-        uploadUserId: ''
+        name: '',
+        version: '',
+        remark: '',
+        downloadLink: ''
       },
       rules: {
-        title: [{ required: true, message: '文献标题不能为空', trigger: 'blur' }],
-        author: [{ required: true, message: '请输入作者', trigger: 'blur' }],
-        introduction: [{ required: true, message: '请输入简介', trigger: 'blur' }],
-        publishPlace: [{ required: true, message: '请输入出版单位', trigger: 'blur' }],
-        originAddress: [{ required: true, message: '请输入来源网址', trigger: 'blur' }]
+        name: [{ required: true, message: '软件名不能为空', trigger: 'blur' }],
+        downloadLink: [{ required: true, message: '请输入下载地址', trigger: 'blur' }]
       }
     }
   },
@@ -113,30 +90,30 @@ export default {
     submitForm(formName) {
       if (this.isEditButton) {
         // 如果是编辑页面
-        this.updateDocument(formName)
+        this.updateSoftware(formName)
       } else {
-        this.addDocument(formName)
+        this.addSoftware(formName)
       }
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    // 新增文献信息
-    addDocument(formName) {
+    // 新增信息
+    addSoftware(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.formData.uploadUserId = localStorage.getItem('userId')
-          this.$http.document
-            .addDocument(JSON.stringify(this.formData))
+          //   this.formData.uploadUserId = localStorage.getItem('userId')
+          this.$http.software
+            .addSoftware(JSON.stringify(this.formData))
             .then(res => {
               if (res.code === 0) {
                 this.$notify({
-                  message: '添加文献成功',
+                  message: '添加成功',
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllDocuments()
+                this.$parent.getAllSoftware()
               } else {
                 this.$notify.error({
                   message: '添加失败'
@@ -145,7 +122,7 @@ export default {
             })
             .catch(() => {
               this.$notify.error({
-                message: '添加文献失败'
+                message: '添加失败'
               })
             })
           this.$emit('dialog-cancel') // 关闭弹窗
@@ -154,21 +131,21 @@ export default {
         }
       })
     },
-    // 更新文献信息
-    updateDocument(formName) {
+    // 更新信息
+    updateSoftware(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.formData.uploadUserId = localStorage.getItem('userId')
-          this.$http.document
-            .updateDocument(JSON.stringify(this.formData))
+          //   this.formData.uploadUserId = localStorage.getItem('userId')
+          this.$http.software
+            .updateSoftware(JSON.stringify(this.formData))
             .then(res => {
               if (res.code === 0) {
                 this.$notify({
-                  message: '文献信息更新成功',
+                  message: '更新成功',
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllDocuments()
+                this.$parent.getAllSoftware()
               } else {
                 this.$notify.error({
                   message: '更新失败'
@@ -177,7 +154,7 @@ export default {
             })
             .catch(() => {
               this.$notify.error({
-                message: '文献信息更新失败'
+                message: '更新失败'
               })
             })
           this.$emit('dialog-cancel') // 关闭弹窗

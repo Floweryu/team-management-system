@@ -225,7 +225,7 @@ export default {
     handleSelectionChange(rows) {
       this.selectRows = rows
     },
-    // 删除用户接口
+    // 删除接口
     deleteDocumentApi(data) {
       this.$http.document
         .deleteDocument(JSON.stringify(data))
@@ -255,7 +255,7 @@ export default {
           this.selectRows.forEach(item => {
             data.push(item.id)
           })
-          await this.deleteUserApi(data)
+          await this.deleteDocumentApi(data)
         })
         .catch(() => {
           this.$notify.error({
@@ -263,7 +263,7 @@ export default {
           })
         })
     },
-    // 删除用户信息
+    // 删除信息
     deleteDocument(index, row) {
       this.$confirm('此操作将删除文献, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -343,11 +343,16 @@ export default {
           title: val
         }
       }
-      this.$http.document.searchByTitle(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByTitle(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 根据关键字获取用户
     searchByAuthor(val) {
@@ -356,11 +361,16 @@ export default {
           author: val
         }
       }
-      this.$http.document.searchByAuthor(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByAuthor(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 根据关键字获取用户
     searchByPlace(val) {
@@ -369,11 +379,16 @@ export default {
           place: val
         }
       }
-      this.$http.document.searchByPlace(query).then(res => {
-        if (res.code === 0 && res.data) {
-          this.tableData = this.transData(res.data)
-        }
-      })
+      this.$http.document
+        .searchByPlace(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.tableData = this.transData(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.SoftwareMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Software">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="version" jdbcType="VARCHAR" javaType="String" property="version" />
+        <result column="download_link" jdbcType="VARCHAR" javaType="String" property="downloadLink" />
+        <result column="remark" jdbcType="VARCHAR" javaType="String" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `name`, version, download_link, remark, create_time, update_time
+    </sql>
+
+    <select id="getAllSoftware" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_software
+    </select>
+
+    <delete id="deleteSoftware" parameterType="java.util.List">
+        delete from t_software where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="searchByName" parameterType="String" resultMap="BaseResultMap">
+        <if test="name != null">
+            <bind name="pattern" value="'%' + name + '%'"/>
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_software
+        where `name` like #{pattern}
+    </select>
+
+    <insert id="insertSoftware" parameterType="com.buct.team.manage.entity.Software">
+        insert into t_software
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="downloadLink != null">
+                download_link,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="downloadLink != null">
+                #{downloadLink},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSoftware" parameterType="com.buct.team.manage.entity.Software">
+        update t_software
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="downloadLink != null">
+                download_link = #{downloadLink},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

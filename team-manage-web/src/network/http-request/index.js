@@ -8,6 +8,7 @@ import score from './score.api'
 import like from './like.api'
 import classify from './classify.api'
 import label from './label.api'
+import software from './software.api'
 
 export default {
   user,
@@ -16,5 +17,6 @@ export default {
   score,
   like,
   classify,
-  label
+  label,
+  software
 }
