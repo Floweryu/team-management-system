@@ -4,7 +4,7 @@
  -->
 <template>
   <Header>
-    <el-button slot="left" size="mini" type="primary" @click="addAchievement" round icon="el-icon-plus">添加成果</el-button>
+    <el-button slot="left" size="mini" type="primary" @click="addAssets" round icon="el-icon-plus">添加资产</el-button>
     <el-button slot="left" size="mini" type="danger" @click="multipleDelete" round icon="el-icon-delete">批量删除</el-button>
     <el-input
       slot="right"
@@ -15,7 +15,7 @@
       size="mini"
       clearable
       autosize
-      placeholder="请输入投稿者id"
+      placeholder="请输入查询关键词"
     ></el-input>
     <el-button slot="right" class="search-button" @click="searchData" type="primary" size="mini" icon="el-icon-search" round>
       搜索
@@ -36,8 +36,8 @@ export default {
     }
   },
   methods: {
-    addAchievement() {
-      this.$emit('add-achievement', true)
+    addAssets() {
+      this.$emit('add-assets', true)
     },
     searchData() {
       this.$emit('search-data', this.input)

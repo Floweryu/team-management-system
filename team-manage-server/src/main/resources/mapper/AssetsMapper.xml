@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.AssetsMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Assets">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="number" jdbcType="VARCHAR" javaType="String" property="number" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="remark" jdbcType="VARCHAR" javaType="String" property="remark" />
+        <result column="by_user_id" jdbcType="VARCHAR" javaType="String" property="byUserId" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `number`, `name`, user_id, remark, by_user_id, create_time, update_time
+    </sql>
+
+    <select id="getAllAssets" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_assets
+    </select>
+
+    <select id="getAssetsByUploadUser" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from t_assets
+        where by_user_id = #{userId}
+    </select>
+
+    <select id="getAssetsByUser" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from t_assets
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteAssets" parameterType="java.util.List">
+        delete from t_assets where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertAssets" parameterType="com.buct.team.manage.entity.Assets">
+        insert into t_assets
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="number != null">
+                `number`,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="byUserId != null">
+                by_user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="byUserId != null">
+                #{byUserId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateAssets" parameterType="com.buct.team.manage.entity.Assets">
+        update t_assets
+        <set>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="byUserId != null">
+                by_user_id = #{byUserId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

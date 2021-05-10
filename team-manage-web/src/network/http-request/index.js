@@ -10,6 +10,7 @@ import classify from './classify.api'
 import label from './label.api'
 import software from './software.api'
 import achievement from './achievement.api'
+import assets from './assets.api'
 
 export default {
   user,
@@ -20,5 +21,6 @@ export default {
   classify,
   label,
   software,
-  achievement
+  achievement,
+  assets
 }

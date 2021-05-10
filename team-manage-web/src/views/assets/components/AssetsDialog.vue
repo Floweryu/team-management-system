@@ -4,51 +4,22 @@
       <el-form :model="formData" ref="formData" :rules="rules" label-width="80px" label-position="right">
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="articleName" label="文章标题" size="mini">
-              <el-input v-model="formData.articleName" placeholder="请输入文章标题"></el-input>
+            <el-form-item prop="number" label="资产编号" size="mini">
+              <el-input v-model="formData.number" placeholder="请输入资产编号"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="magazineName" label="期刊" size="mini">
-              <el-input v-model="formData.magazineName" placeholder="请输入期刊"></el-input>
+            <el-form-item prop="name" label="资产名称" size="mini">
+              <el-input v-model="formData.name" placeholder="请输入资产名称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="submitTime" label="投递时间" size="mini">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.submitTime" style="width: 100%"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col>
-            <el-form-item prop="checkTime" label="审核时间" size="mini">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.checkTime" style="width: 100%"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex" align="middle" class="row-bg">
-          <el-col>
-            <el-form-item prop="cost" label="花费" size="mini">
-              <el-input v-model="formData.cost" placeholder="请输入花费, 单位：(元)"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col>
-            <el-form-item prop="reward" label="奖励" size="mini">
-              <el-input v-model="formData.reward" placeholder="请输入奖励, 单位：(元)"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex" align="middle" class="row-bg">
-          <el-col>
-            <el-form-item prop="receiveTime" label="接收时间" size="mini">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.receiveTime" style="width: 100%"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col>
-            <el-form-item prop="userId" label="投稿人" size="mini">
-              <el-input v-model="formData.userId" placeholder="投稿人id"></el-input>
+            <el-form-item prop="userId" label="使用者" size="mini">
+              <el-input v-model="formData.userId" placeholder="请输入使用者id"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -79,7 +50,7 @@
 
 <script>
 export default {
-  name: 'AchievementDialog',
+  name: 'AssetsDialog',
   props: {
     dialogVisible: {
       type: Boolean,
@@ -99,19 +70,14 @@ export default {
   data() {
     return {
       formData: {
-        articleName: '',
-        magazineName: '',
-        submitTime: '',
-        checkTime: '',
-        receiveTime: '',
-        cost: '',
-        reward: '',
+        number: '',
+        name: '',
         userId: '',
         remark: ''
       },
       rules: {
-        articleName: [{ required: true, message: '文章名不能为空', trigger: 'blur' }],
-        userId: [{ required: true, message: '投稿人不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: '资产名不能为空', trigger: 'blur' }],
+        userId: [{ required: true, message: '使用者不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -126,9 +92,9 @@ export default {
     submitForm(formName) {
       if (this.isEditButton) {
         // 如果是编辑页面
-        this.updateAchievement(formName)
+        this.updateAssets(formName)
       } else {
-        this.addAchievement(formName)
+        this.addAssets(formName)
       }
     },
     // 重置表单
@@ -136,12 +102,12 @@ export default {
       this.$refs[formName].resetFields()
     },
     // 新增信息
-    addAchievement(formName) {
+    addAssets(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.formData.byUserId = localStorage.getItem('userId')
-          this.$http.achievement
-            .addAchievement(JSON.stringify(this.formData))
+          this.$http.assets
+            .addAssets(JSON.stringify(this.formData))
             .then(res => {
               if (res.code === 0) {
                 this.$notify({
@@ -149,10 +115,10 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllAchievement()
+                this.$parent.getAllAssets()
               } else {
                 this.$notify.error({
-                  message: '添加失败'
+                  message: res.msg
                 })
               }
             })
@@ -168,12 +134,12 @@ export default {
       })
     },
     // 更新信息
-    updateAchievement(formName) {
+    updateAssets(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.formData.byUserId = localStorage.getItem('userId')
-          this.$http.achievement
-            .updateAchievement(JSON.stringify(this.formData))
+          this.$http.assets
+            .updateAssets(JSON.stringify(this.formData))
             .then(res => {
               if (res.code === 0) {
                 this.$notify({
@@ -181,10 +147,10 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllAchievement()
+                this.$parent.getAllAssets()
               } else {
                 this.$notify.error({
-                  message: '更新失败'
+                  message: res.msg
                 })
               }
             })

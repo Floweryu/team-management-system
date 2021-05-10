@@ -1,15 +1,13 @@
-package com.buct.team.manage.entity;
+package com.buct.team.manage.controller.dto;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 /**
  * @author Floweryu
- * @date 2021/3/30 14:55
+ * @date 2021/5/10 21:52
  */
 @Data
-public class Assets {
+public class AssetsReq {
     // 自增主键
     private Long id;
 
@@ -28,9 +26,4 @@ public class Assets {
     // 信息上传修改用户
     private String byUserId;
 
-    // 创建时间
-    private Timestamp createTime;
-
-    // 更新时间
-    private Timestamp updateTime;
 }

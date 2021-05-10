@@ -14,7 +14,7 @@ public interface AchievementService {
     List<Achievement> getAllAchievement();
     List<Achievement> getAchievementByUploadUser(String userId);
 
-    List<Achievement> getAchievementByUser( String userId);
+    List<Achievement> getAchievementByUser(String userId);
 
     boolean insertAchievement(AchievementReq achievementReq);
 

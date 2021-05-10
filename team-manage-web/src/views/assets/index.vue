@@ -1,6 +1,6 @@
 <template>
-  <div class="Achievement-index">
-    <header-top @search-data="searchData" @clear-button="clearButton" @add-achievement="addAchievement" @multiple-delete="multipleDelete" />
+  <div class="Assets-index">
+    <header-top @search-data="searchData" @clear-button="clearButton" @add-assets="addAssets" @multiple-delete="multipleDelete" />
     <el-card class="body">
       <el-table
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
@@ -11,20 +11,15 @@
         stripe
       >
         <el-table-column fixed type="selection" width="40" align="center" />
-        <el-table-column fixed prop="articleName" show-overflow-tooltip label="文章名" width="100" align="center" />
-        <el-table-column prop="magazineName" show-overflow-tooltip label="期刊名" width="80" align="center" />
-        <el-table-column prop="submitTime" show-overflow-tooltip label="投稿时间" width="100" align="center" />
-        <el-table-column prop="checkTime" show-overflow-tooltip label="审核时间" width="100" align="center" />
-        <el-table-column prop="receiveTime" show-overflow-tooltip label="接收时间" width="100" align="center" />
-        <el-table-column prop="cost" show-overflow-tooltip label="花费(元)" width="80" align="center" />
-        <el-table-column prop="reward" show-overflow-tooltip label="奖励(元)" width="80" align="center" />
-        <el-table-column prop="userId" show-overflow-tooltip label="投稿人" width="95" align="center" />
+        <el-table-column fixed prop="number" show-overflow-tooltip label="资产编号" width="100" align="center" />
+        <el-table-column prop="name" show-overflow-tooltip label="资产名" min-width="120" align="center" />
+        <el-table-column prop="userId" show-overflow-tooltip label="使用者" width="100" align="center" />
         <el-table-column prop="remark" show-overflow-tooltip label="备注" min-width="120" align="center" />
-        <el-table-column prop="byUserId" show-overflow-tooltip label="上传者" width="95" align="center" />
+        <el-table-column prop="byUserId" show-overflow-tooltip label="上传者" width="100" align="center" />
         <el-table-column fixed="right" label="操作" width="140" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="editAchievement(scope.$index, scope.row)"
+              @click="editAssets(scope.$index, scope.row)"
               size="mini"
               type="primary"
               icon="el-icon-edit"
@@ -32,7 +27,7 @@
               >编辑
             </el-button>
             <el-button
-              @click="deleteAchievement(scope.$index, scope.row)"
+              @click="deleteAssets(scope.$index, scope.row)"
               size="mini"
               type="danger"
               icon="el-icon-delete"
@@ -43,7 +38,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <achievement-dialog
+    <assets-dialog
       ref="child"
       :is-edit-button="isEditButton"
       :edit-value="editValue"
@@ -62,14 +57,13 @@
 
 <script>
 import HeaderTop from './components/HeaderTop'
-import AchievementDialog from './components/AchievementDialog'
+import AssetsDialog from './components/AssetsDialog'
 import { pageSeparate } from '@/utils/mixin'
-import { formatDate } from '@/utils/index'
 export default {
   name: 'Index',
   components: {
     HeaderTop,
-    AchievementDialog
+    AssetsDialog
   },
   mixins: [pageSeparate],
   data() {
@@ -82,48 +76,31 @@ export default {
     }
   },
   created() {
-    this.getAllAchievement()
+    this.getAllAssets()
   },
   methods: {
-    getAllAchievement() {
-      this.$http.achievement
-        .getAllAchievement()
+    getAllAssets() {
+      this.$http.assets
+        .getAllAssets()
         .then(res => {
           if (res.code === 0 && res.data) {
             let data = res.data
-            this.tableData = this.transData(data)
+            this.tableData = data
           }
         })
         .catch(err => {
           console.log(err)
         })
     },
-    transData(data) {
-      data.forEach(item => {
-        if (item.submitTime) {
-          let time = new Date(item.submitTime)
-          item.submitTime = formatDate(time, 'yyyy-MM-dd')
-        }
-        if (item.checkTime) {
-          let time = new Date(item.checkTime)
-          item.checkTime = formatDate(time, 'yyyy-MM-dd')
-        }
-        if (item.receiveTime) {
-          let time = new Date(item.receiveTime)
-          item.receiveTime = formatDate(time, 'yyyy-MM-dd')
-        }
-      })
-      return data
-    },
-    deleteAchievementApi(data) {
-      this.$http.achievement
-        .deleteAchievement(JSON.stringify(data))
+    deleteAssetsApi(data) {
+      this.$http.assets
+        .deleteAssets(JSON.stringify(data))
         .then(res => {
           if (res.code === 0) {
             this.$notify.success({
               message: '删除成功'
             })
-            this.getAllAchievement()
+            this.getAllAssets()
           }
         })
         .catch(() => {
@@ -144,7 +121,7 @@ export default {
           this.selectRows.forEach(item => {
             data.push(item.id)
           })
-          await this.deleteAchievementApi(data)
+          await this.deleteAssetsApi(data)
         })
         .catch(() => {
           this.$notify.error({
@@ -153,7 +130,7 @@ export default {
         })
     },
     // 删除信息
-    deleteAchievement(index, row) {
+    deleteAssets(index, row) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -162,7 +139,7 @@ export default {
         .then(() => {
           let data = []
           data.push(row.id)
-          this.deleteAchievementApi(data)
+          this.deleteAssetsApi(data)
         })
         .catch(err => {
           console.log(err)
@@ -171,13 +148,13 @@ export default {
           })
         })
     },
-    addAchievement(val) {
+    addAssets(val) {
       this.isEditButton = false
       this.dialogFormVisible = val
       this.editValue = null
     },
     // 编辑
-    editAchievement(index, row) {
+    editAssets(index, row) {
       this.isEditButton = true
       this.dialogFormVisible = true
       this.editValue = row
@@ -187,7 +164,7 @@ export default {
       this.dialogFormVisible = false
     },
     clearButton() {
-      this.getAllAchievement()
+      this.getAllAssets()
     },
     // 存储选择行信息
     handleSelectionChange(rows) {
@@ -199,11 +176,11 @@ export default {
           userId: val
         }
       }
-      this.$http.achievement
-        .getAchievementByUser(query)
+      this.$http.assets
+        .getAssetsByUser(query)
         .then(res => {
           if (res.code === 0 && res.data) {
-            this.tableData = this.transData(res.data)
+            this.tableData = res.data
           }
         })
         .catch(err => {
