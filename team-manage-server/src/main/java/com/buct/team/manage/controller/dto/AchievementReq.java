@@ -1,17 +1,16 @@
-package com.buct.team.manage.entity;
+package com.buct.team.manage.controller.dto;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
  * @author Floweryu
- * @date 2021/3/30 14:49
+ * @date 2021/5/10 13:31
  */
 @Data
-public class Achievement {
+public class AchievementReq {
     private Long id;
 
     // 文章名
@@ -43,10 +42,4 @@ public class Achievement {
 
     // 信息上传修改用户
     private String byUserId;
-
-    // 创建时间
-    private Timestamp createTime;
-
-    // 更新时间
-    private Timestamp updateTime;
 }

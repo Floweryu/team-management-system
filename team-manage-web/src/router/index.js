@@ -11,6 +11,8 @@ const DocumentManage = () => import('@/views/document/ManageIndex')
 const DocumentDetail = () => import('@/views/document/DetailIndex')
 const DocumentDetailPre = () => import('@/views/document/components/DocumentDetail')
 const SoftwareIndex = () => import('@/views/software/index')
+const AchievementIndex = () => import('@/views/achievement/index')
+const AssetsIndex = () => import('@/views/assets/index')
 
 const routes = [
   {
@@ -51,6 +53,16 @@ const routes = [
         path: 'software',
         component: SoftwareIndex,
         meta: { title: '软件管理' }
+      },
+      {
+        path: 'achievement',
+        component: AchievementIndex,
+        meta: { title: '成果管理' }
+      },
+      {
+        path: 'assets',
+        component: AssetsIndex,
+        mmeta: { title: '资产管理' }
       }
     ]
   }

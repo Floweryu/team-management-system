@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.AchievementMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Achievement">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="article_name" jdbcType="VARCHAR" javaType="String" property="articleName" />
+        <result column="magazine_name" jdbcType="VARCHAR" javaType="String" property="magazineName" />
+        <result column="submit_time" jdbcType="DATE" javaType="Date" property="submitTime" />
+        <result column="check_time" jdbcType="DATE" javaType="Date" property="checkTime" />
+        <result column="receive_time" jdbcType="DATE" javaType="Date" property="receiveTime" />
+        <result column="cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="cost" />
+        <result column="reward" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="reward" />
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="remark" jdbcType="VARCHAR" javaType="String" property="remark" />
+        <result column="by_user_id" jdbcType="VARCHAR" javaType="String" property="byUserId" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, article_name, magazine_name, submit_time, check_time, receive_time, cost, reward, user_id, remark, by_user_id, create_time, update_time
+    </sql>
+
+    <select id="getAllAchievement" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_achievement
+    </select>
+
+    <select id="getAchievementByUploadUser" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from t_achievement
+        where by_user_id = #{userId}
+    </select>
+
+    <select id="getAchievementByUser" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from t_achievement
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteAchievement" parameterType="java.util.List">
+        delete from t_achievement where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertAchievement" parameterType="com.buct.team.manage.entity.Achievement">
+        insert into t_achievement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleName != null">
+                article_name,
+            </if>
+            <if test="magazineName != null">
+                magazine_name,
+            </if>
+            <if test="submitTime != null">
+                submit_time,
+            </if>
+            <if test="checkTime != null">
+                check_time,
+            </if>
+            <if test="receiveTime != null">
+                receive_time,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="reward != null">
+                reward,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="byUserId != null">
+                by_user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="articleName != null">
+                #{articleName},
+            </if>
+            <if test="magazineName != null">
+                #{magazineName},
+            </if>
+            <if test="submitTime != null">
+                #{submitTime},
+            </if>
+            <if test="checkTime != null">
+                #{checkTime},
+            </if>
+            <if test="receiveTime != null">
+                #{receiveTime},
+            </if>
+            <if test="cost != null">
+                #{cost},
+            </if>
+            <if test="reward != null">
+                #{reward},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="byUserId != null">
+                #{byUserId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatetAchievement" parameterType="com.buct.team.manage.entity.Achievement">
+        update t_achievement
+        <set>
+            <if test="articleName != null">
+                article_name = #{articleName},
+            </if>
+            <if test="magazineName != null">
+                magazine_name = #{magazineName},
+            </if>
+            <if test="submitTime != null">
+                submit_time = #{submitTime},
+            </if>
+            <if test="checkTime != null">
+                check_time = #{checkTime},
+            </if>
+            <if test="receiveTime != null">
+                receive_time = #{receiveTime},
+            </if>
+            <if test="cost != null">
+                cost = #{cost},
+            </if>
+            <if test="reward != null">
+                reward = #{reward},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="byUserId != null">
+                by_user_id = #{byUserId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

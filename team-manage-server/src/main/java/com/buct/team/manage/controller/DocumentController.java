@@ -132,6 +132,34 @@ public class DocumentController {
      */
     @PutMapping("/document")
     public Result<CodeMsg> updateDocument(@RequestBody DocumentReq documentReq) {
+        String title = documentReq.getTitle();
+        if (title.isEmpty()) {
+            return Result.error(400, "title connot be null");
+        }
+        if (title.length() > 50) {
+            return Result.error(400, "title length is too long, should < 50");
+        }
+
+        String author = documentReq.getAuthor();
+        if (author.isEmpty()) {
+            return Result.error(400, "author connot be null");
+        }
+        if (author.length() > 20) {
+            return Result.error(400, "author length should < 20");
+        }
+
+        String publishPlace = documentReq.getPublishPlace();
+        if (publishPlace.isEmpty()) {
+            return Result.error(400, "publish place cannot be null");
+        }
+
+        String uploadUserId = documentReq.getUploadUserId();
+        if (!StringUtils.isNumeric(uploadUserId)) {
+            return Result.error(400, "uploadUserId must be Number!");
+        }
+        if (uploadUserId.length() < 8 || uploadUserId.length() > 10) {
+            return Result.error(400, "uploadUserId length should be 8 ~ 10!");
+        }
         try {
             boolean flag = documentService.updateDocument(documentReq);
             if (flag) {
@@ -370,6 +398,12 @@ public class DocumentController {
     public Result<DocumentDetailVo> getDocumentDetail(@RequestParam("id") Long id, @RequestParam("userId") String userId) {
         if (id < 0) {
             return Result.error(400, "id must >= 0");
+        }
+        if (!StringUtils.isNumeric(userId)) {
+            return Result.error(400, "userId must be Number!");
+        }
+        if (userId.length() < 8 || userId.length() > 10) {
+            return Result.error(400, "userId length should be 8 ~ 10!");
         }
         log.info("传递文件id: {}, userId: {}", id, userId);
         try {

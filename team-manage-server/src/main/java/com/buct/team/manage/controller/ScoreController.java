@@ -30,7 +30,7 @@ public class ScoreController {
     }
 
     @PostMapping("/score/add")
-    public Result<CodeMsg> getAverageScore(@RequestBody ScoreReq score) {
+    public Result<CodeMsg> addScore(@RequestBody ScoreReq score) {
         if (score.getScore() < 0 || score.getScore() > 5) {
             return Result.error(400, "id must be >= 0 and <= 5");
         }
