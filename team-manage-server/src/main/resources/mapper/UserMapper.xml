@@ -34,6 +34,16 @@
         id, user_id, password, username, identity, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
     </sql>
 
+    <select id="getUserByUserIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where deleted = 0 and user_id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     <select id="verifyPassword" resultMap="LoginInfoMap">
         select user_id, username, login_time, login_count, create_uid
         from t_user

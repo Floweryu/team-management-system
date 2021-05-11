@@ -69,6 +69,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserByIdentity(identity);
     }
 
+    @Override
+    public List<User> getUserByUserIdList(List<String> userIdList) {
+        return userMapper.getUserByUserIdList(userIdList);
+    }
+
     private User transUserReq(UserReq userReq) {
         Long id = userReq.getId();
         String userId = userReq.getUserId();

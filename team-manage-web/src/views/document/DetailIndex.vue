@@ -161,7 +161,6 @@ export default {
     },
     // 跳转详情页
     jumpDetail(val) {
-      console.log(val)
       this.$router.push({
         name: 'Detail',
         params: {

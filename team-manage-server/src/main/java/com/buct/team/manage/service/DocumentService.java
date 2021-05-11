@@ -33,4 +33,6 @@ public interface DocumentService {
     Long getDownloadCount(Long id);
 
     List<Document> getDocumentById(List<Long> idList);
+
+    List<Document> getAllDocumentByUploadUser(String userId);
 }

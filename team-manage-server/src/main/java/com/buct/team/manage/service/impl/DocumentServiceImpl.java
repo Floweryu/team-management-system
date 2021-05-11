@@ -44,6 +44,11 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public List<Document> getAllDocumentByUploadUser(String userId) {
+        return documentMapper.getAllDocumentByUploadUser(userId);
+    }
+
+    @Override
     public List<Document> selectByTitle(String title) {
         return documentMapper.selectByTitle(title);
     }

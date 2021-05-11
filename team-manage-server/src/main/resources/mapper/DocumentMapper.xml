@@ -48,6 +48,13 @@
         <include refid="Base_Column_List" />
         from t_document
     </select>
+
+    <select id="getAllDocumentByUploadUser" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_document
+        where upload_user_id = #{userId}
+    </select>
     
     <select id="findMd5IsExit" resultType="String">
         select store_path

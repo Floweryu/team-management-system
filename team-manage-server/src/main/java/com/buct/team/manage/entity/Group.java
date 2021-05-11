@@ -19,11 +19,10 @@ public class Group {
     // 团队介绍
     private String introduce;
 
-    // 团队头像
-    private String photo;
-
     // 工作内容或方向
     private String workDirection;
+
+    private String byUserId;
 
     // 创建时间
     private Timestamp createTime;

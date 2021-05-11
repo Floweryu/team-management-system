@@ -24,6 +24,8 @@ public interface DocumentMapper {
     // 获取文献
     List<Document> getAllDocument();
 
+    List<Document> getAllDocumentByUploadUser(@Param("userId") String userId);
+
     int deleteDocument(List<Long> idList);
 
     List<Document> selectByTitle(@Param("title") String title);

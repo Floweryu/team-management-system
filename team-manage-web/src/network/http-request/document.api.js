@@ -7,6 +7,10 @@ const document = {
     return axios.get(`${host.apiHost}/manage/documents`)
   },
 
+  getAllDocumentByUploadUser(params) {
+    return axios.get(`${host.apiHost}/manage/documents/byUserId`, params)
+  },
+
   // 添加文献
   addDocument(data) {
     return axios.post(`${host.apiHost}/manage/document`, data)

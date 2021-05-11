@@ -76,6 +76,18 @@ public class DocumentController {
         }
     }
 
+    @GetMapping("/documents/byUserId")
+    public Result<List<Document>> getAllDocumentByUploadUser(@RequestParam String userId) {
+        try {
+            List<Document> documentList = documentService.getAllDocumentByUploadUser(userId);
+            log.info("获取的所有文献: {}", documentList);
+            return Result.success(documentList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
     /**
      * 添加文献
      * @param documentReq   文献传参

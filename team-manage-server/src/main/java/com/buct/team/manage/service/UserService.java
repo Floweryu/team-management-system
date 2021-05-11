@@ -28,4 +28,6 @@ public interface UserService {
     List<User> getUserByUserName(String username);
 
     List<User> getUserByIdentity(Integer identity);
+
+    List<User> getUserByUserIdList(List<String> userIdList);
 }

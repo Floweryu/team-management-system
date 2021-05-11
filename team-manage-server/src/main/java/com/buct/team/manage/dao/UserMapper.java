@@ -42,4 +42,5 @@ public interface UserMapper {
     // 根据用户身份查询
     List<User> getUserByIdentity(Integer identity);
 
+    List<User> getUserByUserIdList(List<String> userIdList);
 }

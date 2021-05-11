@@ -12,6 +12,7 @@ import software from './software.api'
 import achievement from './achievement.api'
 import assets from './assets.api'
 import comment from './comment.api'
+import team from './team.api'
 
 export default {
   user,
@@ -24,5 +25,6 @@ export default {
   software,
   achievement,
   assets,
-  comment
+  comment,
+  team
 }

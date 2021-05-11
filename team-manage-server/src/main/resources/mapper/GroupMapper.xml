@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.GroupMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Group">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="introduce" jdbcType="VARCHAR" javaType="String" property="introduce" />
+        <result column="work_direction" jdbcType="VARCHAR" javaType="String" property="workDirection" />
+        <result column="by_user_id" jdbcType="VARCHAR" javaType="String" property="byUserId" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `name`, introduce, work_direction, by_user_id, create_time, update_time
+    </sql>
+
+    <select id="getAllGroup" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_group
+    </select>
+
+    <select id="getGroupById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        <include refid="Base_Column_List" />
+        from t_group
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="String" resultMap="BaseResultMap">
+        <if test="name != null">
+            <bind name="pattern" value="'%' + name + '%'"/>
+        </if>
+        select
+        <include refid="Base_Column_List" />
+        from t_group
+        where name like #{pattern}
+    </select>
+
+    <insert id="insertGroup" parameterType="com.buct.team.manage.entity.Group">
+        insert into t_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="introduce != null">
+                introduce,
+            </if>
+            <if test="workDirection != null">
+                work_direction,
+            </if>
+            <if test="byUserId != null">
+                by_user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="introduce != null">
+                #{introduce},
+            </if>
+            <if test="workDirection != null">
+                #{workDirection},
+            </if>
+            <if test="byUserId != null">
+                #{byUserId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="com.buct.team.manage.entity.Group">
+        update t_group
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce},
+            </if>
+            <if test="workDirection != null">
+                work_direction = #{workDirection},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroup" parameterType="java.util.List">
+        delete from t_group where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

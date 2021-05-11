@@ -11,8 +11,12 @@ const DocumentManage = () => import('@/views/document/ManageIndex')
 const DocumentDetail = () => import('@/views/document/DetailIndex')
 const DocumentDetailPre = () => import('@/views/document/components/DocumentDetail')
 const SoftwareIndex = () => import('@/views/software/index')
+const SoftwareShow = () => import('@/views/software/components/SoftwareShow')
 const AchievementIndex = () => import('@/views/achievement/index')
 const AssetsIndex = () => import('@/views/assets/index')
+const TeamManage = () => import('@/views/team/TeamManage')
+const TeamShow = () => import('@/views/team/TeamShow')
+const TeamDetail = () => import('@/views/team/components/TeamDetail')
 
 const routes = [
   {
@@ -50,9 +54,14 @@ const routes = [
         meta: { title: '详情页' }
       },
       {
-        path: 'software',
+        path: 'software/manage',
         component: SoftwareIndex,
         meta: { title: '软件管理' }
+      },
+      {
+        path: 'software/detail',
+        component: SoftwareShow,
+        meta: { title: '软件展示' }
       },
       {
         path: 'achievement',
@@ -63,6 +72,19 @@ const routes = [
         path: 'assets',
         component: AssetsIndex,
         mmeta: { title: '资产管理' }
+      },
+      {
+        path: 'team/manage',
+        component: TeamManage
+      },
+      {
+        path: 'team/show',
+        component: TeamShow
+      },
+      {
+        path: 'team/detail/:id',
+        name: 'GroupDetail',
+        component: TeamDetail
       }
     ]
   }
