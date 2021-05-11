@@ -2,10 +2,7 @@ package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.controller.vo.DocumentDetailVo;
-import com.buct.team.manage.entity.Classify;
-import com.buct.team.manage.entity.Document;
-import com.buct.team.manage.entity.FileMd;
-import com.buct.team.manage.entity.Label;
+import com.buct.team.manage.entity.*;
 import com.buct.team.manage.enums.FilePathEnum;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -38,6 +35,7 @@ public class DocumentController {
     private final LabelService labelService;
     private final ScoreService scoreService;
     private final LikeService likeService;
+//    private final CommentService commentService;
 
     public DocumentController(DocumentService documentService,
                               FileMdService fileMdService,
@@ -55,6 +53,7 @@ public class DocumentController {
         this.labelService = labelService;
         this.scoreService = scoreService;
         this.likeService = likeService;
+//        this.commentService = commentService;
     }
 
     // 文献存储本地磁盘路径
@@ -410,6 +409,9 @@ public class DocumentController {
             // 根据id查询到document信息
             Document document = documentService.selectById(id);
 
+            // 根据id查询相关评论
+//            List<Comment> commentList = commentService.getCommentByTopicId(id);
+
             // 根据文献id获取与该文献id关联的分类id
             List<Long> classifyId = documentClassifyService.getClassifyId(id);
 
@@ -443,6 +445,7 @@ public class DocumentController {
             documentDetailVo.setLabelList(labelList);
             documentDetailVo.setHasScore(isScore);
             documentDetailVo.setHasLike(isLike);
+//            documentDetailVo.setCommentList(commentList);
 
             // 增加阅读量
             DocumentReq documentReq = new DocumentReq();

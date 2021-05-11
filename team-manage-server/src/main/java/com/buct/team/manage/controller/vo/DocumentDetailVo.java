@@ -1,6 +1,7 @@
 package com.buct.team.manage.controller.vo;
 
 import com.buct.team.manage.entity.Classify;
+import com.buct.team.manage.entity.Comment;
 import com.buct.team.manage.entity.Document;
 import com.buct.team.manage.entity.Label;
 import lombok.Data;
@@ -27,4 +28,6 @@ public class DocumentDetailVo {
 
     // 文献所属标签
     private List<Label> labelList;
+
+    private List<Comment> commentList;
 }

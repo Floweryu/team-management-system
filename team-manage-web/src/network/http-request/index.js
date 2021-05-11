@@ -11,6 +11,7 @@ import label from './label.api'
 import software from './software.api'
 import achievement from './achievement.api'
 import assets from './assets.api'
+import comment from './comment.api'
 
 export default {
   user,
@@ -22,5 +23,6 @@ export default {
   label,
   software,
   achievement,
-  assets
+  assets,
+  comment
 }

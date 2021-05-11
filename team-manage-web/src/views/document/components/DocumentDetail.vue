@@ -74,7 +74,7 @@
             </div>
             <div class="comment">
               <svg-icon class="comment-icon" iconClass="comment"></svg-icon>
-              <span class="comment-count">评论{{ likeCount }}</span>
+              <span class="comment-count">评论{{ commentCount }}</span>
             </div>
             <div class="download">
               <el-button v-if="document.storePath != ''" type="primary" size="mini" @click="downloadFile">
@@ -91,6 +91,29 @@
               <el-rate v-if="!isDisabled" v-model="score" @change="submitScore" :disabled="isDisabled"> </el-rate>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="user-comment">
+        <div class="self-comment">
+          <el-input
+            class="self-comment-text"
+            type="textarea"
+            v-model="comment.content"
+            :autosize="{ minRows: 1, maxRows: 4 }"
+            placeholder="写下你的评论..."
+            maxlength="1000"
+            show-word-limit
+          ></el-input>
+          <el-button type="primary" size="mini" @click="publishBtn">发布</el-button>
+        </div>
+        <div class="comment-list" v-for="(item, index) in commentList" :key="index">
+          <el-row type="flex" align="top" class="row">
+            <el-col class="comment-user" :span="3"><svg-icon iconClass="author"></svg-icon>{{ item.fromUid + '：' }}</el-col>
+            <el-col class="comment-content" :span="21">
+              <span class="content-text">{{ item.content }}</span>
+              <el-button class="delete-comment-btn" type="text" size="mini" @click="deleteComment(item.id)">删除</el-button>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </el-card>
@@ -111,7 +134,16 @@ export default {
       likeCount: Number,
       hasLike: false,
       score: null,
-      isDisabled: false
+      isDisabled: false,
+      comment: {
+        topicId: this.$route.params.id,
+        topicType: 1,
+        content: '',
+        fromUid: localStorage.getItem('userId'),
+        toUid: ''
+      },
+      commentList: [],
+      commentCount: Number
     }
   },
   watch: {
@@ -122,8 +154,66 @@ export default {
   created() {
     this.id = this.$route.params.id
     this.getDocumentDetail(this.id)
+    this.getCommentByTopicId(this.id)
   },
   methods: {
+    getCommentByTopicId(val) {
+      let query = {
+        params: {
+          id: val,
+          type: 1
+        }
+      }
+      this.$http.comment
+        .getCommentByTopicId(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            this.commentList = res.data.commentList
+            this.commentCount = res.data.commentCount
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    deleteCommentAPI(msg) {
+      let query = {
+        params: {
+          id: msg
+        }
+      }
+      this.$http.comment
+        .deleteComment(query)
+        .then(res => {
+          if (res.code === 0) {
+            this.$notify.success({
+              message: '删除成功'
+            })
+            this.getCommentByTopicId(this.id)
+          }
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: '删除失败'
+          })
+        })
+    },
+    deleteComment(data) {
+      this.$confirm('此操作将删除文献, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteCommentAPI(data)
+        })
+        .catch(err => {
+          console.log(err)
+          this.$notify.error({
+            message: '取消删除操作'
+          })
+        })
+    },
     // 获取文献详细信息
     getDocumentDetail(val) {
       let query = {
@@ -312,6 +402,30 @@ export default {
           this.tableData = this.transData(res.data)
         }
       })
+    },
+    // 添加评论
+    publishBtn() {
+      this.$http.comment
+        .addComment(JSON.stringify(this.comment))
+        .then(res => {
+          if (res.code === 0) {
+            this.$notify({
+              message: '评论成功',
+              type: 'success'
+            })
+            this.comment.content = ''
+            this.getCommentByTopicId(this.id)
+          } else {
+            this.$notify.error({
+              message: res.msg
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: '评论失败'
+          })
+        })
     }
   }
 }
@@ -325,10 +439,31 @@ export default {
   margin-top: 6px;
 }
 
-.doc {
+.doc,
+.user-comment {
   width: 80%;
   min-width: 750px;
   margin: 0 auto 30px;
+}
+.self-comment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.self-comment-text {
+  margin-right: 20px;
+}
+.comment-list {
+  margin-top: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f2f5;
+  line-height: 24px;
+}
+.comment-user {
+  color: #6d757a;
+}
+.content-text {
+  margin-right: 10px;
 }
 .document-top,
 .document-top-right,
