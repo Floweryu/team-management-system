@@ -1,8 +1,6 @@
 package com.buct.team.manage.controller;
 
-import com.buct.team.manage.controller.vo.GroupMemberVo;
 import com.buct.team.manage.entity.Group;
-import com.buct.team.manage.entity.User;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.GroupMemberService;
@@ -62,27 +60,15 @@ public class GroupController {
     }
 
     @GetMapping("/team/byTeamId")
-    public Result<GroupMemberVo> getAllGroupsById(@RequestParam Long id) {
+    public Result<Group> getAllGroupsById(@RequestParam Long id) {
         if (id < 0) {
             return Result.error(400, "id can not < 0");
         }
         try {
-            // 通过团队id查询关联的用户id
-            List<String> userIdList = groupMemberService.getUserIdByGroupId(id);
-            // 获取该团队成员信息
-            List<User> userList;
-            if (userIdList.size() != 0) {
-                userList = userService.getUserByUserIdList(userIdList);
-            } else {
-                userList = null;
-            }
             Group group = groupService.getGroupById(id);
-            GroupMemberVo groupMemberVo = new GroupMemberVo();
-            groupMemberVo.setGroup(group);
-            groupMemberVo.setUserList(userList);
 
-            log.info("获取的团队: {}", groupMemberVo);
-            return Result.success(groupMemberVo);
+            log.info("获取的团队: {}", group);
+            return Result.success(group);
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());
             return Result.error(CodeMsg.SERVER_ERROR);

@@ -2,35 +2,28 @@
   <div class="team-detail">
     <el-card class="detail-box">
       <div class="doc">
-        <div class="team-center">
-          <el-row type="flex" align="middle" class="row">
-            <el-col class="tag" :span="2">团队名称：</el-col>
-            <el-col class="title" :span="22">{{ teamInfo.name }}</el-col>
-          </el-row>
-          <el-row type="flex" align="top" class="row">
-            <el-col class="tag" :span="2">团队介绍：</el-col>
-            <el-col class="text" :span="22">{{ teamInfo.introduce }}</el-col>
-          </el-row>
-          <el-row type="flex" align="top" class="row">
-            <el-col class="tag" :span="2">工作方向：</el-col>
-            <el-col class="text" :span="22">{{ teamInfo.workDirection }}</el-col>
-          </el-row>
-        </div>
+        <el-row type="flex" align="middle" class="row">
+          <el-col class="tag" :span="2">团队名称：</el-col>
+          <el-col class="title" :span="22">{{ teamInfo.name }}</el-col>
+        </el-row>
+        <el-row type="flex" align="top" class="row">
+          <el-col class="tag" :span="2">团队介绍：</el-col>
+          <el-col class="text" :span="22">{{ teamInfo.introduce }}</el-col>
+        </el-row>
+        <el-row type="flex" align="top" class="row">
+          <el-col class="tag" :span="2">工作方向：</el-col>
+          <el-col class="text" :span="22">{{ teamInfo.workDirection }}</el-col>
+        </el-row>
+      </div>
+      <div class="function-btn">
+        <el-button size="mini" @click="addMember" type="primary" icon="el-icon-plus">添加成员</el-button>
       </div>
     </el-card>
     <el-card class="team-member">
-      <el-table
-        :data="userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
-        style="width: 100%"
-        size="small"
-        @selection-change="handleSelectionChange"
-        border
-        stripe
-      >
-        <el-table-column type="selection" width="40" align="center" />
+      <el-table :data="userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)" style="width: 100%" size="small" border stripe>
         <el-table-column prop="userId" label="成员账号" min-width="90" align="center" />
         <el-table-column prop="username" label="成员姓名" min-width="80" align="center" />
-        <el-table-column prop="identity" label="身份" min-width="80" align="center" />
+        <el-table-column prop="_identity" label="身份" min-width="80" align="center" />
         <el-table-column fixed="right" label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button
@@ -53,6 +46,8 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <user-info-dialog :user-info="userInfo" :dialog-visible="dialogFormVisible" @dialog-cancel="dialogCancel" />
+    <add-member-dialog ref="addMember" :dialog-visible="addDialogVisible" @dialog-cancel="dialogCancel" :group-id="id" />
     <page-separate
       :page-sizes="pageSizes"
       :page-size="pageSize"
@@ -65,18 +60,28 @@
 
 <script>
 import { pageSeparate } from '@/utils/mixin'
+import { formatDate } from '@/utils/index'
+import UserInfoDialog from './UserInfoDialog'
+import AddMemberDialog from './AddMemberDialog'
 export default {
   name: 'TeamDetail',
+  components: {
+    UserInfoDialog,
+    AddMemberDialog
+  },
   data() {
     return {
       teamInfo: {},
       userList: [],
-      selectRows: []
+      userInfo: {},
+      dialogFormVisible: false,
+      addDialogVisible: false,
+      id: Number
     }
   },
   mixins: [pageSeparate],
   created() {
-    this.id = this.$route.params.id
+    this.id = parseInt(this.$route.params.id)
     this.getTeamDetail(this.id)
   },
   methods: {
@@ -92,41 +97,131 @@ export default {
         .then(res => {
           if (res.code === 0 && res.data) {
             let data = res.data
-            if (data.group) {
-              this.teamInfo = data.group
-            }
-            if (data.group && data.userList) {
-              this.userList = this.transData(data.userList, data.group.byUserId)
-            }
+            this.teamInfo = data
+            this.getTeamMember(val)
           }
         })
         .catch(err => {
           console.log(err)
         })
     },
-    transData(data, byUserId) {
+    getTeamMember(val) {
+      let query = {
+        params: {
+          id: val
+        }
+      }
+      this.$http.team
+        .getTeamMember(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            let data = res.data
+            this.userList = this.transData(data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 转换数据格式
+    transData(data) {
       data.forEach(item => {
-        if (item.userId === byUserId) {
-          item.identity = '负责人'
-        } else {
-          item.identity = '成员'
+        if (item.birth) {
+          let time = new Date(item.birth)
+          item.birth = formatDate(time, 'yyyy-MM-dd')
+        }
+        if (item.loginTime) {
+          let time = new Date(item.loginTime)
+          item.loginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
+        }
+        if (item.lastLoginTime) {
+          let time = new Date(item.lastLoginTime)
+          item.lastLoginTime = formatDate(time, 'yyyy-MM-dd hh:mm:ss')
+        }
+        item._sex = item.sex ? '男' : '女'
+        if (item.identity) {
+          switch (item.identity) {
+            case 0:
+              item._identity = '教师'
+              break
+            case 1:
+              item._identity = '大一'
+              break
+            case 2:
+              item._identity = '大二'
+              break
+            case 3:
+              item._identity = '大三'
+              break
+            case 4:
+              item._identity = '大四'
+              break
+            case 5:
+              item._identity = '研一'
+              break
+            case 6:
+              item._identity = '研二'
+              break
+            case 7:
+              item._identity = '研三'
+              break
+          }
         }
       })
       return data
     },
     viewMemberInfo(msg) {
+      this.userInfo = msg
+      this.dialogFormVisible = true
+    },
+    deleteFromTeamAPI(msg) {
       let query = {
-        userId: msg.userId,
-        groupId: this.id
+        params: {
+          userId: msg.userId,
+          groupId: this.id
+        }
       }
-      console.log(msg)
+      this.$http.team
+        .deleteGroupMember(query)
+        .then(res => {
+          if (res.code === 0) {
+            this.$notify({
+              message: '移除成功',
+              type: 'success'
+            })
+            this.getTeamMember(this.id)
+          } else {
+            this.$notify.error({
+              message: '移除失败'
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     deleteFromTeam(msg) {
-      console.log(msg)
+      this.$confirm('此操作将移除成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteFromTeamAPI(msg)
+        })
+        .catch(err => {
+          console.log(err)
+          this.$notify.error({
+            message: '取消删除操作'
+          })
+        })
     },
-    // 存储选择行信息
-    handleSelectionChange(rows) {
-      this.selectRows = rows
+    dialogCancel() {
+      this.dialogFormVisible = false
+      this.addDialogVisible = false
+    },
+    addMember() {
+      this.addDialogVisible = true
     }
   }
 }
@@ -140,7 +235,9 @@ export default {
   margin-top: 6px;
   margin-bottom: 6px;
 }
-
+.detail-box /deep/ .el-card__body {
+  display: flex;
+}
 .doc {
   width: 90%;
   min-width: 750px;

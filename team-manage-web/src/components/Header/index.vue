@@ -26,12 +26,9 @@ export default {
   background-color: #fff;
   z-index: 9;
   margin: 2px 0;
-  border-radius: 8px;
-  border: 1px solid #ddd;
   padding: 3px 0;
 }
 .left {
-  margin-left: 10px;
   display: flex;
   align-items: center;
 }

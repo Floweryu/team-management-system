@@ -113,7 +113,6 @@ export default {
         })
     },
     editGroupMember(val) {
-      console.log(val)
       this.$router.push({
         name: 'GroupDetail',
         params: {

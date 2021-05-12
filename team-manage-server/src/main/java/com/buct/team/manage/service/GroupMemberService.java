@@ -1,5 +1,7 @@
 package com.buct.team.manage.service;
 
+import com.buct.team.manage.entity.GroupMember;
+
 import java.util.List;
 
 /**
@@ -8,4 +10,8 @@ import java.util.List;
  */
 public interface GroupMemberService {
     List<String> getUserIdByGroupId(Long id);
+
+    boolean deleteMember(String userId, Long groupId);
+
+    boolean addMember(GroupMember groupMember);
 }

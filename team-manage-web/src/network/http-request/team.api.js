@@ -11,6 +11,10 @@ const team = {
   addTeam(data) {
     return axios.post(`${host.apiHost}/manage/team`, data)
   },
+  // 添加
+  addTeamMember(data) {
+    return axios.post(`${host.apiHost}/manage/team/member`, data)
+  },
 
   // 更新
   updateTeam(data) {
@@ -27,6 +31,12 @@ const team = {
   },
   getTeamById(params) {
     return axios.get(`${host.apiHost}/manage/team/byTeamId`, params)
+  },
+  getTeamMember(params) {
+    return axios.get(`${host.apiHost}/manage/team/member`, params)
+  },
+  deleteGroupMember(params) {
+    return axios.delete(`${host.apiHost}/manage/teamMember`, params)
   }
 }
 

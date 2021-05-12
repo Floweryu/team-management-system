@@ -7,5 +7,28 @@
         where group_id = #{groupId}
     </select>
 
-    <delete id="deleteMember" parameterType=""
+    <delete id="deleteMember">
+        delete from t_group_member
+        where user_id = #{userId} and group_id = #{groupId}
+    </delete>
+
+    <insert id="addMember" parameterType="com.buct.team.manage.entity.GroupMember">
+        insert into t_group_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">
+                #{groupId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+        </trim>
+    </insert>
 </mapper>
