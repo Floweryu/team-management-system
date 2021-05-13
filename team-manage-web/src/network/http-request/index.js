@@ -13,6 +13,7 @@ import achievement from './achievement.api'
 import assets from './assets.api'
 import comment from './comment.api'
 import team from './team.api'
+import clas from './class.api'
 
 export default {
   user,
@@ -26,5 +27,6 @@ export default {
   achievement,
   assets,
   comment,
-  team
+  team,
+  clas
 }

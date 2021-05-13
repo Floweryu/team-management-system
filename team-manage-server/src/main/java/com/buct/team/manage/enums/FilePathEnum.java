@@ -7,7 +7,9 @@ package com.buct.team.manage.enums;
 public enum FilePathEnum {
     FILE_PATH("resource"),
     DOCUMENT("document"),
-    DOCUMENT_PATH(FILE_PATH,DOCUMENT);
+    CLASS("class"),
+    DOCUMENT_PATH(FILE_PATH,DOCUMENT),
+    CLASS_PATH(FILE_PATH,CLASS);
 
     private final String path;
 

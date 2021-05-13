@@ -6,6 +6,8 @@
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
         style="width: 100%"
         size="small"
+        highlight-current-row
+        @current-change="handleCurrentChangeRow"
         border
         stripe
       >
@@ -55,7 +57,14 @@ export default {
           console.log(err)
         })
     },
-
+    handleCurrentChangeRow(val) {
+      this.$router.push({
+        name: 'GroupDetailShow',
+        params: {
+          id: val.id
+        }
+      })
+    },
     clearButton() {
       this.getAllTeam()
     },

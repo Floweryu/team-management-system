@@ -17,6 +17,8 @@ const AssetsIndex = () => import('@/views/assets/index')
 const TeamManage = () => import('@/views/team/TeamManage')
 const TeamShow = () => import('@/views/team/TeamShow')
 const TeamDetail = () => import('@/views/team/components/TeamDetail')
+const TeamDetailShow = () => import('@/views/team/components/TeamDetailShow')
+const ClassIndex = () => import('@/views/classes/index')
 
 const routes = [
   {
@@ -85,6 +87,15 @@ const routes = [
         path: 'team/detail/:id',
         name: 'GroupDetail',
         component: TeamDetail
+      },
+      {
+        path: 'team/detail/show/:id',
+        name: 'GroupDetailShow',
+        component: TeamDetailShow
+      },
+      {
+        path: 'class',
+        component: ClassIndex
       }
     ]
   }

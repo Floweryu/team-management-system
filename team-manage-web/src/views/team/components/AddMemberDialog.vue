@@ -9,8 +9,8 @@
       border
       stripe
     >
-      <el-table-column fixed type="selection" width="40" align="center" />
-      <el-table-column fixed prop="userId" label="用户账号" min-width="100" align="center" />
+      <el-table-column type="selection" width="40" align="center" />
+      <el-table-column prop="userId" label="用户账号" min-width="100" align="center" />
       <el-table-column prop="username" label="用户姓名" min-width="100" align="center" />
       <el-table-column prop="_identity" label="身份" min-width="60" align="center" />
     </el-table>
