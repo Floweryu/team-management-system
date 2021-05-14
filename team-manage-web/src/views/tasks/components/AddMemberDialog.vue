@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false
     },
-    groupId: Number
+    taskId: Number
   },
   mixins: [pageSeparate],
   data() {
@@ -94,18 +94,18 @@ export default {
     addConfirm() {
       this.selectRows.forEach(item => {
         let member = {}
-        member.groupId = this.groupId
+        member.taskId = this.taskId
         member.userId = item.userId
         this.memberList.push(member)
       })
-      this.$http.team
-        .addTeamMember(JSON.stringify(this.memberList))
+      this.$http.task
+        .addTaskMember(JSON.stringify(this.memberList))
         .then(res => {
           if (res.code === 0) {
             this.$notify.success({
               message: '添加成功'
             })
-            this.$parent.getTeamMember(this.groupId)
+            this.$parent.getTaskMember(this.taskId)
             this.$emit('dialog-cancel')
           } else {
             this.$notify.error({
@@ -114,9 +114,6 @@ export default {
           }
         })
         .catch(() => {
-          this.$notify.error({
-            message: '添加失败'
-          })
           this.$emit('dialog-cancel')
         })
     },

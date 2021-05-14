@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.TaskMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Task">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="publish_user_id" jdbcType="VARCHAR" javaType="String" property="publishUserId" />
+        <result column="start_time" jdbcType="DATE" javaType="Date" property="startTime" />
+        <result column="end_time" jdbcType="DATE" javaType="Date" property="endTime" />
+        <result column="content" jdbcType="VARCHAR" javaType="String" property="content" />
+        <result column="state" jdbcType="TINYINT" javaType="Integer" property="state" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, publish_user_id, start_time, end_time, content, `state`, create_time
+    </sql>
+
+    <select id="getAllTask" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_task
+    </select>
+
+    <select id="getTaskById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        <include refid="Base_Column_List" />
+        from t_task
+        where id = #{id}
+    </select>
+
+    <delete id="deleteTask" parameterType="java.util.List">
+        delete from t_task where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addTask" parameterType="com.buct.team.manage.entity.Task">
+        insert into t_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="publishUserId != null">
+                publish_user_id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="state != null">
+                `state`,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="publishUserId != null">
+                #{publishUserId},
+            </if>
+            <if test="startTime != null">
+                #{startTime},
+            </if>
+            <if test="endTime != null">
+                #{endTime},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTask" parameterType="com.buct.team.manage.entity.Task">
+        update t_task
+        <set>
+            <if test="publishUserId != null">
+                publish_user_id = #{publishUserId},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="state != null">
+                `state` = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

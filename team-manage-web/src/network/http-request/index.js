@@ -14,6 +14,7 @@ import assets from './assets.api'
 import comment from './comment.api'
 import team from './team.api'
 import clas from './class.api'
+import task from './task.api'
 
 export default {
   user,
@@ -28,5 +29,6 @@ export default {
   assets,
   comment,
   team,
-  clas
+  clas,
+  task
 }

@@ -19,6 +19,8 @@ const TeamShow = () => import('@/views/team/TeamShow')
 const TeamDetail = () => import('@/views/team/components/TeamDetail')
 const TeamDetailShow = () => import('@/views/team/components/TeamDetailShow')
 const ClassIndex = () => import('@/views/classes/index')
+const TaskIndex = () => import('@/views/tasks/index')
+const TaskDetailShow = () => import('@/views/tasks/components/TaskDetailShow')
 
 const routes = [
   {
@@ -96,6 +98,15 @@ const routes = [
       {
         path: 'class',
         component: ClassIndex
+      },
+      {
+        path: 'task',
+        component: TaskIndex
+      },
+      {
+        path: 'task/detail/show/:id',
+        name: 'TaskDetailShow',
+        component: TaskDetailShow
       }
     ]
   }
