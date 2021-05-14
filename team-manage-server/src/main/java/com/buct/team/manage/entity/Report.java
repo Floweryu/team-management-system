@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * @date 2021/3/30 15:39
  */
 @Data
-public class DailyWeekly {
+public class Report {
     // 自增主键
     private Long id;
 
@@ -30,6 +30,8 @@ public class DailyWeekly {
 
     // 发布者id
     private String userId;
+
+    private String username;
 
     // 发布时间
     private Timestamp createTime;

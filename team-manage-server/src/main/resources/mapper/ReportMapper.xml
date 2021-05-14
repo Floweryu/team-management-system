@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.ReportMapper">
+    <resultMap id="BaseResultMap" type="com.buct.team.manage.entity.Report">
+        <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
+        <result column="finished_task" jdbcType="VARCHAR" javaType="String" property="finishedTask" />
+        <result column="unfinished_task" jdbcType="VARCHAR" javaType="String" property="unfinishedTask" />
+        <result column="plan_task" jdbcType="VARCHAR" javaType="String" property="planTask" />
+        <result column="self_review" jdbcType="VARCHAR" javaType="String" property="selfReview" />
+        <result column="type" jdbcType="TINYINT" javaType="Integer" property="type" />
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, finished_task, unfinished_task, plan_task, self_review, `type`, user_id, username, create_time
+    </sql>
+    <select id="getAllReport" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_report
+    </select>
+
+    <select id="getReportById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        <include refid="Base_Column_List" />
+        from t_report
+        where id = #{id}
+    </select>
+
+    <delete id="deleteReport" parameterType="java.util.List">
+        delete from t_teport where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addReport" parameterType="com.buct.team.manage.entity.Report">
+        insert into t_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="finishedTask != null">
+                finished_task,
+            </if>
+            <if test="unfinishedTask != null">
+                unfinished_task,
+            </if>
+            <if test="planTask != null">
+                plan_task,
+            </if>
+            <if test="selfReview != null">
+                self_review,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="finishedTask != null">
+                #{finishedTask},
+            </if>
+            <if test="unfinishedTask != null">
+                #{unfinishedTask},
+            </if>
+            <if test="planTask != null">
+                #{planTask},
+            </if>
+            <if test="selfReview != null">
+                #{selfReview},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateReport" parameterType="com.buct.team.manage.entity.Report">
+        update t_report
+        <set>
+            <if test="finishedTask != null">
+                finished_task = #{finishedTask},
+            </if>
+            <if test="unfinishedTask != null">
+                unfinished_task = #{unfinishedTask},
+            </if>
+            <if test="planTask != null">
+                plan_task = #{planTask},
+            </if>
+            <if test="selfReview != null">
+                self_review = #{selfReview},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
