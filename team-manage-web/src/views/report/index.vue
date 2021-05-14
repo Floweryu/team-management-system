@@ -65,13 +65,17 @@ export default {
           if (res.code === 0 && res.data) {
             let data = res.data
             this.reportList = this.transData(data)
+            let _dailyList = []
+            let _weekilyList = []
             this.reportList.forEach(item => {
               if (item.type === 1) {
-                this.dailyReportList.push(item)
+                _dailyList.push(item)
               } else {
-                this.weekilyReportList.push(item)
+                _weekilyList.push(item)
               }
             })
+            this.dailyReportList = _dailyList
+            this.weekilyReportList = _weekilyList
           }
         })
         .catch(err => {

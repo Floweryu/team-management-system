@@ -6,8 +6,8 @@
           <el-col>
             <el-form-item prop="type" label="报告类别" size="mini">
               <el-radio-group v-model="formData.type">
-                <el-radio :label="0">日报</el-radio>
-                <el-radio :label="1">周报</el-radio>
+                <el-radio :label="1">日报</el-radio>
+                <el-radio :label="0">周报</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
