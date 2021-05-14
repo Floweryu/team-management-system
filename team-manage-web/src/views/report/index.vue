@@ -195,6 +195,9 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.el-card__body {
+  padding: 20px;
+}
 h4 {
   font-weight: 400;
   color: #1f2f3d;

@@ -69,9 +69,6 @@ export default {
   margin-top: 6px;
   margin-bottom: 6px;
 }
-.detail-box /deep/ .el-card__body {
-  display: flex;
-}
 .doc {
   width: 90%;
   min-width: 750px;

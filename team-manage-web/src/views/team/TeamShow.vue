@@ -4,7 +4,7 @@
     <el-card class="body">
       <el-table
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
-        style="width: 100%"
+        style="width: 100%; cursor: pointer;"
         size="small"
         highlight-current-row
         @current-change="handleCurrentChangeRow"
