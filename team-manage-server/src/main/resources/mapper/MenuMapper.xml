@@ -23,4 +23,8 @@
         <include refid="Base_Column_List" />
         from t_menu
     </select>
+
+    <select id="getMenuPermission">
+
+    </select>
 </mapper>

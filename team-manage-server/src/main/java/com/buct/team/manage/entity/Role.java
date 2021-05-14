@@ -15,11 +15,8 @@ public class Role {
     // 角色名称
     private String name;
 
-    // 角色状态: 1:有效，0: 冻结
-    private Boolean state;
-
-    // 角色描述
-    private String description;
+    // 角色标识
+    private String key;
 
     // 创建时间
     private Timestamp createTime;
