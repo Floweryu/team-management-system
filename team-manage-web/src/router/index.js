@@ -21,6 +21,7 @@ const TeamDetailShow = () => import('@/views/team/components/TeamDetailShow')
 const ClassIndex = () => import('@/views/classes/index')
 const TaskIndex = () => import('@/views/tasks/index')
 const TaskDetailShow = () => import('@/views/tasks/components/TaskDetailShow')
+const MeetingIndex = () => import('@/views/meeting/index')
 
 const routes = [
   {
@@ -107,6 +108,10 @@ const routes = [
         path: 'task/detail/show/:id',
         name: 'TaskDetailShow',
         component: TaskDetailShow
+      },
+      {
+        path: 'meeting',
+        component: MeetingIndex
       }
     ]
   }

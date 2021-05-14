@@ -15,6 +15,7 @@ import comment from './comment.api'
 import team from './team.api'
 import clas from './class.api'
 import task from './task.api'
+import meeting from './meeting.api'
 
 export default {
   user,
@@ -30,5 +31,6 @@ export default {
   comment,
   team,
   clas,
-  task
+  task,
+  meeting
 }
