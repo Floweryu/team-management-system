@@ -183,6 +183,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
+                this.formData = {}
                 this.$parent.getAllMeeting()
               } else {
                 this.$notify.error({
