@@ -13,6 +13,7 @@ const DocumentDetailPre = () => import('@/views/document/components/DocumentDeta
 const SoftwareIndex = () => import('@/views/software/index')
 const SoftwareShow = () => import('@/views/software/components/SoftwareShow')
 const AchievementIndex = () => import('@/views/achievement/index')
+const AchievementShow = () => import('@/views/achievement/ShowIndex')
 const AssetsIndex = () => import('@/views/assets/index')
 const TeamManage = () => import('@/views/team/TeamManage')
 const TeamShow = () => import('@/views/team/TeamShow')
@@ -74,6 +75,10 @@ const routes = [
         path: 'achievement',
         component: AchievementIndex,
         meta: { title: '成果管理' }
+      },
+      {
+        path: 'achievement/show',
+        component: AchievementShow
       },
       {
         path: 'assets',

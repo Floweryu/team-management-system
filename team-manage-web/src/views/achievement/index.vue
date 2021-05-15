@@ -82,9 +82,32 @@ export default {
     }
   },
   created() {
-    this.getAllAchievement()
+    if (this.$store.state.role === 'admin') {
+      this.getAllAchievement()
+    }
+    if (this.$store.state.role === 'common') {
+      this.getAchievementByUploadUser()
+    }
   },
   methods: {
+    getAchievementByUploadUser() {
+      let query = {
+        params: {
+          userId: localStorage.getItem('userId')
+        }
+      }
+      this.$http.achievement
+        .getAchievementByUploadUser(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            let data = res.data
+            this.tableData = this.transData(data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getAllAchievement() {
       this.$http.achievement
         .getAllAchievement()

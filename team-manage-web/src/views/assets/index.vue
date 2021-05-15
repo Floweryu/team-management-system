@@ -27,6 +27,7 @@
               >编辑
             </el-button>
             <el-button
+              v-if="$store.state.role === 'admin'"
               @click="deleteAssets(scope.$index, scope.row)"
               size="mini"
               type="danger"
