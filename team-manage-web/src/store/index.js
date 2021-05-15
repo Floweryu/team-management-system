@@ -5,7 +5,9 @@ import mutations from './mutations'
 
 Vue.use(Vuex)
 
-const state = {}
+const state = {
+  token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
+}
 
 export default new Vuex.Store({
   state,

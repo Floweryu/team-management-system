@@ -95,6 +95,9 @@ export default {
     handleCommand(command) {
       if (command == 'logout') {
         localStorage.removeItem('username')
+        localStorage.removeItem('userId')
+        //退出登录，清空token
+        localStorage.removeItem('token')
         this.$router.push('/')
       }
     }

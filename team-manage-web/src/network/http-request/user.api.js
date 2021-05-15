@@ -4,7 +4,7 @@ import host from '../http-env/index'
 const user = {
   //验证登录
   verifyPassword(params) {
-    return axios.post(`${host.apiHost}/admin/login`, params)
+    return axios.post(`${host.apiHost}/manage/login`, params)
   },
 
   // 获取所有用户

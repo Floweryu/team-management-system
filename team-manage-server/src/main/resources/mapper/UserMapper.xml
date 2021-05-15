@@ -57,6 +57,13 @@
         where deleted = 0
     </select>
 
+    <select id="selectUserByUserId" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_id = #{userId} and deleted = 0
+    </select>
+
     <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List" />

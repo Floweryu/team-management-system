@@ -13,6 +13,8 @@ import java.util.List;
 public interface UserService {
     UserLoginInfoVo verifyPassword(String userId, String password);
 
+    User selectUserByUserId(String userId);
+
     List<User> getAllUser();
 
     User getUserById(Long id);

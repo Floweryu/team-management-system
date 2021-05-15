@@ -60,11 +60,16 @@ export default {
   methods: {
     // 获取所有菜单
     getMenus() {
-      this.$http.menu.getMenus().then(res => {
-        if (res.code == 0 || res.data) {
-          this.menuList = res.data
-        }
-      })
+      this.$http.menu
+        .getMenus()
+        .then(res => {
+          if (res.code == 0 || res.data) {
+            this.menuList = res.data
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

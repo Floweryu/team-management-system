@@ -18,6 +18,7 @@ public interface UserMapper {
     // 用户登录
     UserLoginInfoVo verifyPassword(@Param("userId") String userId, @Param("password") String password);
 
+    User selectUserByUserId(@Param("userId") String userId);
     // 获取所有用户
     List<User> getAllUser();
 

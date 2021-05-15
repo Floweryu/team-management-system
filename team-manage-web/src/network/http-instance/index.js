@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import router from '@/router'
 // 允许跨域
 axios.defaults.withCredentials = true
 
@@ -33,6 +33,11 @@ instance.interceptors.response.use(
     }
   },
   error => {
+    if (error.response.status === 401) {
+      router.push({
+        path: '/login'
+      })
+    }
     return Promise.reject(error)
   }
 )
@@ -40,6 +45,9 @@ instance.interceptors.response.use(
 //reuest拦截器处理
 instance.interceptors.request.use(
   config => {
+    if (localStorage.getItem('token')) {
+      config.headers.token = localStorage.getItem('token')
+    }
     return config
   },
   error => {
