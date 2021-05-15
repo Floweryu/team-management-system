@@ -10,4 +10,5 @@ import lombok.Data;
 public class AdminReq {
     private String userId;
     private String password;
+    private String verifyCode;
 }

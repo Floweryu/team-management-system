@@ -26,6 +26,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/manage/login");  //登录
+        excludePath.add("/manage/verifyCode");  //获取验证码
 
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")

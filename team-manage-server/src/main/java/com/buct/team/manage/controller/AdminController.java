@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Floweryu
  * @date 2021/4/9 20:24
@@ -28,13 +30,17 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Result<Object> adminLogin(@RequestBody AdminReq adminReq) {
+    public Result<Object> adminLogin(@RequestBody AdminReq adminReq, HttpServletRequest request) {
         String userId = adminReq.getUserId();
         if (!StringUtils.isNumeric(userId)) {
             return Result.error(400, "userId must be Number!");
         }
         if (userId.length() < 8 || userId.length() > 10) {
             return Result.error(400, "userId length should be 8 ~ 10!");
+        }
+        if(request.getSession(true).getAttribute("verify_code") == null
+                || !adminReq.getVerifyCode().toUpperCase().equals(request.getSession(true).getAttribute("verify_code").toString().toUpperCase())){
+            return Result.error(4001, "验证码错误");
         }
         try {
             User user = userService.selectUserByUserId(userId);
