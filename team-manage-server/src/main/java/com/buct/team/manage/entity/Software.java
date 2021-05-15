@@ -25,6 +25,7 @@ public class Software {
     // 备注
     private String remark;
 
+    private String uploadUserId;
     // 创建时间
     private Timestamp createTime;
 

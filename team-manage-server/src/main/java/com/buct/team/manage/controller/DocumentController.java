@@ -78,6 +78,12 @@ public class DocumentController {
 
     @GetMapping("/documents/byUserId")
     public Result<List<Document>> getAllDocumentByUploadUser(@RequestParam String userId) {
+        if (!StringUtils.isNumeric(userId)) {
+            return Result.error(400, "uploadUserId must be Number!");
+        }
+        if (userId.length() < 8 || userId.length() > 10) {
+            return Result.error(400, "uploadUserId length should be 8 ~ 10!");
+        }
         try {
             List<Document> documentList = documentService.getAllDocumentByUploadUser(userId);
             log.info("获取的所有文献: {}", documentList);

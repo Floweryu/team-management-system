@@ -7,18 +7,26 @@
         <result column="version" jdbcType="VARCHAR" javaType="String" property="version" />
         <result column="download_link" jdbcType="VARCHAR" javaType="String" property="downloadLink" />
         <result column="remark" jdbcType="VARCHAR" javaType="String" property="remark" />
+        <result column="upload_user_id" jdbcType="VARCHAR" javaType="String" property="uploadUserId" />
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `name`, version, download_link, remark, create_time, update_time
+        id, `name`, version, download_link, remark, upload_user_id, create_time, update_time
     </sql>
 
     <select id="getAllSoftware" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from t_software
+    </select>
+
+    <select id="getAllSoftwareByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_software
+        where upload_user_id = #{userId}
     </select>
 
     <delete id="deleteSoftware" parameterType="java.util.List">
@@ -53,6 +61,9 @@
             <if test="remark != null">
                 remark,
             </if>
+            <if test="uploadUserId != null">
+                upload_user_id,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="name != null">
@@ -66,6 +77,9 @@
             </if>
             <if test="remark != null">
                 #{remark},
+            </if>
+            <if test="uploadUserId != null">
+                #{uploadUserId},
             </if>
         </trim>
     </insert>
@@ -84,6 +98,9 @@
             </if>
             <if test="remark != null">
                 remark = #{remark},
+            </if>
+            <if test="uploadUserId != null">
+                #{uploadUserId},
             </if>
         </set>
         where id = #{id}

@@ -96,7 +96,7 @@ export default {
         localStorage.removeItem('token')
         localStorage.removeItem('role')
         localStorage.removeItem('roleName')
-        this.$router.push('/')
+        this.$router.push('/login')
         window.location.reload()
       }
     }

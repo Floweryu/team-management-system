@@ -16,6 +16,8 @@ import java.util.List;
 public interface SoftwareMapper {
     List<Software> getAllSoftware();
 
+    List<Software> getAllSoftwareByUserId(@Param("userId") String userId);
+
     List<Software> searchByName(@Param("name") String name);
 
     int insertSoftware(Software software);

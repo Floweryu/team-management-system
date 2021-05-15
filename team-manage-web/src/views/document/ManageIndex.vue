@@ -121,9 +121,27 @@ export default {
     }
   },
   created() {
-    this.getAllDocuments()
+    if (this.$store.state.role === 'admin') {
+      this.getAllDocuments()
+    }
+    if (this.$store.state.role === 'common') {
+      this.getAllDocumentByUploadUser()
+    }
   },
   methods: {
+    getAllDocumentByUploadUser() {
+      let query = {
+        params: {
+          userId: localStorage.getItem('userId')
+        }
+      }
+      this.$http.document.getAllDocumentByUploadUser(query).then(res => {
+        if (res.code === 0 && res.data) {
+          let data = res.data
+          this.tableData = this.transData(data)
+        }
+      })
+    },
     // 获取所有文献
     getAllDocuments() {
       this.$http.document.getAllDocument().then(res => {

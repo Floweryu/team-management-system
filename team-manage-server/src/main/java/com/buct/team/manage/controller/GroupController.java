@@ -7,6 +7,7 @@ import com.buct.team.manage.service.GroupMemberService;
 import com.buct.team.manage.service.GroupService;
 import com.buct.team.manage.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,24 @@ public class GroupController {
     public Result<List<Group>> getAllGroups() {
         try {
             List<Group> groupList = groupService.getAllGroup();
+            log.info("获取的所有团队: {}", groupList);
+            return Result.success(groupList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/teams/userId")
+    public Result<List<Group>> getAllGroupsByUserId(@RequestParam String userId) {
+        if (!StringUtils.isNumeric(userId)) {
+            return Result.error(400, "uploadUserId must be Number!");
+        }
+        if (userId.length() < 8 || userId.length() > 10) {
+            return Result.error(400, "uploadUserId length should be 8 ~ 10!");
+        }
+        try {
+            List<Group> groupList = groupService.getAllGroupByUserId(userId);
             log.info("获取的所有团队: {}", groupList);
             return Result.success(groupList);
         } catch (Throwable throwable) {

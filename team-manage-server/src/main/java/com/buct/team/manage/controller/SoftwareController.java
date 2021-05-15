@@ -6,6 +6,7 @@ import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
 import com.buct.team.manage.service.SoftwareService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,24 @@ public class SoftwareController {
     public Result<List<Software>> getAllSoftware() {
         try {
             List<Software> softwareList = softwareService.getAllSoftware();
+            log.info("获取的所有软件: {}", softwareList);
+            return Result.success(softwareList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/softwares/userId")
+    public Result<List<Software>> getAllSoftwareByUserId(@RequestParam String userId) {
+        if (!StringUtils.isNumeric(userId)) {
+            return Result.error(400, "uploadUserId must be Number!");
+        }
+        if (userId.length() < 8 || userId.length() > 10) {
+            return Result.error(400, "uploadUserId length should be 8 ~ 10!");
+        }
+        try {
+            List<Software> softwareList = softwareService.getAllSoftwareByUserId(userId);
             log.info("获取的所有软件: {}", softwareList);
             return Result.success(softwareList);
         } catch (Throwable throwable) {

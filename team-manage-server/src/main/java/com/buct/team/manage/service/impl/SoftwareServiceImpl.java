@@ -32,6 +32,11 @@ public class SoftwareServiceImpl implements SoftwareService {
     }
 
     @Override
+    public List<Software> getAllSoftwareByUserId(String userId) {
+        return softwareMapper.getAllSoftwareByUserId(userId);
+    }
+
+    @Override
     public boolean updateSoftware(SoftwareReq softwareReq) {
         Software software = transSoftware(softwareReq);
         return softwareMapper.updateSoftware(software) > 0;

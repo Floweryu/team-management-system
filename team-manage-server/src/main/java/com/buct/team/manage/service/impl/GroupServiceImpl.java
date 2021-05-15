@@ -26,6 +26,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<Group> getAllGroupByUserId(String userId) {
+        return groupMapper.getAllGroupByUserId(userId);
+    }
+
+    @Override
     public boolean insertGroup(Group group) {
         return groupMapper.insertGroup(group) > 0;
     }

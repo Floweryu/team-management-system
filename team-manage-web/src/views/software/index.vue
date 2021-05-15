@@ -79,9 +79,32 @@ export default {
     }
   },
   created() {
-    this.getAllSoftware()
+    if (this.$store.state.role === 'admin') {
+      this.getAllSoftware()
+    }
+    if (this.$store.state.role === 'common') {
+      this.getAllSoftwareByUserId()
+    }
   },
   methods: {
+    getAllSoftwareByUserId() {
+      let query = {
+        params: {
+          userId: localStorage.getItem('userId')
+        }
+      }
+      this.$http.software
+        .getAllSoftwareByUserId(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            let data = res.data
+            this.tableData = data
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getAllSoftware() {
       this.$http.software
         .getAllSoftware()

@@ -12,6 +12,8 @@ import java.util.List;
 public interface SoftwareService {
     List<Software> getAllSoftware();
 
+    List<Software> getAllSoftwareByUserId(String userId);
+
     List<Software> searchByName(String name);
 
     boolean insertSoftware(SoftwareReq softwareReq);

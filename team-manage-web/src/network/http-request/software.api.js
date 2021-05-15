@@ -6,6 +6,9 @@ const software = {
   getAllSoftware() {
     return axios.get(`${host.apiHost}/manage/softwares`)
   },
+  getAllSoftwareByUserId(params) {
+    return axios.get(`${host.apiHost}/manage/softwares/userId`, params)
+  },
 
   // 添加
   addSoftware(data) {

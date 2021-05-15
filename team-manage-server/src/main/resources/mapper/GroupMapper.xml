@@ -19,6 +19,12 @@
         <include refid="Base_Column_List" />
         from t_group
     </select>
+    <select id="getAllGroupByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_group
+        where by_user_id = #{userId}
+    </select>
 
     <select id="getGroupById" resultMap="BaseResultMap" parameterType="Long">
         select

@@ -16,6 +16,8 @@ import java.util.List;
 public interface GroupMapper {
     List<Group> getAllGroup();
 
+    List<Group> getAllGroupByUserId(@Param("userId") String userId);
+
     int insertGroup(Group group);
 
     int updateGroup(Group group);

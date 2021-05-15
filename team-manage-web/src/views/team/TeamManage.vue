@@ -79,9 +79,32 @@ export default {
     }
   },
   created() {
-    this.getAllTeam()
+    if (this.$store.state.role === 'admin') {
+      this.getAllTeam()
+    }
+    if (this.$store.state.role === 'common') {
+      this.getAllGroupsByUserId()
+    }
   },
   methods: {
+    getAllGroupsByUserId() {
+      let query = {
+        params: {
+          userId: localStorage.getItem('userId')
+        }
+      }
+      this.$http.team
+        .getAllGroupsByUserId(query)
+        .then(res => {
+          if (res.code === 0 && res.data) {
+            let data = res.data
+            this.tableData = data
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getAllTeam() {
       this.$http.team
         .getAllTeam()

@@ -6,7 +6,9 @@ const team = {
   getAllTeam() {
     return axios.get(`${host.apiHost}/manage/teams`)
   },
-
+  getAllGroupsByUserId(params) {
+    return axios.get(`${host.apiHost}/manage/teams/userId`, params)
+  },
   // 添加
   addTeam(data) {
     return axios.post(`${host.apiHost}/manage/team`, data)
