@@ -2,9 +2,11 @@ package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.AdminReq;
 import com.buct.team.manage.controller.vo.UserLoginInfoVo;
+import com.buct.team.manage.entity.Role;
 import com.buct.team.manage.entity.User;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
+import com.buct.team.manage.service.RoleService;
 import com.buct.team.manage.service.UserService;
 import com.buct.team.manage.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class AdminController {
     private final UserService userService;
-    public AdminController(UserService userService) {
+    private final RoleService roleService;
+    public AdminController(UserService userService,
+                           RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @PostMapping("/login")
@@ -40,7 +45,7 @@ public class AdminController {
         }
         if(request.getSession(true).getAttribute("verify_code") == null
                 || !adminReq.getVerifyCode().toUpperCase().equals(request.getSession(true).getAttribute("verify_code").toString().toUpperCase())){
-            return Result.error(4001, "验证码错误");
+            return Result.error(401, "验证码错误");
         }
         try {
             User user = userService.selectUserByUserId(userId);
@@ -52,11 +57,14 @@ public class AdminController {
             }
             log.info("登录用户信息为：username: {}, password: {}", adminReq.getUserId(), adminReq.getPassword());
             String token = JwtUtil.sign(userId);
+            Role role = roleService.getRoleByUserId(userId);
             UserLoginInfoVo userInfo = new UserLoginInfoVo();
             userInfo.setUserId(userId);
             userInfo.setUsername(user.getUsername());
             userInfo.setCreateUid(user.getCreateUid());
             userInfo.setToken(token);
+            userInfo.setRole(role.getKey());
+            userInfo.setRoleName(role.getName());
             return Result.success(userInfo);
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());

@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface MenuService {
     List<Menu> getMenuList();
+
+    List<Menu> getMenuByRole(String role);
 }

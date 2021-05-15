@@ -27,6 +27,12 @@ public class MenuServiceImpl implements MenuService {
         return buildMenuTree(menus);
     }
 
+    @Override
+    public List<Menu> getMenuByRole(String role) {
+        List<Menu> menus = menuMapper.getMenuByRole(role);
+        return buildMenuTree(menus);
+    }
+
     private List<Menu> buildMenuTree(List<Menu> menuList) {
         List<Menu> menuTree = new ArrayList<>();
 

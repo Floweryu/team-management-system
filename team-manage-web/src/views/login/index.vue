@@ -65,16 +65,17 @@ export default {
             .verifyPassword(JSON.stringify(this.ruleForm))
             .then(res => {
               if (res.code === 0 && res.data) {
-                localStorage.setItem('userId', res.data.userId)
-                localStorage.setItem('username', res.data.username)
+                this.$store.commit('storeUserinfo', res.data)
                 this.$store.commit('changeToken', res.data.token)
                 this.$router.push('/dashboard')
                 this.$notify.success('登陆成功')
               } else if (res.code === 400) {
                 this.$notify.error(res.msg)
-              } else {
-                this.$message.error('验证码输入错误')
+              } else if (res.code === 401) {
+                this.$notify.error('验证码输入错误')
                 this.imgUrl = `${process.env.VUE_APP_BASE_URL}/manage/verifyCode?time=` + new Date()
+              } else {
+                this.$notify.error(res.msg)
               }
             })
             .catch(err => {
@@ -116,7 +117,7 @@ export default {
   width: 400px;
   margin: 0 auto;
   box-shadow: 0 4px 6px rgb(0 0 0 / 10%), 0 12px 20px rgb(38 38 38 / 12%);
-  padding: 55px 36px;
+  padding: 30px 36px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;

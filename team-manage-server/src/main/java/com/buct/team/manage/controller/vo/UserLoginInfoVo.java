@@ -12,4 +12,6 @@ public class UserLoginInfoVo {
     private String username;
     private String createUid;
     private String token;
+    private String role;
+    private String roleName;
 }

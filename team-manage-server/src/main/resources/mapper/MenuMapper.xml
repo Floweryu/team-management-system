@@ -15,7 +15,7 @@
     </resultMap>
     
     <sql id="Base_Column_List">
-        id, name, parent_id, path, icon, permission, type, visible, create_time, update_time
+        t_menu.id, t_menu.`name`, t_menu.parent_id, t_menu.`path`, t_menu.icon, t_menu.permission, t_menu.`type`, t_menu.visible, t_menu.create_time, t_menu.update_time
     </sql>
     
     <select id="getMenuList" resultMap="BaseResultMap">
@@ -24,7 +24,12 @@
         from t_menu
     </select>
 
-    <select id="getMenuPermission">
-
+    <select id="getMenuByRole" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM t_role
+        INNER JOIN t_role_menu ON t_role_menu.role_id = t_role.id
+        INNER JOIN t_menu ON t_role_menu.menu_id = t_menu.id
+        WHERE t_role.`key` = #{role}
     </select>
 </mapper>

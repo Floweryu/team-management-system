@@ -23,7 +23,7 @@
       </div>
       <el-dropdown class="user-name" trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
-          {{ '张俊峰' }}
+          {{ username }}
           <i class="el-icon-caret-bottom"></i>
         </span>
 
@@ -48,15 +48,11 @@ export default {
   data() {
     return {
       collapse: false,
-      fullscreen: false
+      fullscreen: false,
+      username: localStorage.getItem('username')
     }
   },
   created() {},
-  computed: {
-    userName() {
-      return localStorage.getItem('username')
-    }
-  },
   methods: {
     // 发送 collpse 到 兄弟组件home-sidebar 和父组件 home
     collapseChange() {
@@ -98,7 +94,10 @@ export default {
         localStorage.removeItem('userId')
         //退出登录，清空token
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        localStorage.removeItem('roleName')
         this.$router.push('/')
+        window.location.reload()
       }
     }
   }

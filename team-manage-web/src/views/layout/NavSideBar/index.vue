@@ -60,11 +60,18 @@ export default {
   methods: {
     // 获取所有菜单
     getMenus() {
+      let query = {
+        params: {
+          role: localStorage.getItem('role')
+        }
+      }
       this.$http.menu
-        .getMenus()
+        .getMenus(query)
         .then(res => {
           if (res.code == 0 || res.data) {
             this.menuList = res.data
+          } else {
+            this.$notify.error(res.msg)
           }
         })
         .catch(err => {
