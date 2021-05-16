@@ -25,6 +25,7 @@ const TaskDetailShow = () => import('@/views/tasks/components/TaskDetailShow')
 const MeetingIndex = () => import('@/views/meeting/index')
 const ReportIndex = () => import('@/views/report/index')
 const ReportDetail = () => import('@/views/report/components/ReportDetail')
+const UserRoleIndex = () => import('@/views/role/index')
 
 const routes = [
   {
@@ -128,6 +129,10 @@ const routes = [
         path: 'report/detail/:id',
         name: 'ReportDetail',
         component: ReportDetail
+      },
+      {
+        path: 'role',
+        component: UserRoleIndex
       }
     ]
   }

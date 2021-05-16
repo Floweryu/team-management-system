@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct.team.manage.dao.UserRoleMapper">
+    <resultMap id="UserRoleMap" type="com.buct.team.manage.controller.vo.UserVo">
+        <result column="id" jdbcType="BIGINT" javaType="Long" property="userRoleId" />
+        <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
+        <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
+        <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
+        <result column="key" jdbcType="VARCHAR" javaType="String" property="key" />
+        <result column="key" jdbcType="VARCHAR" javaType="String" property="key" />
+    </resultMap>
+    <select id="getUserAndRole" resultMap="UserRoleMap">
+        SELECT t_user.user_id, t_user.username, t_user_role.id, t_role.`name`, t_role.`key`
+        FROM t_user
+        INNER JOIN t_user_role ON t_user.user_id = t_user_role.user_id
+        INNER JOIN t_role ON t_role.id = t_user_role.role_id
+    </select>
+
+    <select id="getUserAndRoleByUserId" resultMap="UserRoleMap">
+        <if test="userId != null">
+            <bind name="pattern" value="'%' + userId + '%'" />
+        </if>
+        SELECT t_user.user_id, t_user.username, t_role.id, t_role.`name`, t_role.`key`
+        FROM t_user
+        INNER JOIN t_user_role ON t_user.user_id = t_user_role.user_id
+        INNER JOIN t_role ON t_role.id = t_user_role.role_id
+        WHERE t_user.user_id like #{pattern}
+    </select>
+    <delete id="deleteUserRole" parameterType="java.util.List">
+        delete from t_user_role where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addUserRole" parameterType="com.buct.team.manage.entity.UserRole">
+        insert into t_user_role(user_id, role_id) values (#{userId}, #{roleId})
+    </insert>
+    <update id="updateUserRole" parameterType="com.buct.team.manage.entity.UserRole">
+        update t_user_role
+        set role_id = #{roleId}
+        where user_id = #{userId}
+    </update>
+</mapper>

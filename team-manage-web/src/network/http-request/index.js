@@ -17,6 +17,7 @@ import clas from './class.api'
 import task from './task.api'
 import meeting from './meeting.api'
 import report from './report.api'
+import role from './role.api'
 
 export default {
   user,
@@ -34,5 +35,6 @@ export default {
   clas,
   task,
   meeting,
-  report
+  report,
+  role
 }

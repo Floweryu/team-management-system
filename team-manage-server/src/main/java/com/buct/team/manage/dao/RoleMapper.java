@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Floweryu
  * @date 2021/5/14 21:38
@@ -13,4 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleMapper {
     Role getRoleByUserId(@Param("userId") String userId);
+
+    List<Role> getAllRole();
 }
