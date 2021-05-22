@@ -27,6 +27,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/manage/login");  //登录
         excludePath.add("/manage/verifyCode");  //获取验证码
+        excludePath.add("/resource/class/**"); //获取课表资源
 
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
