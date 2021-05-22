@@ -16,12 +16,12 @@
         stripe
       >
         <el-table-column fixed type="selection" width="40" align="center" />
-        <el-table-column fixed prop="title" show-overflow-tooltip label="文献标题" width="100" align="center" />
+        <el-table-column fixed prop="title" show-overflow-tooltip label="文献标题" min-width="100" align="center" />
         <el-table-column prop="author" show-overflow-tooltip label="作者" min-width="80" align="center" />
-        <el-table-column prop="publishTime" sortable label="发表时间" width="100" align="center" />
-        <el-table-column prop="publishPlace" show-overflow-tooltip label="出版单位" width="80" align="center" />
+        <el-table-column prop="publishTime" sortable label="发表时间" min-width="100" align="center" />
+        <el-table-column prop="publishPlace" show-overflow-tooltip label="出版单位" min-width="80" align="center" />
         <el-table-column prop="size" label="MB" width="60" align="center" />
-        <el-table-column prop="originAddress" show-overflow-tooltip label="来源地址" width="120" align="center">
+        <el-table-column prop="originAddress" show-overflow-tooltip label="来源地址" min-width="120" align="center">
           <template slot-scope="scope">
             <a :href="scope.row.originAddress" target="_blank" class="buttonText">{{ scope.row.originAddress }}</a>
           </template>
@@ -182,6 +182,9 @@ export default {
       this.$axios({
         url: `${process.env.VUE_APP_BASE_URL}/manage/document/upload?id=${param.data.id}`,
         method: 'post',
+        headers: {
+          token: localStorage.getItem('token')
+        },
         data: formData,
         //上传进度
         onUploadProgress
@@ -412,17 +415,15 @@ export default {
 }
 </script>
 
-<style>
-.el-card__body {
+<style scoped>
+.el-card /deep/ .el-card__body {
   padding: 5px;
 }
-.el-tooltip__popper {
-  max-width: 300px;
-}
+
 .file-upload {
   height: 28px;
 }
-.el-upload--text {
+.file-upload >>> .el-upload--text {
   width: 76px;
   height: 26px;
   border: 1px;

@@ -211,6 +211,9 @@ export default {
       this.$axios({
         url: `${process.env.VUE_APP_BASE_URL}/manage/class/upload?id=${param.data.id}`,
         method: 'post',
+        headers: {
+          token: localStorage.getItem('token')
+        },
         data: formData,
         //上传进度
         onUploadProgress

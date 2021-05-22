@@ -30,7 +30,7 @@
 
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
-            <el-form-item prop="state" label="性别" size="mini">
+            <el-form-item prop="state" label="状态" size="mini">
               <el-radio-group v-model="formData.state">
                 <el-radio :label="0">未完成</el-radio>
                 <el-radio :label="1">正在进行</el-radio>

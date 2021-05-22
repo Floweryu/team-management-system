@@ -293,18 +293,12 @@ export default {
 }
 </script>
 
-<style>
-.el-card__body {
+<style scpoed>
+.el-card /deep/ .el-card__body {
   padding: 5px;
 }
-.el-tooltip__popper {
-  max-width: 300px;
-}
+
 .avatar-uploader {
-  width: 50px;
-  height: 50px;
-}
-.el-upload--text {
   width: 50px;
   height: 50px;
 }
