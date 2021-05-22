@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 const Index = () => import('@/views/index')
 const Login = () => import('@/views/login/index')
+const ForgetPassword = () => import('@/views/login/components/ForgetPassword')
 
 const UserManage = () => import('@/views/user/index')
 const DocumentManage = () => import('@/views/document/ManageIndex')
@@ -36,6 +37,10 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/forget_password',
+    component: ForgetPassword
   },
   {
     path: '/dashboard',

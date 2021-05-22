@@ -4,7 +4,10 @@
       <el-image :src="require('@/assets/image/app_name.png')"></el-image>
     </div>
     <el-card class="tm-login">
-      <div class="title">登录以继续使用</div>
+      <div class="top-info">
+        <div class="title">登录以继续使用</div>
+        <el-button class="forget-password" type="text" @click="forgetPassword">忘记密码?</el-button>
+      </div>
       <el-form :model="ruleForm" status-icon :rules="rules" ref="loginFromRef">
         <el-form-item prop="userId">
           <el-input v-model="ruleForm.userId" placeholder="用户名" prefix-icon="el-icon-user-solid"></el-input>
@@ -84,6 +87,9 @@ export default {
         }
       })
     },
+    forgetPassword() {
+      this.$router.push('/forget_password')
+    },
     resetImg() {
       this.imgUrl = `${process.env.VUE_APP_BASE_URL}/manage/verifyCode?time=` + new Date()
     }
@@ -114,7 +120,7 @@ export default {
   color: white;
 }
 .tm-login {
-  width: 400px;
+  width: 370px;
   margin: 0 auto;
   box-shadow: 0 4px 6px rgb(0 0 0 / 10%), 0 12px 20px rgb(38 38 38 / 12%);
   padding: 30px 36px;
@@ -122,12 +128,20 @@ export default {
   display: flex;
   flex-direction: column;
   opacity: 0.97;
+  margin-top: 30px;
+}
+.top-info {
+  display: flex;
+  justify-content: space-between;
 }
 .title {
   font-size: 22px;
   color: #262626;
   font-weight: 500;
   line-height: 32px;
+  margin-bottom: 30px;
+}
+.forget-password {
   margin-bottom: 30px;
 }
 .login-btn {

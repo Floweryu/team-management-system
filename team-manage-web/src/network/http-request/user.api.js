@@ -45,6 +45,10 @@ const user = {
   //删除对应id用户
   deleteUser(data) {
     return axios.delete(`${host.apiHost}/manage/user`, { data })
+  },
+
+  resetPassword(data) {
+    return axios.post(`${host.apiHost}/manage/resetPassword`, data)
   }
 }
 

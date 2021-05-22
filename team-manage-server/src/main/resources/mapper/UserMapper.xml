@@ -34,6 +34,16 @@
         id, user_id, password, username, identity, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
     </sql>
 
+    <select id="getUserEmailByUserId" parameterType="String" resultType="String">
+        select email from t_user where user_id = #{userId}
+    </select>
+
+    <update id="updateUserPassword">
+        update t_user
+        set password = #{password}
+        where user_id = #{userId}
+    </update>
+
     <select id="getUserByUserIdList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />

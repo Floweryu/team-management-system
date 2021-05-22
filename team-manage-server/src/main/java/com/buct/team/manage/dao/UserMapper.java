@@ -15,6 +15,9 @@ import java.util.List;
 @Mapper
 @Repository
 public interface UserMapper {
+    int updateUserPassword(@Param("userId") String userId, @Param("password") String password);
+
+    String getUserEmailByUserId(@Param("userId") String userId);
     // 用户登录
     UserLoginInfoVo verifyPassword(@Param("userId") String userId, @Param("password") String password);
 

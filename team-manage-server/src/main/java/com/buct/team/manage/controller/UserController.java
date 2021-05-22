@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.controller.dto.ResetPassReq;
 import com.buct.team.manage.controller.dto.UserReq;
 import com.buct.team.manage.entity.User;
 import com.buct.team.manage.result.CodeMsg;
@@ -180,6 +181,38 @@ public class UserController {
             List<User> userList = userService.getUserByIdentity(identity);
             log.info("获取的用户: {}", userList);
             return Result.success(userList);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/resetPassword")
+    public Result<CodeMsg> resetPassword(@RequestBody ResetPassReq resetPassReq) {
+        log.info("传递参数: {}", resetPassReq);
+        String userId = resetPassReq.getUserId();
+        if (!StringUtils.isNumeric(userId)) {
+            return Result.error(400, "userId must be Number!");
+        }
+        if (userId.length() < 8 || userId.length() > 10) {
+            return Result.error(400, "userId length should be 8 ~ 10!");
+        }
+        // 从数据库获取该用户邮箱地址进行验证
+        String userEmail = userService.getUserEmailByUserId(userId);
+        if (! userEmail.equals(resetPassReq.getEmail())) {
+            return Result.error(400, "邮件地址验证错误");
+        }
+        String password = resetPassReq.getPassword();
+        if (!password.equals(resetPassReq.getCheckPassword())) {
+            return Result.error(400, "两次密码输入不一致");
+        }
+        try {
+            boolean flag = userService.updateUserPassword(userId, password);
+            if (flag) {
+                return Result.success(CodeMsg.RESET_PASSWORD_SUCCESS);
+            }else {
+                return Result.error(CodeMsg.FAILURE);
+            }
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());
             return Result.error(CodeMsg.SERVER_ERROR);

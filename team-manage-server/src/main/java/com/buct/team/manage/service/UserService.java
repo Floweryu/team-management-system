@@ -11,6 +11,10 @@ import java.util.List;
  * @date 2021/4/9 14:06
  */
 public interface UserService {
+    boolean updateUserPassword(String userId, String password);
+
+    String getUserEmailByUserId(String userId);
+
     UserLoginInfoVo verifyPassword(String userId, String password);
 
     User selectUserByUserId(String userId);

@@ -23,6 +23,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updateUserPassword(String userId, String password) {
+        return userMapper.updateUserPassword(userId, password) > 0;
+    }
+
+    @Override
+    public String getUserEmailByUserId(String userId) {
+        return userMapper.getUserEmailByUserId(userId);
+    }
+
+    @Override
     public UserLoginInfoVo verifyPassword(String userId, String password) {
         return userMapper.verifyPassword(userId, password);
     }
@@ -31,6 +41,7 @@ public class UserServiceImpl implements UserService {
     public User selectUserByUserId(String userId) {
         return userMapper.selectUserByUserId(userId);
     }
+
     @Override
     public List<User> getAllUser() {
         return userMapper.getAllUser();

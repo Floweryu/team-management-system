@@ -17,6 +17,7 @@ public class CodeMsg {
     public static CodeMsg TOKEN_ERROR = new CodeMsg(403, "token verify fail");
     public static CodeMsg LOGIN_FAILURE = new CodeMsg(-1, "username or password is error");
     public static CodeMsg LOGIN_SUCCESS = new CodeMsg(0, "login success");
+    public static CodeMsg RESET_PASSWORD_SUCCESS = new CodeMsg(0, "reset password success");
 
     private CodeMsg(int code, String codeMsg) {
         this.code = code;
