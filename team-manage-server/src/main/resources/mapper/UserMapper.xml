@@ -221,7 +221,7 @@
                 email = #{email},
             </if>
             <if test="picPath != null">
-                pic_path = #{picPath}
+                pic_path = #{picPath},
             </if>
             <if test="mobile != null">
                 mobile = #{mobile},
@@ -234,6 +234,15 @@
             </if>
             <if test="birth != null">
                 birth = #{birth},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test="loginCount != null">
+                login_count = #{loginCount},
+            </if>
+            <if test="loginTime != null">
+                login_time = #{loginTime},
             </if>
             <if test="createUid != null">
                 create_uid = #{createUid},

@@ -142,7 +142,7 @@ export default {
         sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
         identity: [{ required: true, message: '请选择用户身份', trigger: 'change' }],
         email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { required: true, message: '邮箱地址为重置密码依据，请认真填写', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
         mobile: [

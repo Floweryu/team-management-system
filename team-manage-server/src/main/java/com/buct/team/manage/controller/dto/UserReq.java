@@ -2,6 +2,7 @@ package com.buct.team.manage.controller.dto;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -45,6 +46,15 @@ public class UserReq {
 
     // 出生日期
     private Date birth;
+
+    // 登录时间
+    private Timestamp loginTime;
+
+    // 上次登录时间
+    private Timestamp lastLoginTime;
+
+    // 登录次数
+    private Long loginCount;
 
     // 创建者id
     private String createUid;

@@ -1,6 +1,7 @@
 package com.buct.team.manage.controller;
 
 import com.buct.team.manage.controller.dto.AdminReq;
+import com.buct.team.manage.controller.dto.UserReq;
 import com.buct.team.manage.controller.vo.UserLoginInfoVo;
 import com.buct.team.manage.entity.Role;
 import com.buct.team.manage.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 
 /**
  * @author Floweryu
@@ -66,6 +68,14 @@ public class AdminController {
             userInfo.setRole(role.getKey());
             userInfo.setRoleName(role.getName());
             userInfo.setPicPath(user.getPicPath());
+
+            UserReq userReq = new UserReq();
+            userReq.setLoginCount(user.getLoginCount() + 1);
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            userReq.setLoginTime(currentTime);
+            userReq.setLastLoginTime(user.getLoginTime());
+            userReq.setId(user.getId());
+            userService.updateUser(userReq);
             return Result.success(userInfo);
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());

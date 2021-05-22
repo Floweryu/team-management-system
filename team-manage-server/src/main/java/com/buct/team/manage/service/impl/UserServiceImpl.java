@@ -7,6 +7,7 @@ import com.buct.team.manage.entity.User;
 import com.buct.team.manage.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -104,10 +105,22 @@ public class UserServiceImpl implements UserService {
         Date birth = userReq.getBirth();
         String createUid = userReq.getCreateUid();
         String picPath = userReq.getPicPath();
+        Long loginCount = userReq.getLoginCount();
+        Timestamp loginTime = userReq.getLoginTime();
+        Timestamp lastLoginTime = userReq.getLastLoginTime();
 
         User user = new User();
         if (id != null) {
             user.setId(id);
+        }
+        if (loginCount != null) {
+            user.setLoginCount(loginCount);
+        }
+        if (loginTime != null) {
+            user.setLoginTime(loginTime);
+        }
+        if (lastLoginTime != null) {
+            user.setLastLoginTime(lastLoginTime);
         }
         if (picPath != null) {
             user.setPicPath(picPath);
