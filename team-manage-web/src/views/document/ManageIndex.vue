@@ -168,7 +168,6 @@ export default {
     // 自定义上传
     customUpload(param) {
       this.progressPercent = 0
-      console.log(param)
       let formData = new FormData()
       formData.append('file', param.file)
       const onUploadProgress = progressEvent => {

@@ -11,6 +11,7 @@
         <result column="sex" jdbcType="TINYINT" javaType="Integer" property="sex" />
         <result column="email" jdbcType="VARCHAR" javaType="String" property="email" />
         <result column="mobile" jdbcType="VARCHAR" javaType="String" property="mobile" />
+        <result column="pic_path" jdbcType="VARCHAR" javaType="String" property="picPath" />
         <result column="qq_open_id" jdbcType="VARCHAR" javaType="String" property="qqOpenId" />
         <result column="wx_open_id" jdbcType="VARCHAR" javaType="String" property="wxOpenId" />
         <result column="birth" jdbcType="DATE" javaType="Date" property="birth" />
@@ -31,7 +32,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, password, username, identity, deleted, sex, email, mobile, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
+        id, user_id, password, username, identity, deleted, sex, email, mobile, pic_path, qq_open_id, wx_open_id, birth, login_time, last_login_time, login_count, create_uid, create_time, update_time
     </sql>
 
     <select id="getUserEmailByUserId" parameterType="String" resultType="String">
@@ -136,6 +137,9 @@
             <if test="mobile != null">
                 mobile,
             </if>
+            <if test="picPath != null" >
+                pic_path,
+            </if>
             <if test="qqOpenId != null">
                 qq_open_id,
             </if>
@@ -173,6 +177,9 @@
             </if>
             <if test="mobile != null">
                 #{mobile},
+            </if>
+            <if test="picPath != null">
+                #{picPath},
             </if>
             <if test="qqOpenId != null">
                 #{qqOpenId},
@@ -212,6 +219,9 @@
             </if>
             <if test="email != null">
                 email = #{email},
+            </if>
+            <if test="picPath != null">
+                pic_path = #{picPath}
             </if>
             <if test="mobile != null">
                 mobile = #{mobile},

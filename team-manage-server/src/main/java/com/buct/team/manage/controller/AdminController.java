@@ -65,6 +65,7 @@ public class AdminController {
             userInfo.setToken(token);
             userInfo.setRole(role.getKey());
             userInfo.setRoleName(role.getName());
+            userInfo.setPicPath(user.getPicPath());
             return Result.success(userInfo);
         } catch (Throwable throwable) {
             log.error("There is something error: {}", throwable.getMessage());

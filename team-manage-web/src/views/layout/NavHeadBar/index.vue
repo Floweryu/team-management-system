@@ -19,7 +19,7 @@
 
     <div class="nav-header-right">
       <div class="user-avator">
-        <img src="~/assets/image/user.jpg" />
+        <img :src="$store.state.picPath" />
       </div>
       <el-dropdown class="user-name" trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">

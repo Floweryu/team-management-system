@@ -10,7 +10,8 @@ const state = {
   token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
   userId: localStorage.getItem('userId') ? localStorage.getItem('userId') : '',
   username: localStorage.getItem('username') ? localStorage.getItem('username') : '',
-  role: localStorage.getItem('role') ? localStorage.getItem('role') : ''
+  role: localStorage.getItem('role') ? localStorage.getItem('role') : '',
+  picPath: localStorage.getItem('picPath') ? localStorage.getItem('picPath') : ''
 }
 
 export default new Vuex.Store({

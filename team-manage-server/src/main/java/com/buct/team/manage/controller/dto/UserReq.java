@@ -41,6 +41,8 @@ public class UserReq {
     // 微信号
     private String wxOpenId;
 
+    private String picPath;
+
     // 出生日期
     private Date birth;
 

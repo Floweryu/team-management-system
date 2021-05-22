@@ -103,10 +103,14 @@ public class UserServiceImpl implements UserService {
         String wxOpenId = userReq.getWxOpenId();
         Date birth = userReq.getBirth();
         String createUid = userReq.getCreateUid();
+        String picPath = userReq.getPicPath();
 
         User user = new User();
         if (id != null) {
             user.setId(id);
+        }
+        if (picPath != null) {
+            user.setPicPath(picPath);
         }
         if (userId != null) {
             user.setUserId(userId);

@@ -14,4 +14,5 @@ public class UserLoginInfoVo {
     private String token;
     private String role;
     private String roleName;
+    private String picPath;
 }

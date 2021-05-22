@@ -28,7 +28,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         excludePath.add("/manage/login");  //登录
         excludePath.add("/manage/verifyCode");  //获取验证码
         excludePath.add("/manage/resetPassword");  //重置密码
-        excludePath.add("/resource/class/**"); //获取课表资源
+        excludePath.add("/resource/**"); //获取资源
 
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")

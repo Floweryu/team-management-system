@@ -197,6 +197,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.formData.createUid = localStorage.getItem('userId')
+          this.formData.picPath = '/resource/img/user.jpg'
           this.$http.user
             .addUser(JSON.stringify(this.formData))
             .then(res => {
@@ -234,7 +235,7 @@ export default {
                   type: 'success'
                 })
                 this.resetForm(formName)
-                this.$parent.getAllUsers()
+                this.$parent.getUserByUserId()
               }
             })
             .catch(() => {

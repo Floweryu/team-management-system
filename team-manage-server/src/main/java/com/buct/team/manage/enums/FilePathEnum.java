@@ -8,8 +8,10 @@ public enum FilePathEnum {
     FILE_PATH("resource"),
     DOCUMENT("document"),
     CLASS("class"),
+    IMG("img"),
     DOCUMENT_PATH(FILE_PATH,DOCUMENT),
-    CLASS_PATH(FILE_PATH,CLASS);
+    CLASS_PATH(FILE_PATH,CLASS),
+    IMG_PATH(FILE_PATH, IMG);
 
     private final String path;
 

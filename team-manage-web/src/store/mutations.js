@@ -9,9 +9,15 @@ export default {
     state.username = info.username
     state.role = info.role
     state.roleName = info.roleName
+    state.picPath = info.picPath
     localStorage.setItem('userId', info.userId)
     localStorage.setItem('username', info.username)
     localStorage.setItem('role', info.role)
     localStorage.setItem('roleName', info.roleName)
+    localStorage.setItem('picPath', info.picPath)
+  },
+  changePicPath(state, info) {
+    state.picPath = info
+    localStorage.setItem('picPath', info.picPath)
   }
 }

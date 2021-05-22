@@ -46,6 +46,8 @@ public class User {
     // 出生日期
     private Date birth;
 
+    private String picPath;
+
     // 登录时间
     private Timestamp loginTime;
 
