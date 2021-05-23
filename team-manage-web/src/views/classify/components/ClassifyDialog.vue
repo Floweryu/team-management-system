@@ -103,7 +103,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllClassify()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '添加失败'

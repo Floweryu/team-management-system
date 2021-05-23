@@ -113,7 +113,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllSoftware()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '添加失败'
@@ -145,7 +145,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllSoftware()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '更新失败'
