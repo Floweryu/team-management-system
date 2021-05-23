@@ -5,12 +5,13 @@
         <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
         <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
         <result column="description" jdbcType="VARCHAR" javaType="String" property="description" />
+        <result column="by_user_id" jdbcType="VARCHAR" javaType="String" property="byUserId" />
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `name`, description, create_time, update_time
+        id, `name`, description, by_user_id, create_time, update_time
     </sql>
 
     <select id="getLabelById" parameterType="java.util.List" resultMap="BaseResultMap">
@@ -28,4 +29,60 @@
         <include refid="Base_Column_List" />
         from t_label
     </select>
+
+    <select id="getAllLabelByUserId" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_label
+        where by_user_id = #{userId}
+    </select>
+
+    <delete id="deleteLabel" parameterType="java.util.List">
+        delete from t_label where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addLabel" parameterType="com.buct.team.manage.entity.Label">
+        insert into t_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="byUserId != null">
+                by_user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="byUserId != null">
+                #{byUserId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateLabel" parameterType="com.buct.team.manage.entity.Label">
+        update t_label
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="byUserId != null">
+                by_user_id = #{byUserId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

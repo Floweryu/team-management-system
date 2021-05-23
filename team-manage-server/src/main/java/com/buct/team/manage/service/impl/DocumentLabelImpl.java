@@ -1,6 +1,7 @@
 package com.buct.team.manage.service.impl;
 
 import com.buct.team.manage.dao.DocumentLabelMapper;
+import com.buct.team.manage.entity.DocumentLabel;
 import com.buct.team.manage.service.DocumentLabelService;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,11 @@ public class DocumentLabelImpl implements DocumentLabelService {
 
     public DocumentLabelImpl(DocumentLabelMapper documentLabelMapper) {
         this.documentLabelMapper = documentLabelMapper;
+    }
+
+    @Override
+    public boolean addDocumentLabel(DocumentLabel documentLabel) {
+        return documentLabelMapper.addDocumentLabel(documentLabel) > 0;
     }
 
     @Override

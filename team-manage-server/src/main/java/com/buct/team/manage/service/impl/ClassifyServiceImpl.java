@@ -28,4 +28,24 @@ public class ClassifyServiceImpl implements ClassifyService {
     public List<Classify> getAllClassify() {
         return classifyMapper.getAllClassify();
     }
+
+    @Override
+    public List<Classify> getAllClassifyByUserId(String userId) {
+        return classifyMapper.getAllClassifyByUserId(userId);
+    }
+
+    @Override
+    public boolean deleteClassify(List<Long> idList) {
+        return classifyMapper.deleteClassify(idList) > 0;
+    }
+
+    @Override
+    public boolean addClassify(Classify classify) {
+        return classifyMapper.addClassify(classify) > 0;
+    }
+
+    @Override
+    public boolean updateClassify(Classify classify) {
+        return classifyMapper.updateClassify(classify) > 0;
+    }
 }

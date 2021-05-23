@@ -12,4 +12,24 @@
         from t_document_label
         where label_id = #{id}
     </select>
+
+    <insert id="addDocumentLabel" parameterType="com.buct.team.manage.entity.DocumentLabel">
+        insert into t_document_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="labelId != null">
+                label_id,
+            </if>
+            <if test="documentId != null">
+                document_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="labelId != null">
+                #{labelId},
+            </if>
+            <if test="documentId != null">
+                #{documentId},
+            </if>
+        </trim>
+    </insert>
 </mapper>

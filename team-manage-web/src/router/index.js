@@ -28,6 +28,8 @@ const MeetingIndex = () => import('@/views/meeting/index')
 const ReportIndex = () => import('@/views/report/index')
 const ReportDetail = () => import('@/views/report/components/ReportDetail')
 const UserRoleIndex = () => import('@/views/role/index')
+const LabelIndex = () => import('@/views/label/index')
+const ClassifyIndex = () => import('@/views/classify/index')
 
 const routes = [
   {
@@ -65,6 +67,14 @@ const routes = [
         path: 'document/detail',
         component: DocumentDetail,
         meta: { title: '文献详情' }
+      },
+      {
+        path: 'document/class',
+        component: ClassifyIndex
+      },
+      {
+        path: 'document/label',
+        component: LabelIndex
       },
       {
         path: 'document/detail/:id',

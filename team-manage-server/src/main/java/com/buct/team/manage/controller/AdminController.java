@@ -64,11 +64,10 @@ public class AdminController {
             userInfo.setUserId(userId);
             userInfo.setUsername(user.getUsername());
             userInfo.setCreateUid(user.getCreateUid());
+            userInfo.setPicPath(user.getPicPath());
             userInfo.setToken(token);
             userInfo.setRole(role.getKey());
             userInfo.setRoleName(role.getName());
-            userInfo.setPicPath(user.getPicPath());
-
             UserReq userReq = new UserReq();
             userReq.setLoginCount(user.getLoginCount() + 1);
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());

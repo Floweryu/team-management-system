@@ -5,12 +5,13 @@
         <id column="id" jdbcType="BIGINT" javaType="Long" property="id" />
         <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
         <result column="description" jdbcType="VARCHAR" javaType="String" property="description" />
+        <result column="by_user_id" jdbcType="VARCHAR" javaType="String" property="byUserId" />
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `name`, description, create_time, update_time
+        id, `name`, description, by_user_id, create_time, update_time
     </sql>
 
     <select id="getClassifyById" parameterType="java.util.List" resultMap="BaseResultMap">
@@ -23,10 +24,66 @@
         </foreach>
     </select>
 
+    <select id="getAllClassifyByUserId" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_classify
+        where by_user_id = #{userId}
+    </select>
+
     <select id="getAllClassify" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from t_classify
     </select>
+
+    <delete id="deleteClassify" parameterType="java.util.List">
+        delete from t_classify where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addClassify" parameterType="com.buct.team.manage.entity.Classify">
+        insert into t_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="byUserId != null">
+                by_user_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="byUserId != null">
+                #{byUserId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateClassify" parameterType="com.buct.team.manage.entity.Classify">
+        update t_classify
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="byUserId != null">
+                by_user_id = #{byUserId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.buct.team.manage.service.impl;
 
 import com.buct.team.manage.dao.DocumentClassifyMapper;
+import com.buct.team.manage.entity.DocumentClassify;
 import com.buct.team.manage.service.DocumentClassifyService;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,11 @@ public class DocumentClassifyServiceImpl implements DocumentClassifyService {
 
     public DocumentClassifyServiceImpl(DocumentClassifyMapper documentClassifyMapper) {
         this.documentClassifyMapper = documentClassifyMapper;
+    }
+
+    @Override
+    public boolean addDocumentClassify(DocumentClassify documentClassify) {
+        return documentClassifyMapper.addDocumentClassify(documentClassify) > 0;
     }
 
     @Override

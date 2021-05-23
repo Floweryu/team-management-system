@@ -26,10 +26,6 @@
             <a :href="scope.row.originAddress" target="_blank" class="buttonText">{{ scope.row.originAddress }}</a>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="likeCount" label="点赞数" width="60" align="center" />
-        <el-table-column prop="viewCount" label="浏览量" width="60" align="center" />
-        <el-table-column prop="downloadCount" label="下载次数" width="80" align="center" /> -->
-        <el-table-column prop="uploadUserId" label="上传用户" width="90" align="center" />
         <el-table-column prop="fileName" show-overflow-tooltip label="文件名(点击下载)" width="120" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="downloadFile(scope.row)">{{ scope.row.fileName }}</el-button>
@@ -56,6 +52,18 @@
             </el-upload>
           </template>
         </el-table-column>
+        <el-table-column prop="fileName" show-overflow-tooltip label="分类标签" width="90" align="center">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              @click="editClassifyLabel(scope.row)"
+              size="mini"
+              icon="el-icon-edit"
+              style="width: 50px; padding: 5px 0;"
+              >编辑
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="140" align="center">
           <template slot-scope="scope">
             <el-button
@@ -78,6 +86,7 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <classify-label-dialog :document-id="documentId" :dialog-visible="classifyFormVisible" @dialog-cancel="dialogCancel" />
     <document-dialog
       ref="child"
       :is-edit-button="isEditButton"
@@ -98,6 +107,7 @@
 <script>
 import HeaderTop from './components/HeaderTop'
 import DocumentDialog from './components/DocumentDialog'
+import ClassifyLabelDialog from './components/ClassifyLabelDialog'
 
 import { formatDate } from '@/utils/index'
 import { pageSeparate } from '@/utils/mixin'
@@ -106,7 +116,8 @@ export default {
   name: 'DocumentManage',
   components: {
     HeaderTop,
-    DocumentDialog
+    DocumentDialog,
+    ClassifyLabelDialog
   },
   mixins: [pageSeparate],
   data() {
@@ -114,10 +125,12 @@ export default {
       tableData: [],
       dialogFormVisible: false,
       isEditButton: false,
+      classifyFormVisible: false,
       editValue: {},
       selectRows: [],
       progressPercent: 0,
-      loading: false
+      loading: false,
+      documentId: 0
     }
   },
   created() {
@@ -129,6 +142,11 @@ export default {
     }
   },
   methods: {
+    editClassifyLabel(param) {
+      console.log(param)
+      this.classifyFormVisible = true
+      this.documentId = param.id
+    },
     getAllDocumentByUploadUser() {
       let query = {
         params: {
@@ -233,6 +251,7 @@ export default {
     },
     // 接收弹窗的取消事件
     dialogCancel() {
+      this.classifyFormVisible = false
       this.dialogFormVisible = false
     },
     // 编辑

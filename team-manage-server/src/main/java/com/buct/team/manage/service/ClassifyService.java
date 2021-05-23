@@ -12,4 +12,12 @@ public interface ClassifyService {
     List<Classify> getClassifyById(List<Long> id);
 
     List<Classify> getAllClassify();
+
+    List<Classify> getAllClassifyByUserId(String userId);
+
+    boolean deleteClassify(List<Long> idList);
+
+    boolean addClassify(Classify classify);
+
+    boolean updateClassify(Classify classify);
 }

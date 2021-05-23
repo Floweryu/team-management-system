@@ -1,5 +1,6 @@
 package com.buct.team.manage.dao;
 
+import com.buct.team.manage.entity.DocumentLabel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface DocumentLabelMapper {
     List<Long> getLabelId(@Param("id") Long id);
 
     List<Long> getDocumentId(@Param("id") Long id);
+
+    int addDocumentLabel(DocumentLabel documentLabel);
 }

@@ -29,4 +29,24 @@ public class LabelServiceImpl implements LabelService {
     public List<Label> getAllLabel() {
         return labelMapper.getAllLabel();
     }
+
+    @Override
+    public List<Label> getAllLabelByUserId(String userId) {
+        return labelMapper.getAllLabelByUserId(userId);
+    }
+
+    @Override
+    public boolean deleteLabel(List<Long> idList) {
+        return labelMapper.deleteLabel(idList) > 0;
+    }
+
+    @Override
+    public boolean addLabel(Label label) {
+        return labelMapper.addLabel(label) > 0;
+    }
+
+    @Override
+    public boolean updateLabel(Label label) {
+        return labelMapper.updateLabel(label) > 0;
+    }
 }

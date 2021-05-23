@@ -19,6 +19,8 @@ public class Classify {
     // 分类描述
     private String description;
 
+    private String byUserId;
+
     // 创建时间
     private Timestamp createTime;
 

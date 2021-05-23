@@ -12,4 +12,24 @@
         from t_document_classify
         where classify_id = #{id}
     </select>
+
+    <insert id="addDocumentClassify" parameterType="com.buct.team.manage.entity.DocumentClassify">
+        insert into t_document_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="documentId != null">
+                document_id,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="classifyId != null">
+                #{classifyId},
+            </if>
+            <if test="documentId != null">
+                #{documentId},
+            </if>
+        </trim>
+    </insert>
 </mapper>

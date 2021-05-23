@@ -1,5 +1,7 @@
 package com.buct.team.manage.service;
 
+import com.buct.team.manage.entity.DocumentClassify;
+
 import java.util.List;
 
 /**
@@ -10,4 +12,6 @@ public interface DocumentClassifyService {
     List<Long> getClassifyId(Long id);
 
     List<Long> getDocumentId(Long id);
+
+    boolean addDocumentClassify(DocumentClassify documentClassify);
 }

@@ -55,11 +55,11 @@
           </el-row>
           <el-row type="flex" align="middle" class="row">
             <el-col class="tag" :span="2">分类：</el-col>
-            <el-col class="flag" :span="2" v-for="item in classifyList" :key="item.id">{{ item.name }}</el-col>
+            <el-col class="label-calssify" :span="4" v-for="item in classifyList" :key="item.id">{{ item.name }}</el-col>
           </el-row>
           <el-row type="flex" align="middle" class="row">
             <el-col class="tag" :span="2">标签：</el-col>
-            <el-col class="flag" :span="2" v-for="item in labelList" :key="item.id">
+            <el-col class="label-calssify" :span="4" v-for="item in labelList" :key="item.id">
               {{ item.name }}
             </el-col>
           </el-row>
@@ -528,7 +528,7 @@ export default {
   color: #666;
 }
 
-.row .flag {
+.row .label-calssify {
   color: #517faf;
   margin-right: -10px;
 }
