@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Report;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -24,6 +25,7 @@ public class ReportController {
         this.reportService = reportService;
     }
 
+    @Log(value = "获取所有日报周报")
     @GetMapping("/reports")
     public Result<List<Report>> getAllReports() {
         try {
@@ -35,6 +37,7 @@ public class ReportController {
         }
     }
 
+    @Log(value = "根据报告id查询报告信息")
     @GetMapping("/report/id")
     public Result<Report> getReportById(@RequestParam Long id) {
         if (id < 0) {
@@ -50,6 +53,7 @@ public class ReportController {
         }
     }
 
+    @Log(value = "添加报告")
     @PostMapping("/report")
     public Result<CodeMsg> addReport(@RequestBody Report report) {
         String userId = report.getUserId();
@@ -74,6 +78,7 @@ public class ReportController {
         }
     }
 
+    @Log(value = "更新报告")
     @PutMapping("/report")
     public Result<CodeMsg> updateReport(@RequestBody Report report) {
         String userId = report.getUserId();
@@ -99,6 +104,7 @@ public class ReportController {
     }
 
 
+    @Log(value = "删除报告")
     @DeleteMapping("/report")
     public Result<CodeMsg> deleteReports(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {

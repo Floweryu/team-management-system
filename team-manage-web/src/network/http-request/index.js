@@ -18,6 +18,7 @@ import task from './task.api'
 import meeting from './meeting.api'
 import report from './report.api'
 import role from './role.api'
+import systemlog from './systemlog.api'
 
 export default {
   user,
@@ -36,5 +37,6 @@ export default {
   task,
   meeting,
   report,
-  role
+  role,
+  systemlog
 }

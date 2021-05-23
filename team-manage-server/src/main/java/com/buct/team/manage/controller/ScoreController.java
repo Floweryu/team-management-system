@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.ScoreReq;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -29,6 +30,7 @@ public class ScoreController {
         this.documentService = documentService;
     }
 
+    @Log(value = "添加评分")
     @PostMapping("/score/add")
     public Result<CodeMsg> addScore(@RequestBody ScoreReq score) {
         if (score.getScore() < 0 || score.getScore() > 5) {

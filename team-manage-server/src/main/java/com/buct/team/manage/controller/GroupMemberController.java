@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.GroupMember;
 import com.buct.team.manage.entity.User;
 import com.buct.team.manage.result.CodeMsg;
@@ -29,6 +30,7 @@ public class GroupMemberController {
         this.userService = userService;
     }
 
+    @Log(value = "添加团队成员")
     @PostMapping("/team/member")
     public Result<CodeMsg> addGroupMember(@RequestBody List<GroupMember> groupMemberList) {
         if (groupMemberList.isEmpty()) {
@@ -60,6 +62,7 @@ public class GroupMemberController {
         }
     }
 
+    @Log(value = "删除团队成员")
     @DeleteMapping("/teamMember")
     public Result<CodeMsg> deleteGroupMember(@RequestParam String userId, @RequestParam Long groupId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -86,6 +89,7 @@ public class GroupMemberController {
         }
     }
 
+    @Log(value = "获取团队成员")
     @GetMapping("/team/member")
     public Result<List<User>> getGroupMember(@RequestParam Long id) {
         if (id < 0) {

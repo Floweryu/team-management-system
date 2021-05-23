@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.TaskMember;
 import com.buct.team.manage.entity.User;
 import com.buct.team.manage.result.CodeMsg;
@@ -29,6 +30,7 @@ public class TaskMemberController {
         this.userService = userService;
     }
 
+    @Log(value = "添加任务成员")
     @PostMapping("/task/member")
     public Result<CodeMsg> addTaskMember(@RequestBody List<TaskMember> taskMemberList) {
         if (taskMemberList.isEmpty()) {
@@ -60,6 +62,7 @@ public class TaskMemberController {
         }
     }
 
+    @Log(value = "删除任务成员")
     @DeleteMapping("/taskMember")
     public Result<CodeMsg> deleteGroupMember(@RequestParam String userId, @RequestParam Long taskId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -86,6 +89,7 @@ public class TaskMemberController {
         }
     }
 
+    @Log(value = "获取任务成员")
     @GetMapping("/task/member")
     public Result<List<User>> getTaskMember(@RequestParam Long id) {
         if (id < 0) {

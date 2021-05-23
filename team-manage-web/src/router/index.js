@@ -30,6 +30,7 @@ const ReportDetail = () => import('@/views/report/components/ReportDetail')
 const UserRoleIndex = () => import('@/views/role/index')
 const LabelIndex = () => import('@/views/label/index')
 const ClassifyIndex = () => import('@/views/classify/index')
+const SystemLog = () => import('@/views/systemlog/index')
 
 const routes = [
   {
@@ -52,6 +53,10 @@ const routes = [
       {
         path: 'home',
         component: Home
+      },
+      {
+        path: 'systemlog',
+        component: SystemLog
       },
       {
         path: 'user',

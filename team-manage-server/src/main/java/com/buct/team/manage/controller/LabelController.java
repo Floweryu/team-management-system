@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.DocumentLabel;
 import com.buct.team.manage.entity.Label;
 import com.buct.team.manage.result.CodeMsg;
@@ -31,6 +32,7 @@ public class LabelController {
     /**
      * 获取所有标签
      */
+    @Log(value = "获取所有标签")
     @GetMapping("/label/all")
     public Result<List<Label>> getAllLabel() {
         try {
@@ -43,6 +45,7 @@ public class LabelController {
         }
     }
 
+    @Log(value = "通过用户id查询标签")
     @GetMapping("/label/all/byUserId")
     public Result<List<Label>> getAllLabelByUserId(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -62,6 +65,7 @@ public class LabelController {
         }
     }
 
+    @Log(value = "添加标签")
     @PostMapping("/label")
     public Result<CodeMsg> addClassify(@RequestBody Label label) {
         String userId = label.getByUserId();
@@ -83,6 +87,7 @@ public class LabelController {
         }
     }
 
+    @Log(value = "更新标签")
     @PutMapping("/label")
     public Result<CodeMsg> updateClassify(@RequestBody Label label) {
         String userId = label.getByUserId();
@@ -105,6 +110,7 @@ public class LabelController {
     }
 
 
+    @Log(value = "删除标签")
     @DeleteMapping("/label")
     public Result<CodeMsg> deleteClassify(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -126,6 +132,7 @@ public class LabelController {
     }
 
 
+    @Log(value = "为文献添加标签")
     @PostMapping("/label/member")
     public Result<CodeMsg> addLabelClassify(@RequestBody List<DocumentLabel> documentLabelList) {
         if (documentLabelList.isEmpty()) {

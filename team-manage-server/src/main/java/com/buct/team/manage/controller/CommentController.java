@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.vo.CommentVo;
 import com.buct.team.manage.entity.Comment;
 import com.buct.team.manage.result.CodeMsg;
@@ -26,6 +27,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @Log(value = "添加评论")
     @PostMapping("/comment")
     public Result<CodeMsg> addComment(@RequestBody Comment comment) {
         if (comment.getTopicId() < 0) {
@@ -48,6 +50,7 @@ public class CommentController {
         }
     }
 
+    @Log(value = "根据主题获取评论")
     @GetMapping("/comment/byTopicId")
     public Result<CommentVo> getCommentsById(@RequestParam Long id, @RequestParam Integer type) {
         if (id < 0) {
@@ -66,6 +69,7 @@ public class CommentController {
         }
     }
 
+    @Log(value = "删除评论")
     @DeleteMapping("/comment")
     public Result<CodeMsg> deleteComment(@RequestParam Long id) {
         if (id < 0) {

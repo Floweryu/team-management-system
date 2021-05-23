@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Class;
 import com.buct.team.manage.entity.FileMd;
 import com.buct.team.manage.enums.FilePathEnum;
@@ -38,6 +39,7 @@ public class ClassController {
             + FilePathEnum.FILE_PATH.getPath() + System.getProperty("file.separator")
             + FilePathEnum.CLASS.getPath();
 
+    @Log(value = "获取所有课表")
     @GetMapping("/class")
     public Result<List<Class>> getClass(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -57,6 +59,7 @@ public class ClassController {
         }
     }
 
+    @Log(value = "添加课表")
     @PostMapping("/class")
     public Result<CodeMsg> addClass(@RequestBody Class clas) {
         String name = clas.getName();
@@ -79,6 +82,7 @@ public class ClassController {
         }
     }
 
+    @Log(value = "更新课表")
     @PutMapping("/class")
     public Result<CodeMsg> updateClass(@RequestBody Class clas) {
         String name = clas.getName();
@@ -101,7 +105,7 @@ public class ClassController {
         }
     }
 
-
+    @Log(value = "删除课表")
     @DeleteMapping("/class")
     public Result<CodeMsg> deleteAssets(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -122,6 +126,7 @@ public class ClassController {
         }
     }
 
+    @Log(value = "上传课表")
     @PostMapping("/class/upload")
     public Result<CodeMsg> uploadClass(@RequestParam("file") MultipartFile file, @RequestParam Long id) throws IOException {
         if (id < 0) {

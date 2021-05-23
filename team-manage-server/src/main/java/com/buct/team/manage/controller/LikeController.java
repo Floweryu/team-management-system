@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.controller.dto.LikeReq;
 import com.buct.team.manage.controller.vo.LikeVo;
@@ -31,6 +32,7 @@ public class LikeController {
      * @param likeReq 文献id, 用户id
      * @return Result
      */
+    @Log(value = "添加点赞信息")
     @PostMapping("/like/add")
     public Result<Object> addLike(@RequestBody LikeReq likeReq) {
         if (likeReq.getDocumentId() == null){
@@ -71,6 +73,7 @@ public class LikeController {
      * @param likeReq 文献id, 用户id
      * @return Result
      */
+    @Log(value = "删除点赞信息")
     @DeleteMapping("/like/delete")
     public Result<Object> deleteLike(@RequestBody LikeReq likeReq) {
         if (likeReq.getDocumentId() == null){

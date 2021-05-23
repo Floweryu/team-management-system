@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.ResetPassReq;
 import com.buct.team.manage.controller.dto.UserReq;
 import com.buct.team.manage.entity.User;
@@ -33,6 +34,7 @@ public class UserController {
     /**
      * 获取所有用户信息
      */
+    @Log(value = "获取所有用户信息")
     @GetMapping("/users")
     public Result<List<User>> getAllUser() {
         try {
@@ -50,6 +52,7 @@ public class UserController {
      * @param id    用户主键
      * @return  User
      */
+    @Log(value = "通过用户主键获取用户信息")
     @GetMapping("/user")
     public Result<User> getUserById(@RequestParam Long id) {
         if (id <= 0) {
@@ -70,6 +73,7 @@ public class UserController {
      * @param userReq 用户参数
      * @return Result
      */
+    @Log(value = "添加用户")
     @PostMapping("/user")
     public Result<CodeMsg> addUser(@RequestBody UserReq userReq) {
         try {
@@ -91,6 +95,7 @@ public class UserController {
      * @param userReq 用户参数
      * @return Result
      */
+    @Log(value = "更新用户")
     @PutMapping("/user")
     public Result<CodeMsg> updateUser(@RequestBody UserReq userReq) {
         try {
@@ -112,6 +117,7 @@ public class UserController {
      * @param idList    删除用户id
      * @return Result
      */
+    @Log(value = "删除用户")
     @DeleteMapping("/user")
     public Result<CodeMsg> deleteUser(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -136,6 +142,7 @@ public class UserController {
      * @param userId    用户账号
      * @return  Result
      */
+    @Log(value = "根据用户账号查询用户")
     @GetMapping("/getUserByUserId")
     public Result<List<User>> getUserByUserId(String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -155,6 +162,7 @@ public class UserController {
      * @param username  用户姓名
      * @return  Result
      */
+    @Log(value = "根据用户姓名查询用户")
     @GetMapping("/getUserByUserName")
     public Result<List<User>> getUserByUserName(String username) {
         String regex = "^[\\u4e00-\\u9fa5]{0,5}$";
@@ -175,6 +183,7 @@ public class UserController {
      * @param identity  用户身份
      * @return  Result
      */
+    @Log(value = "根据用户身份查询用户")
     @GetMapping("/getUserByIdentity")
     public Result<List<User>> getUserByIdentity(Integer identity) {
         if (identity < 0 || identity > 7) {
@@ -190,6 +199,7 @@ public class UserController {
         }
     }
 
+    @Log(value = "重置用户密码")
     @PostMapping("/resetPassword")
     public Result<CodeMsg> resetPassword(@RequestBody ResetPassReq resetPassReq) {
         log.info("传递参数: {}", resetPassReq);
@@ -222,6 +232,7 @@ public class UserController {
         }
     }
 
+    @Log(value = "更新用户头像")
     @PostMapping("/user/updatePic")
     public Result<CodeMsg> updateSingerPic(@RequestParam("file") MultipartFile picture, @RequestParam Long id){
         if (picture.isEmpty()) {

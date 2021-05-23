@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.DocumentReq;
 import com.buct.team.manage.controller.vo.DocumentDetailVo;
 import com.buct.team.manage.entity.*;
@@ -64,6 +65,7 @@ public class DocumentController {
     /**
      * 获取所有文献
      */
+    @Log(value = "获取所有文献")
     @GetMapping("/documents")
     public Result<List<Document>> getAllDocuments() {
         try {
@@ -76,6 +78,7 @@ public class DocumentController {
         }
     }
 
+    @Log(value = "通过用户账号获取文献")
     @GetMapping("/documents/byUserId")
     public Result<List<Document>> getAllDocumentByUploadUser(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -98,6 +101,7 @@ public class DocumentController {
      * 添加文献
      * @param documentReq   文献传参
      */
+    @Log(value = "添加文献")
     @PostMapping("/document")
     public Result<CodeMsg> insertDocument(@RequestBody DocumentReq documentReq) {
         String title = documentReq.getTitle();
@@ -147,6 +151,7 @@ public class DocumentController {
      * 更新文献
      * @param documentReq   文献传参
      */
+    @Log(value = "更新文献")
     @PutMapping("/document")
     public Result<CodeMsg> updateDocument(@RequestBody DocumentReq documentReq) {
         String title = documentReq.getTitle();
@@ -196,6 +201,7 @@ public class DocumentController {
      * @param idList    删除文献的主键
      * @return  CodeMsg
      */
+    @Log(value = "删除文献")
     @DeleteMapping("/document")
     public Result<CodeMsg> deleteDocuemnt(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -222,6 +228,7 @@ public class DocumentController {
      * @param id    记录id
      * @return  Result
      */
+    @Log(value = "上传或更新文件")
     @PostMapping("/document/upload")
     public Result<CodeMsg> uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam Long id) throws IOException {
 
@@ -316,6 +323,7 @@ public class DocumentController {
      * @param response  下载文献设置
      * @param fileName  传入下载文件名
      */
+    @Log(value = "下载文件")
     @GetMapping("/document/download")
     public void downloadDocument(HttpServletResponse response, @RequestParam String fileName, @RequestParam Long id) throws UnsupportedEncodingException {
         File file = new File(filePath + System.getProperty("file.separator") + fileName);
@@ -352,6 +360,7 @@ public class DocumentController {
      * 根据文献标题查询
      * @param title     文献标题
      */
+    @Log(value = "根据文献标题查询")
     @GetMapping("/document/searchByTitle")
     public Result<List<Document>> getByTitle(@RequestParam("title") String title) {
         if (title.isEmpty()) {
@@ -371,6 +380,7 @@ public class DocumentController {
      * 根据文献作者查询
      * @param author     文献标题
      */
+    @Log(value = "根据文献作者查询")
     @GetMapping("/document/searchByAuthor")
     public Result<List<Document>> getByAuthor(@RequestParam("author") String author) {
         if (author.isEmpty()) {
@@ -390,6 +400,7 @@ public class DocumentController {
      * 根据文献出版单位查询
      * @param place     文献标题
      */
+    @Log(value = "根据文献出版单位查询")
     @GetMapping("/document/searchByPlace")
     public Result<List<Document>> getByPublishPlace(@RequestParam("place") String place) {
         if (place.isEmpty()) {
@@ -411,6 +422,7 @@ public class DocumentController {
      * @param userId    用户id
      * @return Result
      */
+    @Log(value = "获取文献详情")
     @GetMapping("/document/detail")
     public Result<DocumentDetailVo> getDocumentDetail(@RequestParam("id") Long id, @RequestParam("userId") String userId) {
         if (id < 0) {
@@ -483,6 +495,7 @@ public class DocumentController {
      * @param id 类别id
      * @return  文献列表
      */
+    @Log(value = "根据类别查询文献")
     @GetMapping("/document/classify")
     public Result<List<Document>> getDocumentByClassify(@RequestParam Long id) {
         if (id < 0) {
@@ -511,6 +524,7 @@ public class DocumentController {
      * @param id 类别id
      * @return  文献列表
      */
+    @Log(value = "根据标签查询文献")
     @GetMapping("/document/label")
     public Result<List<Document>> getDocumentByLabel(@RequestParam Long id) {
         if (id < 0) {

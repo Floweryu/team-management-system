@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Menu;
 import com.buct.team.manage.enums.RoleEnum;
 import com.buct.team.manage.result.CodeMsg;
@@ -26,6 +27,7 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+    @Log(value = "获取所有菜单")
     @GetMapping("/menus")
     public Result<List<Menu>> getMenus(@RequestParam String role) {
         if (role.isEmpty()) {

@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.AssetsReq;
 import com.buct.team.manage.entity.Assets;
 import com.buct.team.manage.result.CodeMsg;
@@ -25,6 +26,7 @@ public class AssetsController {
         this.assetsService = assetsService;
     }
 
+    @Log(value = "获取所有资产")
     @GetMapping("/assets")
     public Result<List<Assets>> getAllAssets() {
         try {
@@ -41,6 +43,7 @@ public class AssetsController {
      * @param userId    上传者id
      * @return  List
      */
+    @Log(value = "通过上传者查询资产")
     @GetMapping("/assets/byUploadUser")
     public Result<List<Assets>> getAssetsByUploadUser(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -64,6 +67,7 @@ public class AssetsController {
      * @param userId  作者id
      * @return  List
      */
+    @Log(value = "通过作者id查询资产")
     @GetMapping("/assets/byUser")
     public Result<List<Assets>> getAssetsByUser(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -87,6 +91,7 @@ public class AssetsController {
      * @param assetsReq    参数
      * @return  CodeMsg
      */
+    @Log(value = "添加资产")
     @PostMapping("/assets")
     public Result<CodeMsg> addAssets(@RequestBody AssetsReq assetsReq) {
         String name = assetsReq.getName();
@@ -121,6 +126,7 @@ public class AssetsController {
      * @param assetsReq    成果参数
      * @return  CodeMsg
      */
+    @Log(value = "更新资产")
     @PutMapping("/assets")
     public Result<CodeMsg> updateAchievement(@RequestBody AssetsReq assetsReq) {
         String name = assetsReq.getName();
@@ -150,6 +156,7 @@ public class AssetsController {
         }
     }
 
+    @Log(value = "删除资产")
     @DeleteMapping("/assets")
     public Result<CodeMsg> deleteAssets(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {

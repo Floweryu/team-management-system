@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Meeting;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -25,6 +26,7 @@ public class MeetingController {
         this.meetingService = meetingService;
     }
 
+    @Log(value = "获取所有会议")
     @GetMapping("/meetings")
     public Result<List<Meeting>> getAllMeetings() {
         try {
@@ -35,7 +37,8 @@ public class MeetingController {
             return Result.error(CodeMsg.SERVER_ERROR);
         }
     }
-    
+
+    @Log(value = "添加会议")
     @PostMapping("/meeting")
     public Result<CodeMsg> addClass(@RequestBody Meeting meeting) {
         String userId = meeting.getOrganizerId();
@@ -69,6 +72,7 @@ public class MeetingController {
         }
     }
 
+    @Log(value = "更新会议")
     @PutMapping("/meeting")
     public Result<CodeMsg> updateMeeting(@RequestBody Meeting meeting) {
         String userId = meeting.getOrganizerId();
@@ -103,6 +107,7 @@ public class MeetingController {
     }
 
 
+    @Log(value = "删除会议")
     @DeleteMapping("/meeting")
     public Result<CodeMsg> deleteAssets(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {

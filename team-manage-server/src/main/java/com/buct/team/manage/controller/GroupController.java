@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Group;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -33,6 +34,7 @@ public class GroupController {
         this.userService = userService;
     }
 
+    @Log(value = "获取所有团队")
     @GetMapping("/teams")
     public Result<List<Group>> getAllGroups() {
         try {
@@ -45,6 +47,7 @@ public class GroupController {
         }
     }
 
+    @Log(value = "通过用户账号获取团队")
     @GetMapping("/teams/userId")
     public Result<List<Group>> getAllGroupsByUserId(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -63,6 +66,7 @@ public class GroupController {
         }
     }
 
+    @Log(value = "通过名称查询团队")
     @GetMapping("/team/byName")
     public Result<List<Group>> getAllGroupsByName(@RequestParam String name) {
         if (name.isEmpty()) {
@@ -78,6 +82,7 @@ public class GroupController {
         }
     }
 
+    @Log(value = "根据团队id查询团队")
     @GetMapping("/team/byTeamId")
     public Result<Group> getAllGroupsById(@RequestParam Long id) {
         if (id < 0) {
@@ -94,6 +99,7 @@ public class GroupController {
         }
     }
 
+    @Log(value = "添加团队")
     @PostMapping("/team")
     public Result<CodeMsg> addGroup(@RequestBody Group group) {
         String name = group.getName();
@@ -115,6 +121,7 @@ public class GroupController {
      * @param  group   成果参数
      * @return  CodeMsg
      */
+    @Log(value = "更新团队")
     @PutMapping("/team")
     public Result<CodeMsg> updateGroup(@RequestBody Group group) {
         String name = group.getName();
@@ -130,6 +137,7 @@ public class GroupController {
         }
     }
 
+    @Log(value = "删除团队")
     @DeleteMapping("/team")
     public Result<CodeMsg> deleteGroup(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {

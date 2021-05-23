@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.SoftwareReq;
 import com.buct.team.manage.entity.Software;
 import com.buct.team.manage.result.CodeMsg;
@@ -29,6 +30,7 @@ public class SoftwareController {
      * 获取所有软件信息
      * @return List
      */
+    @Log(value = "获取所有软件信息")
     @GetMapping("/softwares")
     public Result<List<Software>> getAllSoftware() {
         try {
@@ -41,6 +43,7 @@ public class SoftwareController {
         }
     }
 
+    @Log(value = "通过用户账户获取软件信息")
     @GetMapping("/softwares/userId")
     public Result<List<Software>> getAllSoftwareByUserId(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -64,6 +67,7 @@ public class SoftwareController {
      * @param softwareReq 请求参数
      * @return CodeMsg
      */
+    @Log(value = "添加软件资源")
     @PostMapping("/software")
     public Result<CodeMsg> insertSoftware(@RequestBody SoftwareReq softwareReq) {
         String name = softwareReq.getName();
@@ -94,6 +98,7 @@ public class SoftwareController {
      * @param softwareReq   参数
      * @return CodeMsg
      */
+    @Log(value = "更新软件资源")
     @PutMapping("/software")
     public Result<CodeMsg> updateSoftware(@RequestBody SoftwareReq softwareReq) {
         String name = softwareReq.getName();
@@ -124,6 +129,7 @@ public class SoftwareController {
      * @param idList    删除文献的主键
      * @return  CodeMsg
      */
+    @Log(value = "删除软件资源")
     @DeleteMapping("/software")
     public Result<CodeMsg> deleteSoftware(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -149,6 +155,7 @@ public class SoftwareController {
      * @param name  软件名
      * @return  List
      */
+    @Log(value = "通过软件名查找")
     @GetMapping("/software/searchByName")
     public Result<List<Software>> getByName(@RequestParam String name) {
         if (name.isEmpty()) {

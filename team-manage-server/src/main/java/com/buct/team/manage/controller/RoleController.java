@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.vo.UserVo;
 import com.buct.team.manage.entity.Role;
 import com.buct.team.manage.entity.UserRole;
@@ -29,6 +30,7 @@ public class RoleController {
         this.userRoleService = userRoleService;
     }
 
+    @Log(value = "获取所有角色")
     @GetMapping("/roles")
     public Result<List<Role>> getAllRoles() {
         try {
@@ -40,6 +42,7 @@ public class RoleController {
         }
     }
 
+    @Log(value = "获取用户角色")
     @GetMapping("/user/role")
     public Result<List<UserVo>> getUserRole() {
         try {
@@ -51,6 +54,7 @@ public class RoleController {
         }
     }
 
+    @Log(value = "通过用户账号查询用户角色")
     @GetMapping("/user/role/byuserId")
     public Result<List<UserVo>> getUserRoleByUserId(@RequestParam String userId) {
         try {
@@ -62,6 +66,7 @@ public class RoleController {
         }
     }
 
+    @Log(value = "删除角色")
     @DeleteMapping("/role/user")
     public Result<CodeMsg> deleteAssets(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -82,6 +87,7 @@ public class RoleController {
         }
     }
 
+    @Log(value = "新增角色")
     @PostMapping("/role/user")
     public Result<CodeMsg> addUserRole(@RequestBody UserRole userRole) {
         String userId = userRole.getUserId();
@@ -103,6 +109,8 @@ public class RoleController {
         }
     }
 
+
+    @Log(value = "更新用户角色")
     @PutMapping("/role/user")
     public Result<CodeMsg> updateUserRole(@RequestBody UserRole userRole) {
         String userId = userRole.getUserId();

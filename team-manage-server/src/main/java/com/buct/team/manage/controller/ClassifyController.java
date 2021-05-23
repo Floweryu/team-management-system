@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Classify;
 import com.buct.team.manage.entity.DocumentClassify;
 import com.buct.team.manage.result.CodeMsg;
@@ -31,6 +32,7 @@ public class ClassifyController {
     /**
      * 获取所有分类
      */
+    @Log(value = "获取所有分类")
     @GetMapping("/classify/all")
     public Result<List<Classify>> getAllClassify() {
         try {
@@ -43,6 +45,7 @@ public class ClassifyController {
         }
     }
 
+    @Log(value = "通过用户账号获取类别信息")
     @GetMapping("/classify/all/byUserId")
     public Result<List<Classify>> getAllClassifyByUserId(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -62,6 +65,7 @@ public class ClassifyController {
         }
     }
 
+    @Log(value = "添加类别信息")
     @PostMapping("/classify")
     public Result<CodeMsg> addClassify(@RequestBody Classify classify) {
         String userId = classify.getByUserId();
@@ -83,6 +87,7 @@ public class ClassifyController {
         }
     }
 
+    @Log(value = "修改类别信息")
     @PutMapping("/classify")
     public Result<CodeMsg> updateClassify(@RequestBody Classify classify) {
         String userId = classify.getByUserId();
@@ -105,6 +110,7 @@ public class ClassifyController {
     }
 
 
+    @Log(value = "删除类别信息")
     @DeleteMapping("/classify")
     public Result<CodeMsg> deleteClassify(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
@@ -125,6 +131,7 @@ public class ClassifyController {
         }
     }
 
+    @Log(value = "为文献添加类别")
     @PostMapping("/classify/member")
     public Result<CodeMsg> addDocumentClassify(@RequestBody List<DocumentClassify> documentClassifyList) {
         if (documentClassifyList.isEmpty()) {

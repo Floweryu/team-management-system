@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.controller.dto.AchievementReq;
 import com.buct.team.manage.entity.Achievement;
 import com.buct.team.manage.result.CodeMsg;
@@ -29,6 +30,7 @@ public class AchievementController {
      * 获取所有文献
      * @return  List
      */
+    @Log(value = "获取所有成果")
     @GetMapping("/achievements")
     public Result<List<Achievement>> getAllAchievement() {
         try {
@@ -45,6 +47,7 @@ public class AchievementController {
      * @param userId    上传者id
      * @return  List
      */
+    @Log(value = "通过上传者id获取成果")
     @GetMapping("/achievement/byUploadUser")
     public Result<List<Achievement>> getAchievementByUploadUser(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -68,6 +71,7 @@ public class AchievementController {
      * @param userId  作者id
      * @return  List
      */
+    @Log(value = "通过作者id查询成果")
     @GetMapping("/achievement/byUser")
     public Result<List<Achievement>> getAchievementByUser(@RequestParam String userId) {
         if (!StringUtils.isNumeric(userId)) {
@@ -91,6 +95,7 @@ public class AchievementController {
      * @param achievementReq    参数
      * @return  CodeMsg
      */
+    @Log(value = "添加个人成果")
     @PostMapping("/achievement")
     public Result<CodeMsg> addAchievement(@RequestBody AchievementReq achievementReq) {
         String articleName = achievementReq.getArticleName();
@@ -125,6 +130,7 @@ public class AchievementController {
      * @param achievementReq    成果参数
      * @return  CodeMsg
      */
+    @Log(value = "更新个人成果")
     @PutMapping("/achievement")
     public Result<CodeMsg> updateAchievement(@RequestBody AchievementReq achievementReq) {
         if (achievementReq.getId() < 0) {
@@ -157,6 +163,7 @@ public class AchievementController {
         }
     }
 
+    @Log(value = "删除个人成果")
     @DeleteMapping("/achievement")
     public Result<CodeMsg> deleteAchievement(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {

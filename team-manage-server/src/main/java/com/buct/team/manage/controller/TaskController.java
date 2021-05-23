@@ -1,5 +1,6 @@
 package com.buct.team.manage.controller;
 
+import com.buct.team.manage.annotation.Log;
 import com.buct.team.manage.entity.Task;
 import com.buct.team.manage.result.CodeMsg;
 import com.buct.team.manage.result.Result;
@@ -25,6 +26,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @Log(value = "获取所有任务")
     @GetMapping("/tasks")
     public Result<List<Task>> getAllTasks() {
         try {
@@ -36,6 +38,7 @@ public class TaskController {
         }
     }
 
+    @Log(value = "查看任务详情")
     @GetMapping("/task/id")
     public Result<Task> getTaskById(@RequestParam Long id) {
         if (id < 0) {
@@ -51,6 +54,7 @@ public class TaskController {
         }
     }
 
+    @Log(value = "添加任务")
     @PostMapping("/task")
     public Result<CodeMsg> addClass(@RequestBody Task task) {
         String userId = task.getPublishUserId();
@@ -81,6 +85,7 @@ public class TaskController {
         }
     }
 
+    @Log(value = "更新任务")
     @PutMapping("/task")
     public Result<CodeMsg> updateTask(@RequestBody Task task) {
         String userId = task.getPublishUserId();
@@ -112,6 +117,7 @@ public class TaskController {
     }
 
 
+    @Log(value = "删除任务")
     @DeleteMapping("/task")
     public Result<CodeMsg> deleteAssets(@RequestBody List<Long> idList) {
         if (idList.isEmpty()) {
