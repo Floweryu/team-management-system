@@ -323,37 +323,43 @@ export default {
     },
     // 点击下载文件
     downloadFile(row) {
-      let query = {
-        params: {
-          fileName: row.fileName,
-          id: row.id
-        },
-        responseType: 'blob'
-      }
-      this.$http.document
-        .downloadDocument(query)
-        .then(res => {
-          if (res) {
-            let blob = new Blob([res])
-            let url = window.URL.createObjectURL(blob)
-            let link = document.createElement('a')
-            link.href = url
-            link.download = row.fileName || '下载文件' //下载后文件名
-            document.body.appendChild(link)
-            link.click() //点击下载
-            link.remove() //下载完成移除元素
-            window.URL.revokeObjectURL(link.href) //用完之后使用URL.revokeObjectURL()释放；
-          } else {
-            this.$notify.error({
-              message: '文件下载失败，请重试'
-            })
-          }
-        })
-        .catch(() => {
-          this.$notify.error({
-            message: '文件下载错误'
-          })
-        })
+      let link = document.createElement('a') //创建a标签
+      link.style.display = 'none' //使其隐藏
+      link.href = `${process.env.VUE_APP_BASE_URL}/${row.storePath}` //赋予文件下载地址
+      link.setAttribute('download', row.fileName) //设置下载属性 以及文件名
+      document.body.appendChild(link) //a标签插至页面中
+      link.click() //强制触发a标签事件
+      // let query = {
+      //   params: {
+      //     fileName: row.fileName,
+      //     id: row.id
+      //   },
+      //   responseType: 'blob'
+      // }
+      // this.$http.document
+      //   .downloadDocument(query)
+      //   .then(res => {
+      //     if (res) {
+      //       let blob = new Blob([res])
+      //       let url = window.URL.createObjectURL(blob)
+      //       let link = document.createElement('a')
+      //       link.href = url
+      //       link.download = row.fileName || '下载文件' //下载后文件名
+      //       document.body.appendChild(link)
+      //       link.click() //点击下载
+      //       link.remove() //下载完成移除元素
+      //       window.URL.revokeObjectURL(link.href) //用完之后使用URL.revokeObjectURL()释放；
+      //     } else {
+      //       this.$notify.error({
+      //         message: '文件下载失败，请重试'
+      //       })
+      //     }
+      //   })
+      //   .catch(() => {
+      //     this.$notify.error({
+      //       message: '文件下载错误'
+      //     })
+      //   })
     },
 
     clearButton() {

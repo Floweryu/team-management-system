@@ -70,7 +70,7 @@ export default {
               if (res.code === 0 && res.data) {
                 this.$store.commit('storeUserinfo', res.data)
                 this.$store.commit('changeToken', res.data.token)
-                this.$router.push('/dashboard')
+                this.$router.push('/dashboard/home')
                 this.$notify.success('登陆成功')
               } else if (res.code === 400) {
                 this.$notify.error(res.msg)
