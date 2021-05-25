@@ -15,6 +15,8 @@ public class UserVo {
     //用户角色主键
     private Long userRoleId;
 
+    private Long roleId;
+
     // 角色名称
     private String name;
 

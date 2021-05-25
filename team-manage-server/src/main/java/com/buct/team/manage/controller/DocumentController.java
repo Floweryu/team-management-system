@@ -318,6 +318,24 @@ public class DocumentController {
         }
     }
 
+    @GetMapping("/document/addDownloadCount")
+    public Result<CodeMsg> addDownloadCount(@RequestParam Long id) {
+        if (id < 0) {
+            return Result.error(400, "id should > 0");
+        }
+        try {
+            Long downloadCount = documentService.getDownloadCount(id);
+            DocumentReq documentReq = new DocumentReq();
+            documentReq.setDownloadCount(downloadCount + 1);
+            documentReq.setId(id);
+            documentService.updateDocument(documentReq);
+            return Result.success(CodeMsg.SUCCESS);
+        } catch (Throwable throwable) {
+            log.error("There is something error: {}", throwable.getMessage());
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+    }
+
     /**
      * 下载文件
      * @param response  下载文献设置

@@ -170,6 +170,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  document.title = '团队资源管理系统'
   if (to.path === '/login') {
     next()
   } else {

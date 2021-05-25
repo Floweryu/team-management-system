@@ -150,7 +150,6 @@ export default {
       })
     },
     handleSelectionChange(rows) {
-      console.log(rows)
       this.selectRows = rows
     },
     // 根据用户姓名获取用户

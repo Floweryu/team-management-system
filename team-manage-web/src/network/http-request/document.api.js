@@ -10,6 +10,9 @@ const document = {
   getAllDocumentByUploadUser(params) {
     return axios.get(`${host.apiHost}/manage/documents/byUserId`, params)
   },
+  addDownloadCount(params) {
+    return axios.get(`${host.apiHost}/manage/document/addDownloadCount`, params)
+  },
 
   // 添加文献
   addDocument(data) {

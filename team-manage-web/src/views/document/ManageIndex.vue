@@ -329,6 +329,29 @@ export default {
       link.setAttribute('download', row.fileName) //设置下载属性 以及文件名
       document.body.appendChild(link) //a标签插至页面中
       link.click() //强制触发a标签事件
+      let query = {
+        params: {
+          id: row.id
+        }
+      }
+      this.$http.document
+        .addDownloadCount(query)
+        .then(res => {
+          if (res.code === 0) {
+            this.$notify.success({
+              message: '下载成功'
+            })
+          } else {
+            this.$notify.error({
+              message: '文件下载错误'
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: '文件下载错误'
+          })
+        })
       // let query = {
       //   params: {
       //     fileName: row.fileName,

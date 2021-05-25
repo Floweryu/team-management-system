@@ -6,11 +6,11 @@
         <result column="user_id" jdbcType="VARCHAR" javaType="String" property="userId" />
         <result column="username" jdbcType="VARCHAR" javaType="String" property="username" />
         <result column="name" jdbcType="VARCHAR" javaType="String" property="name" />
-        <result column="key" jdbcType="VARCHAR" javaType="String" property="key" />
+        <result column="role_id" jdbcType="BIGINT" javaType="Long" property="roleId" />
         <result column="key" jdbcType="VARCHAR" javaType="String" property="key" />
     </resultMap>
     <select id="getUserAndRole" resultMap="UserRoleMap">
-        SELECT t_user.user_id, t_user.username, t_user_role.id, t_role.`name`, t_role.`key`
+        SELECT t_user.user_id, t_user.username, t_user_role.id, t_user_role.role_id, t_role.`name`, t_role.`key`
         FROM t_user
         INNER JOIN t_user_role ON t_user.user_id = t_user_role.user_id
         INNER JOIN t_role ON t_role.id = t_user_role.role_id
@@ -20,7 +20,7 @@
         <if test="userId != null">
             <bind name="pattern" value="'%' + userId + '%'" />
         </if>
-        SELECT t_user.user_id, t_user.username, t_role.id, t_role.`name`, t_role.`key`
+        SELECT t_user.user_id, t_user.username, t_role.id, t_role.`name`, t_role.`key`, t_user_role.role_id
         FROM t_user
         INNER JOIN t_user_role ON t_user.user_id = t_user_role.user_id
         INNER JOIN t_role ON t_role.id = t_user_role.role_id
