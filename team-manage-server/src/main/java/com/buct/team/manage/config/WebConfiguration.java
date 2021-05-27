@@ -28,11 +28,16 @@ public class WebConfiguration implements WebMvcConfigurer {
         excludePath.add("/manage/login");  //登录
         excludePath.add("/manage/verifyCode");  //获取验证码
         excludePath.add("/manage/resetPassword");  //重置密码
-        excludePath.add("/resource/**"); //获取资源
+        excludePath.add("/resource/**"); //静态获取资源
+        excludePath.add("/swagger-resources/**"); //获取swagger资源
+        excludePath.add("/webjars/**"); //获取swagger资源
+        excludePath.add("/v2/**"); //获取swagger资源
+        excludePath.add("/swagger-ui.html/**"); //获取swagger资源
 
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);
         WebMvcConfigurer.super.addInterceptors(registry);
     }
+
 }
