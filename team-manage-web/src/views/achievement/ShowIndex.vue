@@ -6,7 +6,6 @@
         :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
         style="width: 100%"
         size="small"
-        @selection-change="handleSelectionChange"
         border
         stripe
       >
@@ -106,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-.el-card__body {
+.el-card /deep/ .el-card__body {
   padding: 5px;
 }
 </style>

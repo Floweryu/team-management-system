@@ -134,16 +134,18 @@ export default {
     }
   },
   created() {
-    if (this.$store.state.role === 'admin') {
-      this.getAllDocuments()
-    }
-    if (this.$store.state.role === 'common') {
-      this.getAllDocumentByUploadUser()
-    }
+    this.getByRole()
   },
   methods: {
+    getByRole() {
+      if (this.$store.state.role === 'admin') {
+        this.getAllDocuments()
+      }
+      if (this.$store.state.role === 'common') {
+        this.getAllDocumentByUploadUser()
+      }
+    },
     editClassifyLabel(param) {
-      console.log(param)
       this.classifyFormVisible = true
       this.documentId = param.id
     },
@@ -227,7 +229,7 @@ export default {
     // 上传成功后
     handleSuccess(res) {
       if (res.data.code === 0) {
-        this.getAllDocuments()
+        this.getByRole()
         this.$notify.success({
           message: res.data.msg
         })
@@ -273,7 +275,7 @@ export default {
             this.$notify.success({
               message: '删除成功'
             })
-            this.getAllDocuments()
+            this.getByRole()
           }
         })
         .catch(() => {
@@ -386,7 +388,7 @@ export default {
     },
 
     clearButton() {
-      this.getAllDocuments()
+      this.getByRole()
     },
     // 搜索用户
     searchData(msg) {

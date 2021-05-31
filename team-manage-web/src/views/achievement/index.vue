@@ -82,14 +82,17 @@ export default {
     }
   },
   created() {
-    if (this.$store.state.role === 'admin') {
-      this.getAllAchievement()
-    }
-    if (this.$store.state.role === 'common') {
-      this.getAchievementByUploadUser()
-    }
+    this.getByRole()
   },
   methods: {
+    getByRole() {
+      if (this.$store.state.role === 'admin') {
+        this.getAllAchievement()
+      }
+      if (this.$store.state.role === 'common') {
+        this.getAchievementByUploadUser()
+      }
+    },
     getAchievementByUploadUser() {
       let query = {
         params: {
@@ -146,7 +149,7 @@ export default {
             this.$notify.success({
               message: '删除成功'
             })
-            this.getAllAchievement()
+            this.getByRole()
           }
         })
         .catch(() => {
@@ -210,7 +213,7 @@ export default {
       this.dialogFormVisible = false
     },
     clearButton() {
-      this.getAllAchievement()
+      this.getByRole()
     },
     // 存储选择行信息
     handleSelectionChange(rows) {

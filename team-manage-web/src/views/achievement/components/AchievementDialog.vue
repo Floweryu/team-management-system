@@ -55,7 +55,7 @@
         <el-row type="flex" align="middle" class="row-bg">
           <el-col>
             <el-form-item prop="remark" label="备注" size="mini">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" v-model="formData.remark" placeholder="软件备注"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" v-model="formData.remark" placeholder="备注"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -149,7 +149,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllAchievement()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '添加失败'
@@ -181,7 +181,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllAchievement()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '更新失败'

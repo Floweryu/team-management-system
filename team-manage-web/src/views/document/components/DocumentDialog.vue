@@ -91,15 +91,15 @@ export default {
         introduction: '',
         publishPlace: '',
         originAddress: '',
-        uploadUserId: '',
-        publishTime: ''
+        uploadUserId: ''
       },
       rules: {
         title: [{ required: true, message: '文献标题不能为空', trigger: 'blur' }],
         author: [{ required: true, message: '请输入作者', trigger: 'blur' }],
         introduction: [{ required: true, message: '请输入简介', trigger: 'blur' }],
         publishPlace: [{ required: true, message: '请输入出版单位', trigger: 'blur' }],
-        originAddress: [{ required: true, message: '请输入来源网址', trigger: 'blur' }]
+        originAddress: [{ required: true, message: '请输入来源网址', trigger: 'blur' }],
+        publishTime: [{ required: true, message: '请选择日期', trigger: 'change' }]
       }
     }
   },
@@ -137,7 +137,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllDocuments()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '添加失败'
@@ -169,7 +169,7 @@ export default {
                   type: 'success'
                 })
                 this.$refs[formName].resetFields()
-                this.$parent.getAllDocuments()
+                this.$parent.getByRole()
               } else {
                 this.$notify.error({
                   message: '更新失败'

@@ -19,7 +19,7 @@
 
     <div class="nav-header-right">
       <div class="user-avator">
-        <img :src="$store.state.picPath" />
+        <img :src="picPath" />
       </div>
       <el-dropdown class="user-name" trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
@@ -49,7 +49,8 @@ export default {
     return {
       collapse: false,
       fullscreen: false,
-      username: localStorage.getItem('username')
+      username: localStorage.getItem('username'),
+      picPath: localStorage.getItem('picPath')
     }
   },
   created() {},

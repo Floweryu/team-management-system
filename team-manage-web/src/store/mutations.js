@@ -18,6 +18,6 @@ export default {
   },
   changePicPath(state, info) {
     state.picPath = info
-    localStorage.setItem('picPath', info.picPath)
+    localStorage.setItem('picPath', info)
   }
 }
