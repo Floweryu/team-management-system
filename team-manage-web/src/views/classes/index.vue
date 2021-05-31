@@ -259,14 +259,14 @@ export default {
 }
 </script>
 
-<style>
-.el-card__body {
+<style scoped>
+.el-card /deep/ .el-card__body {
   padding: 5px;
 }
 .file-upload {
   height: 28px;
 }
-.el-upload--text {
+.file-upload >>> .el-upload--text {
   width: 76px;
   height: 26px;
   border: 1px;

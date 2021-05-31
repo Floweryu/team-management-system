@@ -232,8 +232,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-card__body {
-  padding: 5px;
-}
-</style>
+<style scoped></style>

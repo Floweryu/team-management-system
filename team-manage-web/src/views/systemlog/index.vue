@@ -8,10 +8,11 @@
         size="small"
         border
         stripe
+        :default-sort="{ prop: 'requestDate', order: 'descending' }"
       >
         <el-table-column fixed prop="url" show-overflow-tooltip label="请求地址" min-width="120" align="center" />
         <el-table-column prop="description" show-overflow-tooltip label="操作描述" min-width="120" align="center" />
-        <el-table-column prop="requestDate" show-overflow-tooltip label="请求时间" min-width="100" align="center" />
+        <el-table-column prop="requestDate" sortable show-overflow-tooltip label="请求时间" min-width="100" align="center" />
         <el-table-column prop="requestMethod" label="请求方法" width="80" align="center" />
         <el-table-column prop="requestBody" show-overflow-tooltip label="请求内容" min-width="120" align="center" />
         <el-table-column prop="reponseStatus" label="响应状态" width="80" align="center" />
