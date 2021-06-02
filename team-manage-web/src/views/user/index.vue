@@ -297,14 +297,4 @@ export default {
 .el-card /deep/ .el-card__body {
   padding: 5px;
 }
-
-.avatar-uploader {
-  width: 50px;
-  height: 50px;
-}
-.avatar {
-  width: 50px;
-  height: 50px;
-  display: block;
-}
 </style>
